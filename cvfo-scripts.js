@@ -71,7 +71,7 @@
      ============================================================ */
 
   function initNavScroll() {
-    const header = document.querySelector('.zpheader, header, [class*="zpheader"]');
+    const header = document.querySelector('.theme-header');
     if (!header) return;
 
     let lastScrollY = 0;
