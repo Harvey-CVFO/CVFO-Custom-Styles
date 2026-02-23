@@ -621,49 +621,55 @@ hr.brand-rule {
 
 /* ============================================================
    11. NAVIGATION — STATIC → FLOATING GLASS ON SCROLL
+   
+   APPROACH: Minimal overrides only.
+   Zoho handles layout, positioning, and submenu behavior.
+   We only touch: background, colors, fonts, border-radius, shadow.
    ============================================================ */
 
-/* Kill Zoho's built-in animation — source of the load jolt */
+/* Kill Zoho's entrance animation — causes the white gap on load */
 .theme-header,
 [data-megamenu-content-container] {
   animation: none !important;
 }
 
-/* Base state — static full-width white bar */
-.theme-header {
+/* Fix hero overlap: the real nav wrapper is .zpheader-style-01
+   It sits outside .theme-header and is what Zoho measures for offset.
+   We can't rely on padding-top on body matching the actual rendered height,
+   so we use a known safe value and let the section padding compensate. */
+.zpheader-style-01 {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
-  right: 0 !important;
   width: 100% !important;
-  max-width: 100% !important;
-  transform: none !important;
   z-index: 1000 !important;
-  background: rgba(255, 255, 255, 0.98) !important;
-  border-radius: 0 !important;
-  border: none !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
-  box-shadow: none !important;
-  padding: 0 var(--space-md) !important;
-
-  /* Smooth morph — cubic-bezier eliminates the jolt feel */
-  transition:
-    background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    right 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Nav links — static state */
+body {
+  padding-top: 68px;
+}
+
+/* ---- Static state ---- */
+
+.theme-header {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transition:
+    background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Nav link colors — static */
 .theme-header .theme-menu-name {
   font-family: var(--font-body) !important;
-  font-size: var(--text-sm) !important;
   font-weight: 500 !important;
-  letter-spacing: 0.02em !important;
   color: var(--color-navy) !important;
   transition: color var(--transition-fast) !important;
 }
@@ -677,38 +683,26 @@ hr.brand-rule {
   font-weight: 600 !important;
 }
 
-/* No pseudo-element indicator — was squishing "Home" */
-.theme-header .theme-menu-selected > a::after {
-  display: none !important;
-}
-
-/* Push page content below fixed nav */
-body {
-  padding-top: 72px;
-}
-
-/* ---- Scrolled state: floating glass pill ---- */
+/* ---- Scrolled state: floating glass pill ----
+   JS adds .scrolled after 80px */
 
 .theme-header.scrolled {
-  top: 10px !important;
+  position: fixed !important;
+  top: 12px !important;
   left: 24px !important;
   right: 24px !important;
   width: calc(100% - 48px) !important;
-  max-width: calc(100% - 48px) !important;
-  background: rgba(22, 46, 80, 0.78) !important;
+  background: rgba(22, 46, 80, 0.82) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow:
-    0 4px 32px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
 }
 
-/* Nav links — scrolled state */
+/* Nav link colors — scrolled */
 .theme-header.scrolled .theme-menu-name {
-  color: rgba(247, 250, 252, 0.88) !important;
+  color: rgba(247, 250, 252, 0.9) !important;
 }
 
 .theme-header.scrolled .theme-menu a:hover .theme-menu-name {
@@ -719,144 +713,55 @@ body {
   color: var(--color-white) !important;
 }
 
-/* Logo: invert to white on dark glass */
+/* Logo invert on dark glass */
 .theme-header.scrolled [data-zs-logo] {
   filter: brightness(0) invert(1) !important;
   transition: filter 0.4s ease !important;
 }
 
-/* ---- Dropdown submenu — base (static nav) ---- */
+/* ---- Dropdown: colors only, no layout overrides ----
+   Zoho owns the layout (flex, position, width). We only set colors. */
 
-.theme-sub-menu {
-  background: var(--color-white) !important;
-  border: 1px solid var(--color-lightgray) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-  padding: 6px 0 !important;
-  margin-top: 4px !important;
-  min-width: 200px !important;
-}
-
-.theme-sub-menu li {
-  background: transparent !important;
-}
-
-.theme-sub-menu li a {
-  display: block !important;
-  padding: 10px 20px !important;
-  background: transparent !important;
-}
-
-.theme-sub-menu li a .theme-menu-name,
-.theme-sub-menu li a span {
+.theme-sub-menu .theme-menu-name {
   color: var(--color-navy) !important;
   font-family: var(--font-body) !important;
-  font-size: var(--text-sm) !important;
   font-weight: 500 !important;
 }
 
-.theme-sub-menu li a:hover {
-  background: var(--color-offwhite) !important;
-}
-
-.theme-sub-menu li a:hover .theme-menu-name,
-.theme-sub-menu li a:hover span {
+.theme-sub-menu li a:hover .theme-menu-name {
   color: var(--accent-primary) !important;
 }
 
-/* ---- Dropdown — scrolled/glass state ---- */
-/* Use a data attribute trick since we can't nest .scrolled > .theme-sub-menu */
-
+/* Scrolled dropdown colors */
 .theme-header.scrolled .theme-sub-menu {
-  background: rgba(16, 36, 64, 0.97) !important;
+  background: rgba(16, 36, 64, 0.96) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
 }
 
-.theme-header.scrolled .theme-sub-menu li a {
-  background: transparent !important;
+.theme-header.scrolled .theme-sub-menu .theme-menu-name {
+  color: rgba(247, 250, 252, 0.88) !important;
 }
 
-.theme-header.scrolled .theme-sub-menu li a .theme-menu-name,
-.theme-header.scrolled .theme-sub-menu li a span {
-  color: rgba(247, 250, 252, 0.85) !important;
-}
-
-.theme-header.scrolled .theme-sub-menu li a:hover {
-  background: rgba(255, 255, 255, 0.07) !important;
-}
-
-.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name,
-.theme-header.scrolled .theme-sub-menu li a:hover span {
+.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name {
   color: var(--color-white) !important;
 }
 
-/* ---- Mobile menu ---- */
+/* ---- Mobile: no floating pill, white nav stays white ---- */
 
-/* Burger icon color */
-.theme-burger-icon::before,
-.theme-burger-icon::after,
-.theme-burger-icon span {
-  background-color: var(--color-navy) !important;
-}
-
-.theme-header.scrolled .theme-burger-icon::before,
-.theme-header.scrolled .theme-burger-icon::after,
-.theme-header.scrolled .theme-burger-icon span {
-  background-color: var(--color-white) !important;
-}
-
-/* Mobile expanded menu panel */
-.theme-responsive-menu-area {
-  background: rgba(26, 54, 93, 0.97) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.theme-responsive-menu-area .theme-menu-name,
-.theme-responsive-menu-area a,
-.theme-responsive-menu-area span {
-  color: rgba(247, 250, 252, 0.9) !important;
-  font-family: var(--font-body) !important;
-  font-size: var(--text-sm) !important;
-}
-
-.theme-responsive-menu-area a:hover .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
-/* Mobile submenu */
-.theme-responsive-menu-area .theme-sub-menu {
-  background: rgba(14, 30, 54, 0.98) !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-.theme-responsive-menu-area .theme-sub-menu li a .theme-menu-name {
-  color: rgba(247, 250, 252, 0.82) !important;
-  font-weight: 400 !important;
-  padding-left: var(--space-lg) !important;
-}
-
-/* Mobile: keep nav styles consistent, no floating pill */
 @media (max-width: 768px) {
-  .theme-header,
   .theme-header.scrolled {
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
     border-radius: 0 !important;
     background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
     box-shadow: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
   }
 
   .theme-header.scrolled .theme-menu-name {
@@ -868,7 +773,7 @@ body {
   }
 
   body {
-    padding-top: 64px;
+    padding-top: 60px;
   }
 }
 
