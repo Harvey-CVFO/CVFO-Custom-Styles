@@ -623,8 +623,9 @@ hr.brand-rule {
    11. NAVIGATION — STATIC → FLOATING GLASS ON SCROLL
    ============================================================ */
 
-/* Neutralize Zoho's built-in nav animation */
-.theme-header {
+/* Kill Zoho's built-in animation — source of the load jolt */
+.theme-header,
+[data-megamenu-content-container] {
   animation: none !important;
 }
 
@@ -645,7 +646,7 @@ hr.brand-rule {
   box-shadow: none !important;
   padding: 0 var(--space-md) !important;
 
-  /* All properties transition together for smooth morph */
+  /* Smooth morph — cubic-bezier eliminates the jolt feel */
   transition:
     background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -809,37 +810,39 @@ body {
 
 /* Mobile expanded menu panel */
 .theme-responsive-menu-area {
-  background: var(--color-white) !important;
-  border-top: 1px solid var(--color-lightgray) !important;
+  background: rgba(26, 54, 93, 0.97) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .theme-responsive-menu-area .theme-menu-name,
 .theme-responsive-menu-area a,
 .theme-responsive-menu-area span {
-  color: var(--color-navy) !important;
+  color: rgba(247, 250, 252, 0.9) !important;
   font-family: var(--font-body) !important;
   font-size: var(--text-sm) !important;
 }
 
 .theme-responsive-menu-area a:hover .theme-menu-name {
-  color: var(--accent-primary) !important;
+  color: var(--color-white) !important;
 }
 
 /* Mobile submenu */
 .theme-responsive-menu-area .theme-sub-menu {
-  background: var(--color-offwhite) !important;
+  background: rgba(14, 30, 54, 0.98) !important;
   border: none !important;
   box-shadow: none !important;
   border-radius: 0 !important;
 }
 
 .theme-responsive-menu-area .theme-sub-menu li a .theme-menu-name {
-  color: var(--color-navy) !important;
+  color: rgba(247, 250, 252, 0.82) !important;
   font-weight: 400 !important;
   padding-left: var(--space-lg) !important;
 }
 
-/* Mobile: reset floating on scrolled state */
+/* Mobile: keep nav styles consistent, no floating pill */
 @media (max-width: 768px) {
   .theme-header,
   .theme-header.scrolled {
