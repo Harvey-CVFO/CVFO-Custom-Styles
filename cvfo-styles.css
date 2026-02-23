@@ -620,27 +620,146 @@ hr.brand-rule {
 
 
 /* ============================================================
-   11. NAVIGATION OVERRIDES
+   11. NAVIGATION — FLOATING GLASS BAR
    ============================================================ */
 
-.zpnav-wrapper,
-.zpheader {
-  font-family: var(--font-body);
+/* Push page content down so it doesn't hide behind fixed nav */
+body {
+  padding-top: 80px;
 }
 
-.zpnav-link,
-.zpnavbar-nav .zpnav-item a {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--color-navy);
-  transition: color var(--transition-fast);
+/* Floating bar */
+.theme-header {
+  position: fixed !important;
+  top: 12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 48px) !important;
+  max-width: 1200px !important;
+  z-index: 1000 !important;
+
+  /* Glass effect */
+  background: rgba(26, 54, 93, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+
+  /* Shape */
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+  /* Shadow */
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
+
+  /* Transition for scroll state */
+  transition:
+    background var(--transition-slow),
+    box-shadow var(--transition-slow) !important;
+
+  padding: 0 var(--space-md) !important;
 }
 
-.zpnav-link:hover,
-.zpnavbar-nav .zpnav-item a:hover {
-  color: var(--accent-primary);
+/* Slightly more opaque once user scrolls */
+.theme-header.scrolled {
+  background: rgba(26, 54, 93, 0.82) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.24),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset !important;
+}
+
+/* Nav links */
+.theme-header .theme-menu-name,
+.theme-header .theme-menu a,
+.theme-header a {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-sm) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  color: rgba(247, 250, 252, 0.88) !important;
+  text-decoration: none !important;
+  transition: color var(--transition-fast) !important;
+}
+
+.theme-header .theme-menu a:hover,
+.theme-header .theme-menu-name:hover {
+  color: var(--color-white) !important;
+}
+
+/* Active nav item */
+.theme-header .theme-menu-selected a,
+.theme-header .theme-menu-selected .theme-menu-name {
+  color: var(--color-white) !important;
+  font-weight: 600 !important;
+}
+
+/* Subtle active indicator */
+.theme-header .theme-menu-selected > a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--accent-primary);
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+/* Submenu */
+.theme-header .theme-sub-menu {
+  background: rgba(26, 54, 93, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: var(--space-xs) 0 !important;
+  margin-top: 8px !important;
+}
+
+.theme-header .theme-sub-menu li a {
+  padding: 10px var(--space-md) !important;
+  display: block !important;
+  color: rgba(247, 250, 252, 0.82) !important;
+  font-size: var(--text-sm) !important;
+}
+
+.theme-header .theme-sub-menu li a:hover {
+  color: var(--color-white) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Burger icon — mobile */
+.theme-header .theme-burger-icon {
+  color: var(--color-white) !important;
+}
+
+/* Mobile: collapse floating effect */
+@media (max-width: 768px) {
+  .theme-header {
+    width: calc(100% - 24px) !important;
+    top: 8px !important;
+    border-radius: 10px !important;
+    padding: 0 var(--space-sm) !important;
+  }
+
+  body {
+    padding-top: 72px;
+  }
+
+  /* Mobile expanded menu */
+  .theme-responsive-menu-area {
+    position: fixed !important;
+    top: 70px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 24px) !important;
+    background: rgba(26, 54, 93, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    border-radius: var(--radius-md) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--shadow-lg) !important;
+    z-index: 999 !important;
+  }
 }
 
 
