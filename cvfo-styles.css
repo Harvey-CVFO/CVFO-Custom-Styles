@@ -633,6 +633,12 @@ hr.brand-rule {
   animation: none !important;
 }
 
+/* Remove Zoho's default border-bottom on the header outer wrapper */
+.zpheader-style-01 {
+  border-bottom: none !important;
+  border-block-end: none !important;
+}
+
 /* Blocks all transitions during initial load — removed by JS after 400ms */
 .theme-header.nav-no-transition {
   transition: none !important;
