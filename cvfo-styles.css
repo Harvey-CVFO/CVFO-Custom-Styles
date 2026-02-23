@@ -623,45 +623,47 @@ hr.brand-rule {
    11. NAVIGATION — STATIC → FLOATING GLASS ON SCROLL
    ============================================================ */
 
-/* Neutralize Zoho's built-in nav animation that causes white gap */
+/* Neutralize Zoho's built-in nav animation */
 .theme-header {
   animation: none !important;
 }
 
-/* Base state — static, full width, standard nav */
+/* Base state — static full-width white bar */
 .theme-header {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;
+  max-width: 100% !important;
   transform: none !important;
   z-index: 1000 !important;
-  background: var(--color-white) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   border-radius: 0 !important;
   border: none !important;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: none !important;
   padding: 0 var(--space-md) !important;
+
+  /* All properties transition together for smooth morph */
   transition:
-    top 0.4s ease,
-    left 0.4s ease,
-    right 0.4s ease,
-    width 0.4s ease,
-    background 0.4s ease,
-    border-radius 0.4s ease,
-    box-shadow 0.4s ease,
-    transform 0.4s ease !important;
+    background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    right 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Nav links — static state */
-.theme-header .theme-menu-name,
-.theme-header .theme-menu a {
+.theme-header .theme-menu-name {
   font-family: var(--font-body) !important;
   font-size: var(--text-sm) !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   color: var(--color-navy) !important;
-  text-decoration: none !important;
   transition: color var(--transition-fast) !important;
 }
 
@@ -669,43 +671,42 @@ hr.brand-rule {
   color: var(--accent-primary) !important;
 }
 
-/* Active item — static state */
 .theme-header .theme-menu-selected > a .theme-menu-name {
   color: var(--accent-primary) !important;
   font-weight: 600 !important;
 }
 
-/* Remove the ::after that was squishing "Home" */
+/* No pseudo-element indicator — was squishing "Home" */
 .theme-header .theme-menu-selected > a::after {
   display: none !important;
 }
 
-/* Push page content below nav */
+/* Push page content below fixed nav */
 body {
   padding-top: 72px;
 }
 
-/* ---- Scrolled (floating glass) state ---- 
-   JS adds .scrolled to .theme-header after 60px scroll */
+/* ---- Scrolled state: floating glass pill ---- */
 
 .theme-header.scrolled {
-  top: 12px !important;
+  top: 10px !important;
   left: 24px !important;
   right: 24px !important;
   width: calc(100% - 48px) !important;
-  background: rgba(26, 54, 93, 0.72) !important;
-  backdrop-filter: blur(18px) !important;
-  -webkit-backdrop-filter: blur(18px) !important;
+  max-width: calc(100% - 48px) !important;
+  background: rgba(22, 46, 80, 0.78) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
+    0 4px 32px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
 }
 
-/* Nav links — scrolled/floating state */
-.theme-header.scrolled .theme-menu-name,
-.theme-header.scrolled .theme-menu a {
+/* Nav links — scrolled state */
+.theme-header.scrolled .theme-menu-name {
   color: rgba(247, 250, 252, 0.88) !important;
 }
 
@@ -717,78 +718,150 @@ body {
   color: var(--color-white) !important;
 }
 
-/* Logo — invert on dark glass */
-.theme-header.scrolled .theme-logo-parent img {
+/* Logo: invert to white on dark glass */
+.theme-header.scrolled [data-zs-logo] {
   filter: brightness(0) invert(1) !important;
+  transition: filter 0.4s ease !important;
 }
 
-/* Dropdown submenu — glass style */
+/* ---- Dropdown submenu — base (static nav) ---- */
+
 .theme-sub-menu {
   background: var(--color-white) !important;
   border: 1px solid var(--color-lightgray) !important;
   border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-lg) !important;
-  padding: var(--space-xs) 0 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  padding: 6px 0 !important;
   margin-top: 4px !important;
+  min-width: 200px !important;
 }
 
-.theme-sub-menu li a,
-.theme-sub-menu li a .theme-menu-name {
-  color: var(--color-navy) !important;
-  font-size: var(--text-sm) !important;
-  font-family: var(--font-body) !important;
-  padding: 10px var(--space-md) !important;
+.theme-sub-menu li {
+  background: transparent !important;
+}
+
+.theme-sub-menu li a {
   display: block !important;
+  padding: 10px 20px !important;
+  background: transparent !important;
 }
 
-.theme-sub-menu li a:hover .theme-menu-name {
-  color: var(--accent-primary) !important;
+.theme-sub-menu li a .theme-menu-name,
+.theme-sub-menu li a span {
+  color: var(--color-navy) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-sm) !important;
+  font-weight: 500 !important;
 }
 
 .theme-sub-menu li a:hover {
   background: var(--color-offwhite) !important;
 }
 
-/* Scrolled dropdown — dark glass */
+.theme-sub-menu li a:hover .theme-menu-name,
+.theme-sub-menu li a:hover span {
+  color: var(--accent-primary) !important;
+}
+
+/* ---- Dropdown — scrolled/glass state ---- */
+/* Use a data attribute trick since we can't nest .scrolled > .theme-sub-menu */
+
 .theme-header.scrolled .theme-sub-menu {
-  background: rgba(20, 42, 74, 0.96) !important;
+  background: rgba(16, 36, 64, 0.97) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
 }
 
-.theme-header.scrolled .theme-sub-menu li a,
-.theme-header.scrolled .theme-sub-menu li a .theme-menu-name {
+.theme-header.scrolled .theme-sub-menu li a {
+  background: transparent !important;
+}
+
+.theme-header.scrolled .theme-sub-menu li a .theme-menu-name,
+.theme-header.scrolled .theme-sub-menu li a span {
   color: rgba(247, 250, 252, 0.85) !important;
 }
 
-.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
 .theme-header.scrolled .theme-sub-menu li a:hover {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
 }
 
-/* Burger icon */
-.theme-header .theme-burger-icon,
-.theme-responsive-menu-container .theme-burger-icon {
-  color: var(--color-navy) !important;
-}
-
-.theme-header.scrolled .theme-burger-icon,
-.theme-header.scrolled .theme-responsive-menu-container .theme-burger-icon {
+.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name,
+.theme-header.scrolled .theme-sub-menu li a:hover span {
   color: var(--color-white) !important;
 }
 
-/* Mobile */
+/* ---- Mobile menu ---- */
+
+/* Burger icon color */
+.theme-burger-icon::before,
+.theme-burger-icon::after,
+.theme-burger-icon span {
+  background-color: var(--color-navy) !important;
+}
+
+.theme-header.scrolled .theme-burger-icon::before,
+.theme-header.scrolled .theme-burger-icon::after,
+.theme-header.scrolled .theme-burger-icon span {
+  background-color: var(--color-white) !important;
+}
+
+/* Mobile expanded menu panel */
+.theme-responsive-menu-area {
+  background: var(--color-white) !important;
+  border-top: 1px solid var(--color-lightgray) !important;
+}
+
+.theme-responsive-menu-area .theme-menu-name,
+.theme-responsive-menu-area a,
+.theme-responsive-menu-area span {
+  color: var(--color-navy) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-sm) !important;
+}
+
+.theme-responsive-menu-area a:hover .theme-menu-name {
+  color: var(--accent-primary) !important;
+}
+
+/* Mobile submenu */
+.theme-responsive-menu-area .theme-sub-menu {
+  background: var(--color-offwhite) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.theme-responsive-menu-area .theme-sub-menu li a .theme-menu-name {
+  color: var(--color-navy) !important;
+  font-weight: 400 !important;
+  padding-left: var(--space-lg) !important;
+}
+
+/* Mobile: reset floating on scrolled state */
 @media (max-width: 768px) {
+  .theme-header,
   .theme-header.scrolled {
-    left: 12px !important;
-    right: 12px !important;
-    width: calc(100% - 24px) !important;
-    top: 8px !important;
-    border-radius: 10px !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+    box-shadow: none !important;
+  }
+
+  .theme-header.scrolled .theme-menu-name {
+    color: var(--color-navy) !important;
+  }
+
+  .theme-header.scrolled [data-zs-logo] {
+    filter: none !important;
   }
 
   body {
@@ -798,7 +871,178 @@ body {
 
 
 /* ============================================================
-   12. SCROLLBAR (subtle brand touch)
+   12. ZOHO ELEMENT BASE OVERRIDES
+   Automatic styling for all native Zoho elements.
+   No custom classes needed — applies everywhere by default.
+   ============================================================ */
+
+/* ---- Sections ---- */
+
+.zpsection {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default section padding */
+.zpsection .zpcontainer {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+
+/* ---- Rows ---- */
+
+.zprow {
+  gap: var(--space-md);
+}
+
+/* ---- Boxes (zpbox-container / zpelem-box) ----
+   Zoho's "box" element — used for cards, stat blocks, feature blocks.
+   Override the inline background-color Zoho injects with !important. */
+
+.zpelem-box,
+.zpbox-container {
+  background-color: var(--color-white) !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-base) !important;
+  overflow: hidden;
+}
+
+.zpelem-box:hover,
+.zpbox-container:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* Colored box variant (zsthickpadding-coloured-box) —
+   Zoho injects blue/green/pink backgrounds inline.
+   We neutralize the color and apply our own treatment. */
+
+.zsthickpadding-coloured-box {
+  background-color: var(--color-offwhite) !important;
+  border-left: 3px solid var(--accent-teal) !important;
+}
+
+/* Boxes inside dark sections */
+.section-dark .zpelem-box,
+.section-dark .zpbox-container {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.section-dark .zpelem-box:hover,
+.section-dark .zpbox-container:hover {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* ---- Icon + Heading + Text blocks (zpelem-iconheadingtext) ---- */
+
+.zpelem-iconheadingtext,
+.zpelem-iconheading {
+  padding: var(--space-md) !important;
+}
+
+/* Icon container */
+.zpicon-container {
+  margin-bottom: var(--space-sm) !important;
+}
+
+/* Icon itself */
+.zpicon.zpicon-common svg {
+  fill: var(--accent-teal) !important;
+  transition: fill var(--transition-fast) !important;
+}
+
+/* Override inline fill overrides Zoho sometimes injects */
+.zpelem-box:hover .zpicon-common svg {
+  fill: var(--accent-primary) !important;
+}
+
+/* Icon in dark sections */
+.section-dark .zpicon.zpicon-common svg {
+  fill: var(--color-teal) !important;
+}
+
+/* Icon heading (h3/h4 inside icon blocks) */
+h3.zpicon-heading,
+h4.zpicon-heading {
+  font-family: var(--font-heading) !important;
+  font-size: var(--text-xl) !important;
+  font-weight: 600 !important;
+  color: var(--color-navy) !important;
+  line-height: 1.3 !important;
+  margin-top: var(--space-xs) !important;
+  margin-bottom: var(--space-xs) !important;
+}
+
+.section-dark h3.zpicon-heading,
+.section-dark h4.zpicon-heading {
+  color: var(--color-white) !important;
+}
+
+/* Icon text body */
+.zpicon-text-container,
+.zpicon-text-container p,
+.zpicon-text-container div {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
+  color: var(--color-darkgray) !important;
+  line-height: 1.65 !important;
+}
+
+.section-dark .zpicon-text-container,
+.section-dark .zpicon-text-container p,
+.section-dark .zpicon-text-container div {
+  color: rgba(247, 250, 252, 0.78) !important;
+}
+
+/* ---- Spacer ---- */
+
+.zpspacer {
+  display: block !important;
+}
+
+/* ---- Links inside text blocks ---- */
+
+.zptext a,
+.zpicon-text-container a {
+  color: var(--accent-primary) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color var(--transition-fast) !important;
+}
+
+.zptext a:hover,
+.zpicon-text-container a:hover {
+  color: var(--accent-hover) !important;
+  text-decoration: underline !important;
+}
+
+/* ---- Dividers ---- */
+
+.zphr,
+hr {
+  border: none !important;
+  border-top: 1px solid rgba(131, 174, 175, 0.25) !important;
+  margin: var(--space-xl) 0 !important;
+}
+
+/* ---- Images ---- */
+
+.zpelem-image img,
+.zpimage img {
+  border-radius: var(--radius-sm) !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+
+/* ============================================================
+   13. SCROLLBAR (subtle brand touch)
    ============================================================ */
 
 ::-webkit-scrollbar {
@@ -820,7 +1064,7 @@ body {
 
 
 /* ============================================================
-   13. RESPONSIVE ADJUSTMENTS
+   14. RESPONSIVE ADJUSTMENTS
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -855,7 +1099,7 @@ body {
 
 
 /* ============================================================
-   14. REDUCED MOTION SUPPORT
+   15. REDUCED MOTION SUPPORT
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
