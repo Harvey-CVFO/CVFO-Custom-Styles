@@ -633,9 +633,9 @@ hr.brand-rule {
   animation: none !important;
 }
 
-/* Fix hero overlap — use actual nav height */
-body {
-  padding-top: 90px;
+/* Fix hero overlap — target content area directly so Zoho's own margin-top doesn't double-stack */
+.theme-content-area {
+  margin-top: 90px !important;
 }
 
 /* ---- Base state: layout + transition only ---- */
@@ -700,6 +700,21 @@ body {
   .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:first-of-type {
     border-top: none !important;
   }
+
+  /* Submenu link text: slightly muted white by default */
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li a .theme-menu-name {
+    color: rgba(255, 255, 255, 0.82) !important;
+    transition: color var(--transition-fast) !important;
+  }
+
+  /* Submenu item hover: subtle white fill + full white text */
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:hover a .theme-menu-name {
+    color: #ffffff !important;
+  }
 }
 
 /* ---- Mobile/tablet menu panel: frosted glass ---- */
@@ -717,10 +732,6 @@ body {
 /* ---- Mobile: no floating pill ---- */
 
 @media (max-width: 768px) {
-  body {
-    padding-top: 90px;
-  }
-
   .theme-header.scrolled {
     top: 0 !important;
     left: 0 !important;
