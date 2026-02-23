@@ -75,19 +75,27 @@
     if (!header) return;
 
     const THRESHOLD = 80;
-
-    // Block transitions until after first scroll handler has run and browser has settled.
-    // Using a class + timeout is more reliable than double-rAF when script loads late.
-    header.classList.add('nav-no-transition');
-    setTimeout(() => {
-      header.classList.remove('nav-no-transition');
-    }, 400);
+    let isScrolled = false;
 
     function onScroll() {
-      if (window.scrollY > THRESHOLD) {
-        header.classList.add('scrolled');
+      const shouldBeScrolled = window.scrollY > THRESHOLD;
+      if (shouldBeScrolled === isScrolled) return;
+      isScrolled = shouldBeScrolled;
+
+      if (shouldBeScrolled) {
+        // Hide nav, swap to pill state off-screen, then fade back in
+        header.classList.add('nav-hidden');
+        setTimeout(() => {
+          header.classList.add('scrolled');
+          header.classList.remove('nav-hidden');
+        }, 200);
       } else {
-        header.classList.remove('scrolled');
+        // Same on the way back — hide, revert to bar, fade in
+        header.classList.add('nav-hidden');
+        setTimeout(() => {
+          header.classList.remove('scrolled');
+          header.classList.remove('nav-hidden');
+        }, 200);
       }
     }
 
