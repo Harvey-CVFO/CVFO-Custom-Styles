@@ -74,10 +74,10 @@
     const header = document.querySelector('.theme-header');
     if (!header) return;
 
-    const SCROLL_THRESHOLD = 80;
+    const THRESHOLD = 80;
 
     function onScroll() {
-      if (window.scrollY > SCROLL_THRESHOLD) {
+      if (window.scrollY > THRESHOLD) {
         header.classList.add('scrolled');
       } else {
         header.classList.remove('scrolled');
@@ -85,7 +85,7 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // Run once on load to set correct state
+    onScroll();
   }
 
 
