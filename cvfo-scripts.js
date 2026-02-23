@@ -76,6 +76,13 @@
 
     const THRESHOLD = 80;
 
+    // Block transitions until after first scroll handler has run and browser has settled.
+    // Using a class + timeout is more reliable than double-rAF when script loads late.
+    header.classList.add('nav-no-transition');
+    setTimeout(() => {
+      header.classList.remove('nav-no-transition');
+    }, 400);
+
     function onScroll() {
       if (window.scrollY > THRESHOLD) {
         header.classList.add('scrolled');
@@ -85,7 +92,6 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
   }
 
 
