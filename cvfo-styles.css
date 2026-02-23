@@ -639,9 +639,11 @@ hr.brand-rule {
   border-block-end: none !important;
 }
 
-/* Blocks all transitions during initial load — removed by JS after 400ms */
-.theme-header.nav-no-transition {
+/* Temporarily hides nav during state swap so pill transition happens off-screen */
+.theme-header.nav-hidden {
   transition: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 
@@ -724,20 +726,15 @@ hr.brand-rule {
   }
 }
 
-/* ---- Mobile: no floating pill ---- */
+/* ---- Mobile/tablet: tighter pill inset ---- */
 
 @media (max-width: 768px) {
   .theme-header.scrolled {
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    top: 10px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    border-radius: 14px !important;
   }
 }
 
