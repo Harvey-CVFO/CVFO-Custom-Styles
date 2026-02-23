@@ -620,108 +620,63 @@ hr.brand-rule {
 
 
 /* ============================================================
-   11. NAVIGATION — STATIC → FLOATING GLASS ON SCROLL
+   11. NAVIGATION — ALWAYS DARK, FLOATS ON SCROLL
    
-   APPROACH: Minimal overrides only.
-   Zoho handles layout, positioning, and submenu behavior.
-   We only touch: background, colors, fonts, border-radius, shadow.
+   One color scheme only — dark navy always.
+   Only position/shape changes on scroll.
+   No color switching. No state conflicts.
    ============================================================ */
 
-/* Kill Zoho's entrance animation — causes the white gap on load */
+/* Kill Zoho's entrance animation */
 .theme-header,
 [data-megamenu-content-container] {
   animation: none !important;
 }
 
-/* Fix hero overlap: the real nav wrapper is .zpheader-style-01
-   It sits outside .theme-header and is what Zoho measures for offset.
-   We can't rely on padding-top on body matching the actual rendered height,
-   so we use a known safe value and let the section padding compensate. */
-.zpheader-style-01 {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  z-index: 1000 !important;
-}
-
+/* Fix hero overlap — use actual nav height */
 body {
-  padding-top: 68px;
+  padding-top: 90px;
 }
 
-/* ---- Static state ---- */
+/* ---- Always-dark base state ---- */
 
 .theme-header {
-  background: rgba(255, 255, 255, 0.98) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+  background: rgba(22, 46, 80, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
   border-radius: 0 !important;
   transition:
-    background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Nav link colors — static */
+/* Nav link colors — always light */
 .theme-header .theme-menu-name {
   font-family: var(--font-body) !important;
   font-weight: 500 !important;
-  color: var(--color-navy) !important;
+  color: rgba(247, 250, 252, 0.88) !important;
   transition: color var(--transition-fast) !important;
 }
 
 .theme-header .theme-menu a:hover .theme-menu-name {
-  color: var(--accent-primary) !important;
+  color: var(--color-white) !important;
 }
 
 .theme-header .theme-menu-selected > a .theme-menu-name {
-  color: var(--accent-primary) !important;
+  color: var(--color-white) !important;
   font-weight: 600 !important;
 }
 
-/* ---- Scrolled state: floating glass pill ----
-   JS adds .scrolled after 80px */
-
-.theme-header.scrolled {
-  position: fixed !important;
-  top: 12px !important;
-  left: 24px !important;
-  right: 24px !important;
-  width: calc(100% - 48px) !important;
-  background: rgba(22, 46, 80, 0.82) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
-}
-
-/* Nav link colors — scrolled */
-.theme-header.scrolled .theme-menu-name {
-  color: rgba(247, 250, 252, 0.9) !important;
-}
-
-.theme-header.scrolled .theme-menu a:hover .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
-.theme-header.scrolled .theme-menu-selected > a .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
-/* Logo invert on dark glass */
-.theme-header.scrolled [data-zs-logo] {
+/* Logo always white */
+.theme-header [data-zs-logo] {
   filter: brightness(0) invert(1) !important;
-  transition: filter 0.4s ease !important;
 }
 
-/* ---- Dropdown: colors only, no layout overrides ----
-   Zoho owns the layout (flex, position, width). We only set colors. */
-
+/* Submenu colors only — no layout overrides */
 .theme-sub-menu .theme-menu-name {
   color: var(--color-navy) !important;
   font-family: var(--font-body) !important;
@@ -732,48 +687,39 @@ body {
   color: var(--accent-primary) !important;
 }
 
-/* Scrolled dropdown colors */
-.theme-header.scrolled .theme-sub-menu {
-  background: rgba(16, 36, 64, 0.96) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+/* ---- Scrolled state: floating pill only ----
+   Only shape/position changes. Colors stay the same. */
+
+.theme-header.scrolled {
+  top: 12px !important;
+  left: 24px !important;
+  right: 24px !important;
+  width: calc(100% - 48px) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.28) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
 }
 
-.theme-header.scrolled .theme-sub-menu .theme-menu-name {
-  color: rgba(247, 250, 252, 0.88) !important;
-}
-
-.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
-/* ---- Mobile: no floating pill, white nav stays white ---- */
+/* ---- Mobile: no floating pill, same dark color ---- */
 
 @media (max-width: 768px) {
+  body {
+    padding-top: 90px;
+  }
+
   .theme-header.scrolled {
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
     border-radius: 0 !important;
-    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
-  }
-
-  .theme-header.scrolled .theme-menu-name {
-    color: var(--color-navy) !important;
-  }
-
-  .theme-header.scrolled [data-zs-logo] {
-    filter: none !important;
-  }
-
-  body {
-    padding-top: 60px;
   }
 }
 
