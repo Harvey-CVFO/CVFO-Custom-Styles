@@ -620,145 +620,179 @@ hr.brand-rule {
 
 
 /* ============================================================
-   11. NAVIGATION — FLOATING GLASS BAR
+   11. NAVIGATION — STATIC → FLOATING GLASS ON SCROLL
    ============================================================ */
 
-/* Push page content down so it doesn't hide behind fixed nav */
-body {
-  padding-top: 80px;
+/* Neutralize Zoho's built-in nav animation that causes white gap */
+.theme-header {
+  animation: none !important;
 }
 
-/* Floating bar */
+/* Base state — static, full width, standard nav */
 .theme-header {
   position: fixed !important;
-  top: 12px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: calc(100% - 48px) !important;
-  max-width: 1200px !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  transform: none !important;
   z-index: 1000 !important;
-
-  /* Glass effect */
-  background: rgba(26, 54, 93, 0.55) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-
-  /* Shape */
-  border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-
-  /* Shadow */
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.18),
-    0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
-
-  /* Transition for scroll state */
-  transition:
-    background var(--transition-slow),
-    box-shadow var(--transition-slow) !important;
-
+  background: var(--color-white) !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08) !important;
   padding: 0 var(--space-md) !important;
+  transition:
+    top 0.4s ease,
+    left 0.4s ease,
+    right 0.4s ease,
+    width 0.4s ease,
+    background 0.4s ease,
+    border-radius 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s ease !important;
 }
 
-/* Slightly more opaque once user scrolls */
-.theme-header.scrolled {
-  background: rgba(26, 54, 93, 0.82) !important;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.24),
-    0 1px 0 rgba(255, 255, 255, 0.08) inset !important;
-}
-
-/* Nav links */
+/* Nav links — static state */
 .theme-header .theme-menu-name,
-.theme-header .theme-menu a,
-.theme-header a {
+.theme-header .theme-menu a {
   font-family: var(--font-body) !important;
   font-size: var(--text-sm) !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
-  color: rgba(247, 250, 252, 0.88) !important;
+  color: var(--color-navy) !important;
   text-decoration: none !important;
   transition: color var(--transition-fast) !important;
 }
 
-.theme-header .theme-menu a:hover,
-.theme-header .theme-menu-name:hover {
-  color: var(--color-white) !important;
+.theme-header .theme-menu a:hover .theme-menu-name {
+  color: var(--accent-primary) !important;
 }
 
-/* Active nav item */
-.theme-header .theme-menu-selected a,
-.theme-header .theme-menu-selected .theme-menu-name {
-  color: var(--color-white) !important;
+/* Active item — static state */
+.theme-header .theme-menu-selected > a .theme-menu-name {
+  color: var(--accent-primary) !important;
   font-weight: 600 !important;
 }
 
-/* Subtle active indicator */
+/* Remove the ::after that was squishing "Home" */
 .theme-header .theme-menu-selected > a::after {
-  content: '';
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: var(--accent-primary);
-  border-radius: 2px;
-  margin-top: 2px;
+  display: none !important;
 }
 
-/* Submenu */
-.theme-header .theme-sub-menu {
-  background: rgba(26, 54, 93, 0.95) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* Push page content below nav */
+body {
+  padding-top: 72px;
+}
+
+/* ---- Scrolled (floating glass) state ---- 
+   JS adds .scrolled to .theme-header after 60px scroll */
+
+.theme-header.scrolled {
+  top: 12px !important;
+  left: 24px !important;
+  right: 24px !important;
+  width: calc(100% - 48px) !important;
+  background: rgba(26, 54, 93, 0.72) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
+}
+
+/* Nav links — scrolled/floating state */
+.theme-header.scrolled .theme-menu-name,
+.theme-header.scrolled .theme-menu a {
+  color: rgba(247, 250, 252, 0.88) !important;
+}
+
+.theme-header.scrolled .theme-menu a:hover .theme-menu-name {
+  color: var(--color-white) !important;
+}
+
+.theme-header.scrolled .theme-menu-selected > a .theme-menu-name {
+  color: var(--color-white) !important;
+}
+
+/* Logo — invert on dark glass */
+.theme-header.scrolled .theme-logo-parent img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Dropdown submenu — glass style */
+.theme-sub-menu {
+  background: var(--color-white) !important;
+  border: 1px solid var(--color-lightgray) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-lg) !important;
   padding: var(--space-xs) 0 !important;
-  margin-top: 8px !important;
+  margin-top: 4px !important;
 }
 
-.theme-header .theme-sub-menu li a {
+.theme-sub-menu li a,
+.theme-sub-menu li a .theme-menu-name {
+  color: var(--color-navy) !important;
+  font-size: var(--text-sm) !important;
+  font-family: var(--font-body) !important;
   padding: 10px var(--space-md) !important;
   display: block !important;
-  color: rgba(247, 250, 252, 0.82) !important;
-  font-size: var(--text-sm) !important;
 }
 
-.theme-header .theme-sub-menu li a:hover {
+.theme-sub-menu li a:hover .theme-menu-name {
+  color: var(--accent-primary) !important;
+}
+
+.theme-sub-menu li a:hover {
+  background: var(--color-offwhite) !important;
+}
+
+/* Scrolled dropdown — dark glass */
+.theme-header.scrolled .theme-sub-menu {
+  background: rgba(20, 42, 74, 0.96) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.theme-header.scrolled .theme-sub-menu li a,
+.theme-header.scrolled .theme-sub-menu li a .theme-menu-name {
+  color: rgba(247, 250, 252, 0.85) !important;
+}
+
+.theme-header.scrolled .theme-sub-menu li a:hover .theme-menu-name {
   color: var(--color-white) !important;
+}
+
+.theme-header.scrolled .theme-sub-menu li a:hover {
   background: rgba(255, 255, 255, 0.06) !important;
 }
 
-/* Burger icon — mobile */
-.theme-header .theme-burger-icon {
+/* Burger icon */
+.theme-header .theme-burger-icon,
+.theme-responsive-menu-container .theme-burger-icon {
+  color: var(--color-navy) !important;
+}
+
+.theme-header.scrolled .theme-burger-icon,
+.theme-header.scrolled .theme-responsive-menu-container .theme-burger-icon {
   color: var(--color-white) !important;
 }
 
-/* Mobile: collapse floating effect */
+/* Mobile */
 @media (max-width: 768px) {
-  .theme-header {
+  .theme-header.scrolled {
+    left: 12px !important;
+    right: 12px !important;
     width: calc(100% - 24px) !important;
     top: 8px !important;
     border-radius: 10px !important;
-    padding: 0 var(--space-sm) !important;
   }
 
   body {
-    padding-top: 72px;
-  }
-
-  /* Mobile expanded menu */
-  .theme-responsive-menu-area {
-    position: fixed !important;
-    top: 70px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 24px) !important;
-    background: rgba(26, 54, 93, 0.96) !important;
-    backdrop-filter: blur(16px) !important;
-    border-radius: var(--radius-md) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: var(--shadow-lg) !important;
-    z-index: 999 !important;
+    padding-top: 64px;
   }
 }
 
