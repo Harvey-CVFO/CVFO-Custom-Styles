@@ -633,10 +633,12 @@ hr.brand-rule {
   animation: none !important;
 }
 
-/* Fix hero overlap — target content area directly so Zoho's own margin-top doesn't double-stack */
-.theme-content-area {
-  margin-top: 90px !important;
+/* Blocks all transitions during initial load — removed by JS after 400ms */
+.theme-header.nav-no-transition {
+  transition: none !important;
 }
+
+
 
 /* ---- Base state: layout + transition only ---- */
 
