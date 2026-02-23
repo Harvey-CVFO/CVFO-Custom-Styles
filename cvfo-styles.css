@@ -638,11 +638,9 @@ body {
   padding-top: 90px;
 }
 
-/* ---- Always-dark base state ---- */
+/* ---- Base state: layout + transition only ---- */
 
 .theme-header {
-  background: rgba(22, 46, 80, 0.95) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
   border-radius: 0 !important;
   transition:
@@ -654,41 +652,15 @@ body {
     box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Nav link colors — always light */
+/* Nav link font — no color override */
 .theme-header .theme-menu-name {
   font-family: var(--font-body) !important;
   font-weight: 500 !important;
-  color: rgba(247, 250, 252, 0.88) !important;
   transition: color var(--transition-fast) !important;
 }
 
-.theme-header .theme-menu a:hover .theme-menu-name {
-  color: var(--color-white) !important;
-}
-
-.theme-header .theme-menu-selected > a .theme-menu-name {
-  color: var(--color-white) !important;
-  font-weight: 600 !important;
-}
-
-/* Logo always white */
-.theme-header [data-zs-logo] {
-  filter: brightness(0) invert(1) !important;
-}
-
-/* Submenu colors only — no layout overrides */
-.theme-sub-menu .theme-menu-name {
-  color: var(--color-navy) !important;
-  font-family: var(--font-body) !important;
-  font-weight: 500 !important;
-}
-
-.theme-sub-menu li a:hover .theme-menu-name {
-  color: var(--accent-primary) !important;
-}
-
 /* ---- Scrolled state: floating pill only ----
-   Only shape/position changes. Colors stay the same. */
+   Shape/position change only. Colors from Zoho editor. */
 
 .theme-header.scrolled {
   top: 12px !important;
@@ -702,7 +674,47 @@ body {
   -webkit-backdrop-filter: blur(20px) !important;
 }
 
-/* ---- Mobile: no floating pill, same dark color ---- */
+/* ---- Desktop submenu: frosted glass ---- */
+/* Targets the dropdown panel on hover */
+
+@media (min-width: 992px) {
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul {
+    background: rgba(22, 46, 80, 0.75) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24) !important;
+    overflow: hidden !important;
+    /* Reset Zoho's top border stripe */
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  /* Individual submenu items — no own background */
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Override Zoho's :first-of-type top border */
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:first-of-type {
+    border-top: none !important;
+  }
+}
+
+/* ---- Mobile/tablet menu panel: frosted glass ---- */
+/* This is the full-width panel that slides down at ≤991px */
+
+@media (max-width: 991px) {
+  .theme-navigation-and-icons .theme-menu-area .theme-menu {
+    background: rgba(22, 46, 80, 0.88) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* ---- Mobile: no floating pill ---- */
 
 @media (max-width: 768px) {
   body {
