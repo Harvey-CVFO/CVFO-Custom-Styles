@@ -74,22 +74,18 @@
     const header = document.querySelector('.theme-header');
     if (!header) return;
 
-    let lastScrollY = 0;
+    const SCROLL_THRESHOLD = 80;
 
     function onScroll() {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 60) {
+      if (window.scrollY > SCROLL_THRESHOLD) {
         header.classList.add('scrolled');
       } else {
         header.classList.remove('scrolled');
       }
-
-      lastScrollY = currentScrollY;
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // Run once on load
+    onScroll(); // Run once on load to set correct state
   }
 
 
