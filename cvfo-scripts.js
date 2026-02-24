@@ -90,7 +90,8 @@
 
       const vpWidth = window.innerWidth;
       const inset = 12;
-      const menuTop = pillRect ? pillRect.bottom + 4 : 106;
+      // Use pill's actual bottom edge in viewport coordinates, plus a 6px gap
+      const menuTop = pillRect ? Math.round(pillRect.bottom) + 6 : 108;
       const menuWidth = vpWidth - (inset * 2);
 
       menuPanel.style.setProperty('position', 'fixed', 'important');
@@ -124,7 +125,8 @@
     const burger = header.querySelector('[data-zp-burger-clickable-area]');
     if (burger) {
       burger.addEventListener('click', () => {
-        setTimeout(fixMenuWidth, 50);
+        // Wait longer to ensure pill has finished transitioning before measuring
+        setTimeout(fixMenuWidth, 150);
       });
     }
   }
