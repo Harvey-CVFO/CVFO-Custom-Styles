@@ -307,7 +307,21 @@
 
 
   /* ============================================================
-     7. INIT — Run everything on DOM ready
+     7. MAP PHASE LABEL DISPLAY FIX
+     Zoho can strip display:flex from custom-classed text elements.
+     This ensures .map-phase-label gets its flex layout on load.
+     ============================================================ */
+
+  function initMapPhaseLabels() {
+    document.querySelectorAll('.map-phase-label').forEach(function (el) {
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+    });
+  }
+
+
+  /* ============================================================
+     8. INIT — Run everything on DOM ready
      ============================================================ */
 
   function init() {
@@ -318,6 +332,7 @@
     initTiltCards();
     initCounters();
     initActiveNav();
+    initMapPhaseLabels();
   }
 
   if (document.readyState === 'loading') {
