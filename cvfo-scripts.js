@@ -82,23 +82,19 @@
     if (!header) return;
 
     function fixMenuWidth() {
-      const menuArea = header.querySelector('.theme-responsive-menu-area .theme-responsive-menu');
       const menuPanel = header.querySelector('.theme-responsive-menu-area .theme-responsive-menu .theme-menu');
+      if (!menuPanel) return;
 
-      if (menuArea) {
-        menuArea.style.setProperty('position', 'relative', 'important');
-        menuArea.style.setProperty('width', '100%', 'important');
-        menuArea.style.setProperty('min-width', '0', 'important');
-      }
+      const vpWidth = window.innerWidth;
+      const inset = vpWidth <= 991 ? 12 : 24;
+      const top = vpWidth <= 991 ? 10 : 12;
 
-      if (menuPanel) {
-        // Get the full viewport width minus the pill insets
-        const vpWidth = window.innerWidth;
-        const inset = vpWidth <= 768 ? 24 : 24; // 12px each side
-        menuPanel.style.setProperty('width', (vpWidth - inset) + 'px', 'important');
-        menuPanel.style.setProperty('left', '0', 'important');
-        menuPanel.style.setProperty('right', '0', 'important');
-      }
+      // Break out of the collapsed containing block entirely
+      menuPanel.style.setProperty('position', 'fixed', 'important');
+      menuPanel.style.setProperty('top', (top + 60) + 'px', 'important'); // pill top + nav height
+      menuPanel.style.setProperty('left', inset + 'px', 'important');
+      menuPanel.style.setProperty('right', inset + 'px', 'important');
+      menuPanel.style.setProperty('width', (vpWidth - inset * 2) + 'px', 'important');
     }
 
     // Watch for Zoho adding/removing the open state class
