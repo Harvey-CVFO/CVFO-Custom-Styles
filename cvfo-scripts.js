@@ -70,6 +70,65 @@
      .zpheader.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
      ============================================================ */
 
+  /* ============================================================
+     2a. MOBILE MENU WIDTH FIX
+     Zoho renders the burger menu as position:absolute inside a
+     flex container that collapses to ~23px. We watch for the
+     menu opening and force the containing block to full width.
+     ============================================================ */
+
+  function initMobileMenuFix() {
+    const header = document.querySelector('.zpheader-style-01');
+    if (!header) return;
+
+    function fixMenuWidth() {
+      const menuArea = header.querySelector('.theme-responsive-menu-area .theme-responsive-menu');
+      const menuPanel = header.querySelector('.theme-responsive-menu-area .theme-responsive-menu .theme-menu');
+
+      if (menuArea) {
+        menuArea.style.setProperty('position', 'relative', 'important');
+        menuArea.style.setProperty('width', '100%', 'important');
+        menuArea.style.setProperty('min-width', '0', 'important');
+      }
+
+      if (menuPanel) {
+        // Get the full viewport width minus the pill insets
+        const vpWidth = window.innerWidth;
+        const inset = vpWidth <= 768 ? 24 : 24; // 12px each side
+        menuPanel.style.setProperty('width', (vpWidth - inset) + 'px', 'important');
+        menuPanel.style.setProperty('left', '0', 'important');
+        menuPanel.style.setProperty('right', '0', 'important');
+      }
+    }
+
+    // Watch for Zoho adding/removing the open state class
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target;
+          if (target.classList.contains('theme-toggle-animate')) {
+            fixMenuWidth();
+          }
+        }
+      });
+    });
+
+    // Observe the menu element for class changes
+    const menuEl = header.querySelector('.theme-responsive-menu .theme-menu');
+    if (menuEl) {
+      observer.observe(menuEl, { attributes: true });
+    }
+
+    // Also run on burger button click as a fallback
+    const burger = header.querySelector('[data-zp-burger-clickable-area]');
+    if (burger) {
+      burger.addEventListener('click', () => {
+        setTimeout(fixMenuWidth, 50);
+      });
+    }
+  }
+
+
   function initNavScroll() {
     const header = document.querySelector('.theme-header');
     if (!header) return;
@@ -245,6 +304,7 @@
 
   function init() {
     initScrollReveal();
+    initMobileMenuFix();
     initNavScroll();
     initSmoothScroll();
     initTiltCards();
