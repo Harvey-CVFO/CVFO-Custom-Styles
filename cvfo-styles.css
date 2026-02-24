@@ -219,19 +219,11 @@ h4.zpheading {
   color: var(--color-navy) !important;
 }
 
-/* --- Section Base --- */
+/* ---- Section Base ---- */
 
 .zpsection {
   position: relative;
 }
-
-.zpcontainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
-}
-
 
 /* ============================================================
    5. SECTION THEME CLASSES
@@ -396,24 +388,78 @@ h4.zpheading {
   border-radius: var(--radius-md);
 }
 
-/* Animated gradient background */
-.gradient-bg-animated {
-  background: linear-gradient(
-    270deg,
-    var(--color-navy),
-    #1e4a7a,
-    #0d3060,
-    var(--color-navy)
-  );
-  background-size: 400% 400%;
-  animation: gradientShift 10s ease infinite;
+/* ============================================================
+   8. UTILITY CLASSES — BACKGROUNDS & GRADIENTS
+   
+   Static gradients:
+     gradient-navy        → dark navy to deep blue (default dark hero)
+     gradient-navy-teal   → navy fading toward teal (warm dark)
+     gradient-light       → soft off-white to light gray (light sections)
+     gradient-sky         → light sky blue wash (accent light)
+     gradient-gold-dark   → dark navy with subtle gold warmth (premium)
+
+   Animated:
+     gradient-bg-animated → slow diagonal shift across navy/teal palette
+   ============================================================ */
+
+/* --- Static gradients --- */
+
+.gradient-navy {
+  background: linear-gradient(160deg, #1a365d 0%, #0d2240 100%);
 }
 
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.gradient-navy-teal {
+  background: linear-gradient(150deg, #1a365d 0%, #0d3a4a 60%, #0e3d44 100%);
 }
+
+.gradient-light {
+  background: linear-gradient(160deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.gradient-sky {
+  background: linear-gradient(150deg, #ebf8ff 0%, #e0f4ff 100%);
+}
+
+.gradient-gold-dark {
+  background: linear-gradient(150deg, #1a2d1a 0%, #1a365d 50%, #2d2510 100%);
+}
+
+/* --- Animated gradient --- */
+/* Slow diagonal drift across navy and deep teal.
+   Stays within brand palette — no jarring color jumps. */
+
+.gradient-bg-animated {
+  background: linear-gradient(
+    135deg,
+    #1a365d 0%,
+    #0d3a4a 25%,
+    #0e3d44 50%,
+    #0d2240 75%,
+    #1a365d 100%
+  );
+  background-size: 300% 300%;
+  animation: gradientDrift 18s ease infinite;
+}
+
+@keyframes gradientDrift {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 100% 0%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* Subtle noise texture overlay — add this alongside any gradient class
+   for a more premium, less flat look */
+.gradient-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
 
 /* Gentle float animation */
 .animate-float {
@@ -581,6 +627,104 @@ hr.brand-rule {
   border-top: 1px solid rgba(131, 174, 175, 0.3);
   margin: var(--space-xl) 0;
 }
+
+
+/* ============================================================
+   9b. UTILITY CLASSES — EXTENDED
+   ============================================================ */
+
+/* --- Text alignment --- */
+.text-left    { text-align: left !important; }
+.text-center  { text-align: center !important; }
+.text-right   { text-align: right !important; }
+
+/* --- Text colors --- */
+.text-white   { color: var(--color-white) !important; }
+.text-navy    { color: var(--color-navy) !important; }
+.text-muted   { color: var(--text-muted) !important; }
+.text-light   { color: rgba(247, 250, 252, 0.75) !important; }
+
+/* --- Font weight --- */
+.font-normal  { font-weight: 400 !important; }
+.font-medium  { font-weight: 500 !important; }
+.font-semibold { font-weight: 600 !important; }
+.font-bold    { font-weight: 700 !important; }
+
+/* --- Font size --- */
+.text-sm      { font-size: var(--text-sm) !important; }
+.text-base    { font-size: var(--text-base) !important; }
+.text-lg      { font-size: var(--text-lg) !important; }
+.text-xl      { font-size: var(--text-xl) !important; }
+.text-2xl     { font-size: var(--text-2xl) !important; }
+.text-3xl     { font-size: var(--text-3xl) !important; }
+
+/* --- Opacity --- */
+.opacity-50   { opacity: 0.5 !important; }
+.opacity-70   { opacity: 0.7 !important; }
+.opacity-80   { opacity: 0.8 !important; }
+
+/* --- Spacing — margin --- */
+.mt-0   { margin-top: 0 !important; }
+.mt-sm  { margin-top: var(--space-sm) !important; }
+.mt-md  { margin-top: var(--space-md) !important; }
+.mt-lg  { margin-top: var(--space-lg) !important; }
+.mt-xl  { margin-top: var(--space-xl) !important; }
+
+.mb-0   { margin-bottom: 0 !important; }
+.mb-sm  { margin-bottom: var(--space-sm) !important; }
+.mb-md  { margin-bottom: var(--space-md) !important; }
+.mb-lg  { margin-bottom: var(--space-lg) !important; }
+.mb-xl  { margin-bottom: var(--space-xl) !important; }
+
+/* --- Spacing — padding --- */
+.pt-sm  { padding-top: var(--space-sm) !important; }
+.pt-md  { padding-top: var(--space-md) !important; }
+.pt-lg  { padding-top: var(--space-lg) !important; }
+.pt-xl  { padding-top: var(--space-xl) !important; }
+.pt-2xl { padding-top: var(--space-2xl) !important; }
+
+.pb-sm  { padding-bottom: var(--space-sm) !important; }
+.pb-md  { padding-bottom: var(--space-md) !important; }
+.pb-lg  { padding-bottom: var(--space-lg) !important; }
+.pb-xl  { padding-bottom: var(--space-xl) !important; }
+.pb-2xl { padding-bottom: var(--space-2xl) !important; }
+
+/* --- Border radius --- */
+.rounded-sm   { border-radius: var(--radius-sm) !important; }
+.rounded-md   { border-radius: var(--radius-md) !important; }
+.rounded-lg   { border-radius: var(--radius-lg) !important; }
+.rounded-pill { border-radius: var(--radius-pill) !important; }
+
+/* --- Border accents --- */
+.border-teal  { border: 1px solid rgba(131, 174, 175, 0.4) !important; }
+.border-navy  { border: 1px solid rgba(26, 54, 93, 0.3) !important; }
+.border-white { border: 1px solid rgba(255, 255, 255, 0.15) !important; }
+
+/* Left accent bar — useful for callout blocks */
+.border-left-teal { border-left: 3px solid var(--accent-teal) !important; padding-left: var(--space-sm) !important; }
+.border-left-sky  { border-left: 3px solid var(--accent-primary) !important; padding-left: var(--space-sm) !important; }
+.border-left-gold { border-left: 3px solid var(--accent-gold) !important; padding-left: var(--space-sm) !important; }
+
+/* --- Max width constrain --- */
+.max-w-sm   { max-width: 480px !important; }
+.max-w-md   { max-width: 640px !important; }
+.max-w-lg   { max-width: 800px !important; }
+.max-w-xl   { max-width: 960px !important; }
+
+/* --- Display --- */
+.block        { display: block !important; }
+.inline-block { display: inline-block !important; }
+.hidden       { display: none !important; }
+
+/* --- Overflow --- */
+.overflow-hidden { overflow: hidden !important; }
+
+/* --- Position --- */
+.relative { position: relative !important; }
+
+/* --- Z-index --- */
+.z-1  { z-index: 1 !important; }
+.z-10 { z-index: 10 !important; }
 
 
 /* ============================================================
@@ -834,177 +978,6 @@ hr.brand-rule {
 }
 
 
-
-
-/* ============================================================
-   12. ZOHO ELEMENT BASE OVERRIDES
-   Automatic styling for all native Zoho elements.
-   No custom classes needed — applies everywhere by default.
-   ============================================================ */
-
-/* ---- Sections ---- */
-
-.zpsection {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Default section padding */
-.zpsection .zpcontainer {
-  padding-top: var(--space-2xl);
-  padding-bottom: var(--space-2xl);
-}
-
-/* ---- Rows ---- */
-
-.zprow {
-  gap: var(--space-md);
-}
-
-/* ---- Boxes (zpbox-container / zpelem-box) ----
-   Zoho's "box" element — used for cards, stat blocks, feature blocks.
-   Override the inline background-color Zoho injects with !important. */
-
-.zpelem-box,
-.zpbox-container {
-  background-color: var(--color-white) !important;
-  background-image: none !important;
-  border: 1px solid rgba(0, 0, 0, 0.07) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-sm) !important;
-  transition:
-    box-shadow var(--transition-base),
-    transform var(--transition-base) !important;
-  overflow: hidden;
-}
-
-.zpelem-box:hover,
-.zpbox-container:hover {
-  box-shadow: var(--shadow-md) !important;
-  transform: translateY(-4px) !important;
-}
-
-/* Colored box variant (zsthickpadding-coloured-box) —
-   Zoho injects blue/green/pink backgrounds inline.
-   We neutralize the color and apply our own treatment. */
-
-.zsthickpadding-coloured-box {
-  background-color: var(--color-offwhite) !important;
-  border-left: 3px solid var(--accent-teal) !important;
-}
-
-/* Boxes inside dark sections */
-.section-dark .zpelem-box,
-.section-dark .zpbox-container {
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.section-dark .zpelem-box:hover,
-.section-dark .zpbox-container:hover {
-  background-color: rgba(255, 255, 255, 0.10) !important;
-}
-
-/* ---- Icon + Heading + Text blocks (zpelem-iconheadingtext) ---- */
-
-.zpelem-iconheadingtext,
-.zpelem-iconheading {
-  padding: var(--space-md) !important;
-}
-
-/* Icon container */
-.zpicon-container {
-  margin-bottom: var(--space-sm) !important;
-}
-
-/* Icon itself */
-.zpicon.zpicon-common svg {
-  fill: var(--accent-teal) !important;
-  transition: fill var(--transition-fast) !important;
-}
-
-/* Override inline fill overrides Zoho sometimes injects */
-.zpelem-box:hover .zpicon-common svg {
-  fill: var(--accent-primary) !important;
-}
-
-/* Icon in dark sections */
-.section-dark .zpicon.zpicon-common svg {
-  fill: var(--color-teal) !important;
-}
-
-/* Icon heading (h3/h4 inside icon blocks) */
-h3.zpicon-heading,
-h4.zpicon-heading {
-  font-family: var(--font-heading) !important;
-  font-size: var(--text-xl) !important;
-  font-weight: 600 !important;
-  color: var(--color-navy) !important;
-  line-height: 1.3 !important;
-  margin-top: var(--space-xs) !important;
-  margin-bottom: var(--space-xs) !important;
-}
-
-.section-dark h3.zpicon-heading,
-.section-dark h4.zpicon-heading {
-  color: var(--color-white) !important;
-}
-
-/* Icon text body */
-.zpicon-text-container,
-.zpicon-text-container p,
-.zpicon-text-container div {
-  font-family: var(--font-body) !important;
-  font-size: var(--text-base) !important;
-  color: var(--color-darkgray) !important;
-  line-height: 1.65 !important;
-}
-
-.section-dark .zpicon-text-container,
-.section-dark .zpicon-text-container p,
-.section-dark .zpicon-text-container div {
-  color: rgba(247, 250, 252, 0.78) !important;
-}
-
-/* ---- Spacer ---- */
-
-.zpspacer {
-  display: block !important;
-}
-
-/* ---- Links inside text blocks ---- */
-
-.zptext a,
-.zpicon-text-container a {
-  color: var(--accent-primary) !important;
-  text-decoration: none !important;
-  font-weight: 500 !important;
-  transition: color var(--transition-fast) !important;
-}
-
-.zptext a:hover,
-.zpicon-text-container a:hover {
-  color: var(--accent-hover) !important;
-  text-decoration: underline !important;
-}
-
-/* ---- Dividers ---- */
-
-.zphr,
-hr {
-  border: none !important;
-  border-top: 1px solid rgba(131, 174, 175, 0.25) !important;
-  margin: var(--space-xl) 0 !important;
-}
-
-/* ---- Images ---- */
-
-.zpelem-image img,
-.zpimage img {
-  border-radius: var(--radius-sm) !important;
-  max-width: 100% !important;
-  height: auto !important;
-}
 
 
 /* ============================================================
