@@ -88,16 +88,17 @@
       const pill = header.querySelector('.theme-header');
       const pillRect = pill ? pill.getBoundingClientRect() : null;
 
-      const vpWidth = window.innerWidth;
-      const inset = 12;
-      // Use pill's actual bottom edge in viewport coordinates, plus a 6px gap
-      const menuTop = pillRect ? Math.round(pillRect.bottom) + 6 : 108;
-      const menuWidth = vpWidth - (inset * 2);
+      if (!pillRect) return;
+
+      // Use pill's exact viewport coordinates — works in both scrolled and unscrolled states
+      const menuTop = Math.round(pillRect.bottom) + 6;
+      const menuLeft = Math.round(pillRect.left);
+      const menuWidth = Math.round(pillRect.width);
 
       menuPanel.style.setProperty('position', 'fixed', 'important');
       menuPanel.style.setProperty('top', menuTop + 'px', 'important');
-      menuPanel.style.setProperty('left', inset + 'px', 'important');
-      menuPanel.style.setProperty('right', inset + 'px', 'important');
+      menuPanel.style.setProperty('left', menuLeft + 'px', 'important');
+      menuPanel.style.setProperty('right', 'auto', 'important');
       menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
       menuPanel.style.setProperty('border-radius', '0 0 14px 14px', 'important');
       menuPanel.style.setProperty('border-top', '1px solid rgba(255,255,255,0.1)', 'important');
@@ -125,8 +126,10 @@
     const burger = header.querySelector('[data-zp-burger-clickable-area]');
     if (burger) {
       burger.addEventListener('click', () => {
-        // Wait longer to ensure pill has finished transitioning before measuring
-        setTimeout(fixMenuWidth, 150);
+        // First pass — early measurement
+        setTimeout(fixMenuWidth, 50);
+        // Second pass — after pill transition has fully settled
+        setTimeout(fixMenuWidth, 300);
       });
     }
   }
