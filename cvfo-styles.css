@@ -782,30 +782,38 @@ hr.brand-rule {
     color: #ffffff !important;
   }
 
-  /* Prevent menu item text and icons from squishing */
+  /* Constrain the a tag */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a {
+    width: 100% !important;
+    box-sizing: border-box !important;
     white-space: nowrap !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
+    position: relative !important;
   }
 
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-content {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
   }
 
-  /* Chevron span is inside <a> — reset any Zoho positioning and force vertical center */
+  /* Hide Zoho's broken chevron span entirely */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
-    position: relative !important;
-    top: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: none !important;
+  }
+
+  /* Draw our own chevron via ::after on the a tag for items that have submenus */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a[aria-haspopup="true"]::after {
+    content: '' !important;
+    display: inline-block !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
+    transform: rotate(45deg) !important;
+    margin-left: 8px !important;
     flex-shrink: 0 !important;
-    line-height: 1 !important;
+    vertical-align: middle !important;
+    position: relative !important;
+    top: -2px !important;
   }
     background: rgba(0, 0, 0, 0.15) !important;
     border-block-end: none !important;
