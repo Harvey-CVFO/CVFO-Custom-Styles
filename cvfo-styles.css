@@ -959,6 +959,9 @@ hr.brand-rule {
     position: relative !important;
     top: -2px !important;
   }
+
+  /* Submenu items — slightly darker tint */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li {
     background: rgba(0, 0, 0, 0.15) !important;
     border-block-end: none !important;
     border-block-start: none !important;
@@ -1060,4 +1063,277 @@ hr.brand-rule {
   .animate-pulse {
     animation: none !important;
   }
+
+  .problem-card::before,
+  .service-card::before {
+    transition: none !important;
+  }
+}
+
+
+/* ============================================================
+   16. HOMEPAGE COMPONENTS
+   
+   These classes handle things Zoho Sites cannot do natively:
+   - Pseudo-element overlays (::before / ::after)
+   - Animated gradient backgrounds
+   - MAP phase labels with decorative lines
+   - Service card top-accent + reveal effect on hover
+   - Problem card animated left-bar reveal on hover
+   - Hero diagonal texture overlay
+   - CTA watermark text
+   - Hero content z-index stacking
+   
+   Zoho handles natively (NOT overridden here):
+   - Padding, margin, spacing
+   - Background colors
+   - Border radius, box shadow
+   - Text color, font size
+   - Column layouts
+   ============================================================ */
+
+
+/* ---- Section 1: Hero ---- */
+
+/* Diagonal line texture — adds depth without stock photos */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 60px,
+    rgba(255, 255, 255, 0.018) 60px,
+    rgba(255, 255, 255, 0.018) 61px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero content above all overlays */
+.hero-section .zpcontainer,
+.hero-section > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fluid H1 sizing — Zoho's font size picker doesn't support clamp() */
+.hero-section .zpheading h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Subheadline max-width for readability */
+.hero-subheadline .zptext p {
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ---- Section 2: Problem / Solution ---- */
+
+/* Left red accent bar — animates in on hover.
+   The static border-left color itself can be set in Zoho,
+   but the scaleY reveal requires CSS. */
+.problem-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #e53e3e;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.35s ease;
+}
+
+.problem-card:hover {
+  transform: translateX(4px);
+}
+
+.problem-card:hover::before {
+  transform: scaleY(1);
+}
+
+
+/* ---- Section 3: MAP Process ---- */
+
+/* Phase label with horizontal rules on each side.
+   Zoho's text element can't draw these lines natively. */
+.map-phase-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+}
+
+.map-phase-label::before,
+.map-phase-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+
+.map-phase-planning {
+  color: var(--color-sky);
+}
+.map-phase-planning::before,
+.map-phase-planning::after {
+  background: rgba(56, 182, 255, 0.35);
+}
+
+.map-phase-implementation {
+  color: #1ba663;
+}
+.map-phase-implementation::before,
+.map-phase-implementation::after {
+  background: rgba(27, 166, 99, 0.35);
+}
+
+/* Step icon circle backgrounds — phase color variants */
+.map-icon-planning {
+  background: rgba(56, 182, 255, 0.1);
+  color: var(--color-sky);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-icon-implementation {
+  background: rgba(27, 166, 99, 0.1);
+  color: #1ba663;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ---- Section 4: Service Cards ---- */
+
+/* Left-side accent reveal on hover.
+   Top border color and shadow set in Zoho. */
+.service-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-primary);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+}
+
+.service-card:hover::before {
+  transform: scaleY(1);
+}
+
+/* Icon container tint — size and padding set in Zoho */
+.service-icon-wrap {
+  background: rgba(56, 182, 255, 0.1);
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+}
+
+
+/* ---- Section 5: Trust / Stats ---- */
+
+/* Gold divider variant (stat section uses gold, not teal) */
+.divider-gold {
+  width: 48px;
+  height: 3px;
+  background-color: var(--accent-gold);
+  border: none;
+  border-radius: 2px;
+  margin: var(--space-sm) auto;
+  display: block;
+}
+
+
+/* ---- Section 7: Final CTA ---- */
+
+/* Faint watermark word — decorative texture, not readable text */
+.cta-final {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-final::before {
+  content: 'EXECUTE';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading);
+  font-size: clamp(8rem, 22vw, 18rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.025);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: -0.02em;
+  user-select: none;
+  z-index: 0;
+}
+
+.cta-final .zpcontainer,
+.cta-final > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ---- Responsive ---- */
+
+@media (max-width: 768px) {
+  .hero-section .zpheading h1 {
+    font-size: clamp(1.9rem, 7vw, 2.6rem) !important;
+  }
+
+  .map-phase-label {
+    font-size: var(--text-xs);
+    gap: var(--space-xs);
+  }
+
+  .cta-final::before {
+    font-size: clamp(5rem, 30vw, 10rem);
+  }
+}
+
+
+/* ============================================================
+   17. TILT CARD BASE
+   JS handles mouse tracking. This just sets up the 3D context.
+   Apply "tilt-card" alongside any card class.
+   ============================================================ */
+
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
