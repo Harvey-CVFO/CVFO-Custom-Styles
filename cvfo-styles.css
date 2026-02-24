@@ -790,8 +790,22 @@ hr.brand-rule {
     gap: 8px !important;
   }
 
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-content {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Chevron span is inside <a> — reset any Zoho positioning and force vertical center */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex-shrink: 0 !important;
+    line-height: 1 !important;
   }
     background: rgba(0, 0, 0, 0.15) !important;
     border-block-end: none !important;
