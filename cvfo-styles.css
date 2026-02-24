@@ -737,57 +737,67 @@ hr.brand-rule {
 }
 
 /* ---- Mobile/tablet menu panel: frosted glass ---- */
-/* Zoho clones nav into .theme-responsive-menu inside .theme-responsive-menu-area */
+/* Element structure confirmed via devtools:
+   .theme-responsive-menu (flex container, collapses to ~23px)
+     └── .theme-menu.theme-toggle-animate (position:absolute, inset-inline-start:0, width:100%) */
 
 @media (max-width: 991px) {
-  /* Full-width panel */
-  .theme-responsive-menu-area {
+  /* Fix the flex container collapsing */
+  .theme-responsive-menu-area .theme-responsive-menu {
+    position: relative !important;
     width: 100% !important;
+    min-width: 0 !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu {
+  /* The actual dropdown panel */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
     width: 100% !important;
-    background: rgba(22, 46, 80, 0.92) !important;
+    background: rgba(22, 46, 80, 0.95) !important;
     backdrop-filter: blur(18px) !important;
     -webkit-backdrop-filter: blur(18px) !important;
+    border-block-start: none !important;
+    border-top: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28) !important;
   }
 
-  /* Remove dividers */
-  .theme-responsive-menu-area .theme-responsive-menu ul li {
+  /* Remove dividers on all list items */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li {
     border-bottom: none !important;
     border-top: none !important;
+    border-block-end: none !important;
+    border-block-start: none !important;
   }
 
   /* Top-level text */
-  .theme-responsive-menu-area .theme-responsive-menu ul li a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-name {
     color: rgba(255, 255, 255, 0.82) !important;
   }
 
   /* Top-level hover */
-  .theme-responsive-menu-area .theme-responsive-menu ul li:hover {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover {
     background: rgba(255, 255, 255, 0.08) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li:hover a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover a .theme-menu-name {
     color: #ffffff !important;
   }
 
-  /* Sub-items (Services dropdown) */
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li {
+  /* Sub-items */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li {
     background: rgba(0, 0, 0, 0.15) !important;
-    border-bottom: none !important;
-    border-top: none !important;
+    border-block-end: none !important;
+    border-block-start: none !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li a .theme-menu-name {
     color: rgba(255, 255, 255, 0.7) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover {
     background: rgba(255, 255, 255, 0.08) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover a .theme-menu-name {
     color: #ffffff !important;
   }
 }
