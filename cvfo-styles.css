@@ -692,6 +692,7 @@ hr.brand-rule {
 /* Tablet and mobile */
 @media (max-width: 991px) {
   .theme-header.scrolled {
+    position: fixed !important;
     top: 10px !important;
     left: 12px !important;
     right: 12px !important;
@@ -735,14 +736,18 @@ hr.brand-rule {
 }
 
 /* ---- Mobile/tablet menu panel: frosted glass ---- */
-/* This is the full-width panel that slides down at ≤991px */
+/* Zoho renders the burger menu into .theme-responsive-menu at ≤991px */
 
 @media (max-width: 991px) {
-  .theme-navigation-and-icons .theme-menu-area .theme-menu {
-    background: rgba(22, 46, 80, 0.88) !important;
+  .theme-navigation-and-icons .theme-menu-area .theme-menu,
+  .theme-responsive-menu-area .theme-responsive-menu {
+    background: rgba(22, 46, 80, 0.95) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-bottom-left-radius: 14px !important;
+    border-bottom-right-radius: 14px !important;
+    border-top: none !important;
+    overflow: hidden !important;
   }
 }
 
