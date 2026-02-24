@@ -737,61 +737,57 @@ hr.brand-rule {
 }
 
 /* ---- Mobile/tablet menu panel: frosted glass ---- */
-/* Zoho renders the burger menu into .theme-responsive-menu at ≤991px */
+/* Zoho clones nav into .theme-responsive-menu inside .theme-responsive-menu-area */
 
 @media (max-width: 991px) {
-  /* The menu panel itself */
-  .theme-navigation-and-icons .theme-menu-area .theme-menu,
+  /* Full-width panel */
+  .theme-responsive-menu-area {
+    width: 100% !important;
+  }
+
   .theme-responsive-menu-area .theme-responsive-menu {
+    width: 100% !important;
     background: rgba(22, 46, 80, 0.92) !important;
     backdrop-filter: blur(18px) !important;
     -webkit-backdrop-filter: blur(18px) !important;
   }
 
-  /* Remove divider lines between items */
-  .theme-responsive-menu-area .theme-responsive-menu ul li,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li {
+  /* Remove dividers */
+  .theme-responsive-menu-area .theme-responsive-menu ul li {
     border-bottom: none !important;
     border-top: none !important;
   }
 
-  /* Top-level item text */
-  .theme-responsive-menu-area .theme-responsive-menu ul li a .theme-menu-name,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li a .theme-menu-name {
+  /* Top-level text */
+  .theme-responsive-menu-area .theme-responsive-menu ul li a .theme-menu-name {
     color: rgba(255, 255, 255, 0.82) !important;
   }
 
-  /* Top-level item hover */
-  .theme-responsive-menu-area .theme-responsive-menu ul li:hover,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li:hover {
+  /* Top-level hover */
+  .theme-responsive-menu-area .theme-responsive-menu ul li:hover {
     background: rgba(255, 255, 255, 0.08) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li:hover a .theme-menu-name,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li:hover a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu ul li:hover a .theme-menu-name {
     color: #ffffff !important;
   }
 
-  /* Submenu items (Services dropdown) — slightly more indented */
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li {
+  /* Sub-items (Services dropdown) */
+  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li {
     background: rgba(0, 0, 0, 0.15) !important;
     border-bottom: none !important;
     border-top: none !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li a .theme-menu-name,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li a .theme-menu-name {
     color: rgba(255, 255, 255, 0.7) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:hover {
+  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover {
     background: rgba(255, 255, 255, 0.08) !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover a .theme-menu-name,
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:hover a .theme-menu-name {
+  .theme-responsive-menu-area .theme-responsive-menu ul li > ul li:hover a .theme-menu-name {
     color: #ffffff !important;
   }
 }
