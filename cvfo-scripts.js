@@ -85,16 +85,21 @@
       const menuPanel = header.querySelector('.theme-responsive-menu-area .theme-responsive-menu .theme-menu');
       if (!menuPanel) return;
 
-      const vpWidth = window.innerWidth;
-      const inset = vpWidth <= 991 ? 12 : 24;
-      const top = vpWidth <= 991 ? 10 : 12;
+      const pill = header.querySelector('.theme-header');
+      const pillRect = pill ? pill.getBoundingClientRect() : null;
 
-      // Break out of the collapsed containing block entirely
+      const vpWidth = window.innerWidth;
+      const inset = 12;
+      const menuTop = pillRect ? pillRect.bottom + 4 : 106;
+      const menuWidth = vpWidth - (inset * 2);
+
       menuPanel.style.setProperty('position', 'fixed', 'important');
-      menuPanel.style.setProperty('top', (top + 60) + 'px', 'important'); // pill top + nav height
+      menuPanel.style.setProperty('top', menuTop + 'px', 'important');
       menuPanel.style.setProperty('left', inset + 'px', 'important');
       menuPanel.style.setProperty('right', inset + 'px', 'important');
-      menuPanel.style.setProperty('width', (vpWidth - inset * 2) + 'px', 'important');
+      menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
+      menuPanel.style.setProperty('border-radius', '0 0 14px 14px', 'important');
+      menuPanel.style.setProperty('border-top', '1px solid rgba(255,255,255,0.1)', 'important');
     }
 
     // Watch for Zoho adding/removing the open state class
