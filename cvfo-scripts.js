@@ -87,11 +87,12 @@
 
       const pill = header.querySelector('.theme-header');
       const pillRect = pill ? pill.getBoundingClientRect() : null;
-
       if (!pillRect) return;
 
-      // Use pill's exact viewport coordinates — works in both scrolled and unscrolled states
-      const menuTop = Math.round(pillRect.bottom) + 6;
+      // Detect state by whether pill has inset (scrolled) or not (top of page)
+      const isScrolled = pillRect.left > 0;
+
+      const menuTop  = Math.round(pillRect.bottom);
       const menuLeft = Math.round(pillRect.left);
       const menuWidth = Math.round(pillRect.width);
 
@@ -100,7 +101,7 @@
       menuPanel.style.setProperty('left', menuLeft + 'px', 'important');
       menuPanel.style.setProperty('right', 'auto', 'important');
       menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
-      menuPanel.style.setProperty('border-radius', '0 0 14px 14px', 'important');
+      menuPanel.style.setProperty('border-radius', isScrolled ? '0 0 14px 14px' : '0', 'important');
       menuPanel.style.setProperty('border-top', '1px solid rgba(255,255,255,0.1)', 'important');
     }
 
@@ -126,10 +127,8 @@
     const burger = header.querySelector('[data-zp-burger-clickable-area]');
     if (burger) {
       burger.addEventListener('click', () => {
-        // First pass — early measurement
-        setTimeout(fixMenuWidth, 50);
-        // Second pass — after pill transition has fully settled
-        setTimeout(fixMenuWidth, 300);
+        // Single measurement after Zoho's open animation (0.2s) plus buffer
+        setTimeout(fixMenuWidth, 250);
       });
     }
   }
