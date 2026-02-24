@@ -89,11 +89,14 @@
       const pillRect = pill ? pill.getBoundingClientRect() : null;
       if (!pillRect) return;
 
-      // Detect state by whether pill has inset (scrolled) or not (top of page)
       const isScrolled = pillRect.left > 0;
 
-      const menuTop  = Math.round(pillRect.bottom);
-      const menuLeft = Math.round(pillRect.left);
+      // Measured offsets: Zoho adds ~13px left drift and ~11px top drift after our styles apply
+      const LEFT_CORRECTION = isScrolled ? -13 : 0;
+      const TOP_CORRECTION  = isScrolled ? -11 : 0;
+
+      const menuTop  = Math.round(pillRect.bottom) + TOP_CORRECTION;
+      const menuLeft = Math.round(pillRect.left) + LEFT_CORRECTION;
       const menuWidth = Math.round(pillRect.width);
 
       menuPanel.style.setProperty('position', 'fixed', 'important');
