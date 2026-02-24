@@ -782,8 +782,10 @@ hr.brand-rule {
     color: #ffffff !important;
   }
 
-  /* Sub-items */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li {
+  /* Prevent menu item text from wrapping */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a {
+    white-space: nowrap !important;
+  }
     background: rgba(0, 0, 0, 0.15) !important;
     border-block-end: none !important;
     border-block-start: none !important;
