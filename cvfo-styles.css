@@ -782,9 +782,16 @@ hr.brand-rule {
     color: #ffffff !important;
   }
 
-  /* Prevent menu item text from wrapping */
+  /* Prevent menu item text and icons from squishing */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a {
     white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
+    flex-shrink: 0 !important;
   }
     background: rgba(0, 0, 0, 0.15) !important;
     border-block-end: none !important;
