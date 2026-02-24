@@ -640,7 +640,8 @@ hr.brand-rule {
 }
 
 /* Temporarily hides nav during state swap so pill transition happens off-screen */
-.theme-header.nav-hidden {
+/* Not applied when burger menu is open (theme-toggle-animate = menu open state) */
+.theme-header.nav-hidden:not(.theme-toggle-animate) {
   transition: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
@@ -741,13 +742,7 @@ hr.brand-rule {
 @media (max-width: 991px) {
   .theme-navigation-and-icons .theme-menu-area .theme-menu,
   .theme-responsive-menu-area .theme-responsive-menu {
-    background: rgba(22, 46, 80, 0.95) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-bottom-left-radius: 14px !important;
-    border-bottom-right-radius: 14px !important;
-    border-top: none !important;
-    overflow: hidden !important;
+    background: rgba(22, 46, 80, 0.97) !important;
   }
 }
 
