@@ -278,8 +278,23 @@
 
           if (isNaN(targetNum)) return;
 
-          // Store the clean final value so we can restore it if needed
-          el.dataset.finalText = targetNum + suffix;
+          // Find the text node to update — avoids wiping child elements
+          // Zoho headings sometimes have child spans/divs we must preserve
+          let textNode = null;
+          for (const node of el.childNodes) {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+              textNode = node;
+              break;
+            }
+          }
+          // If no direct text node, fall back to a wrapper span
+          if (!textNode) {
+            const span = document.createElement('span');
+            span.textContent = targetNum + suffix;
+            el.innerHTML = '';
+            el.appendChild(span);
+            textNode = span.childNodes[0];
+          }
 
           const duration = 1400;
           const start = performance.now();
@@ -289,12 +304,12 @@
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = Math.floor(eased * targetNum);
-            el.textContent = current + suffix;
+            textNode.textContent = current + suffix;
 
             if (progress < 1) {
               requestAnimationFrame(update);
             } else {
-              el.textContent = targetNum + suffix;
+              textNode.textContent = targetNum + suffix;
             }
           }
 
