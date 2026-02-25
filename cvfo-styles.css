@@ -1049,7 +1049,7 @@ body {
 /* Desktop submenu — frosted glass */
 @media (min-width: 992px) {
   .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul {
-    background: rgba(13, 28, 58, 0.55) !important;
+    background: rgba(13, 28, 58, 0.88) !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -1078,11 +1078,12 @@ body {
 
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
     width: 100% !important;
-    background: rgba(13, 28, 58, 0.6) !important;
+    background: rgba(13, 28, 58, 0.88) !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
     border-block-start: none !important;
     border-top: none !important;
+    border-radius: 10px 10px 14px 14px !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22) !important;
   }
 
