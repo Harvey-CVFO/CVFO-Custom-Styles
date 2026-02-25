@@ -155,21 +155,57 @@ body {
   transition: background-color var(--transition-base),
               transform var(--transition-fast),
               box-shadow var(--transition-base) !important;
-  box-shadow: 0 2px 8px 0 rgba(56, 182, 255, 0.25) !important;
+  box-shadow: 0 2px 10px 0 rgba(56, 182, 255, 0.35) !important;
 }
 
 .zpbutton.zpbutton-type-primary:hover {
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px 0 rgba(56, 182, 255, 0.4) !important;
+  box-shadow: 0 8px 24px 0 rgba(56, 182, 255, 0.55) !important;
 }
 
 .zpbutton.zpbutton-type-secondary {
   transition: background-color var(--transition-base),
               color var(--transition-base),
-              transform var(--transition-fast) !important;
+              border-color var(--transition-base),
+              transform var(--transition-fast),
+              box-shadow var(--transition-base) !important;
 }
 
 .zpbutton.zpbutton-type-secondary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px 0 rgba(26, 54, 93, 0.25) !important;
+}
+
+/* Button glow variants — apply to any button element in Zoho CSS field.
+   Works on top of primary or secondary type. */
+
+/* Gold glow — for premium CTAs */
+.btn-glow-gold {
+  box-shadow: 0 2px 10px 0 rgba(210, 180, 80, 0.35) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast) !important;
+}
+.btn-glow-gold:hover {
+  box-shadow: 0 8px 24px 0 rgba(210, 180, 80, 0.55) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* White glow — for buttons on dark sections */
+.btn-glow-white {
+  box-shadow: 0 2px 10px 0 rgba(255, 255, 255, 0.15) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast) !important;
+}
+.btn-glow-white:hover {
+  box-shadow: 0 8px 28px 0 rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Teal glow — matches brand teal accent */
+.btn-glow-teal {
+  box-shadow: 0 2px 10px 0 rgba(131, 174, 175, 0.35) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast) !important;
+}
+.btn-glow-teal:hover {
+  box-shadow: 0 8px 24px 0 rgba(131, 174, 175, 0.55) !important;
   transform: translateY(-2px) !important;
 }
 
@@ -368,21 +404,36 @@ body {
 .text-right  { text-align: right !important; }
 
 /* Stat number — gold color for the large number; size set in Zoho */
-.stat-number,
-.stat-number *,
-.zpheading.stat-number,
-.zptext.stat-number,
-.zptext.stat-number p {
+/* stat-number — gold color only. Size set in Zoho.
+   No wildcard child selector — that was overriding heading font sizes. */
+.stat-number {
+  color: var(--accent-gold) !important;
+  text-align: center !important;
+  display: block !important;
+}
+.zpheading.stat-number h1,
+.zpheading.stat-number h2,
+.zpheading.stat-number h3,
+.zpheading.stat-number h4 {
   color: var(--accent-gold) !important;
   text-align: center !important;
 }
 
-/* Stat label — light color on dark section; size/weight set in Zoho */
-.stat-label,
-.stat-label *,
-.zpheading.stat-label,
-.zptext.stat-label,
-.zptext.stat-label p {
+/* stat-label — light color on dark section; size/weight set in Zoho */
+.stat-label {
+  color: rgba(247, 250, 252, 0.75) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  text-align: center !important;
+  display: block !important;
+}
+.zptext.stat-label p,
+.zpheading.stat-label h1,
+.zpheading.stat-label h2,
+.zpheading.stat-label h3,
+.zpheading.stat-label h4,
+.zpheading.stat-label h5,
+.zpheading.stat-label h6 {
   color: rgba(247, 250, 252, 0.75) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
@@ -504,42 +555,49 @@ body {
   ) !important;
 }
 
-/* Subtle color-shift overlay — hue-rotate only, fully GPU composited */
+/* Radial glow overlay — hue-rotate shifts the teal accent color.
+   Increased opacity so it's actually visible against the dark bg. */
 .hero-section::before,
 .cta-final::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 80% 60% at 30% 50%,
-    rgba(56, 182, 255, 0.15) 0%,
-    transparent 65%
-  );
-  animation: hueShift 12s ease-in-out infinite alternate;
+  background:
+    radial-gradient(ellipse 75% 55% at 25% 55%, rgba(56, 182, 255, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 65% at 80% 35%, rgba(14, 61, 68, 0.6) 0%, transparent 55%);
+  animation: hueShift 14s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
+  will-change: filter;
 }
 
 @keyframes hueShift {
-  0%   { filter: hue-rotate(0deg)   opacity(1); }
-  50%  { filter: hue-rotate(20deg)  opacity(0.85); }
-  100% { filter: hue-rotate(-15deg) opacity(1); }
+  0%   { filter: hue-rotate(0deg);   opacity: 1; }
+  40%  { filter: hue-rotate(18deg);  opacity: 0.82; }
+  100% { filter: hue-rotate(-12deg); opacity: 1; }
 }
 
-/* Diagonal lines — hero only, static, no animation */
+/* Diagonal lines — hero only, animated scroll across the surface */
 .hero-section::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -100%;
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,
-    transparent 60px,
-    rgba(255, 255, 255, 0.02) 60px,
-    rgba(255, 255, 255, 0.02) 61px
+    transparent 58px,
+    rgba(255, 255, 255, 0.028) 58px,
+    rgba(255, 255, 255, 0.028) 59px
   );
+  animation: linesDrift 28s linear infinite;
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
+}
+
+@keyframes linesDrift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(84px, 84px); }
 }
 
 /* Section content sits above all overlays */
@@ -674,35 +732,67 @@ body {
   background: rgba(27, 166, 99, 0.3);
 }
 
-/* Step number badge — small colored circle above step name */
+/* Step number badges — centered horizontally, line passes through them.
+   Numbers sit at top of column; icons sit below with gap.
+   Order in Zoho: step number paragraph → icon element → heading → text */
 .map-step-num-planning {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--color-sky);
-  color: var(--color-white);
-  font-size: 0.7rem;
-  font-weight: 700;
-  margin-bottom: var(--space-xs);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: var(--color-sky) !important;
+  color: var(--color-white) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  margin: 0 auto 16px auto !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
 .map-step-num-impl {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #1ba663;
-  color: var(--color-white);
-  font-size: 0.7rem;
-  font-weight: 700;
-  margin-bottom: var(--space-xs);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #1ba663 !important;
+  color: var(--color-white) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  margin: 0 auto 16px auto !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
+
+/* Service card top border — Zoho can't target one border side independently.
+   Apply "card-border-top" to any card Box element. */
+.card-border-top {
+  border-top: 3px solid var(--accent-primary) !important;
+  /* Override any existing top border Zoho sets */
+  border-top-color: var(--accent-primary) !important;
+  border-top-width: 3px !important;
+  border-top-style: solid !important;
+}
+
+/* Gold variant */
+.card-border-top-gold {
+  border-top: 3px solid var(--accent-gold) !important;
+  border-top-color: var(--accent-gold) !important;
+  border-top-width: 3px !important;
+  border-top-style: solid !important;
+}
+
+/* Teal variant */
+.card-border-top-teal {
+  border-top: 3px solid var(--accent-teal) !important;
+  border-top-color: var(--accent-teal) !important;
+  border-top-width: 3px !important;
+  border-top-style: solid !important;
+}
 
 /* ============================================================
    12. SERVICE CARDS
@@ -771,6 +861,37 @@ body {
   transform: scaleY(1);
 }
 
+
+/* ============================================================
+   13b. CPA NOTE SECTION
+   Better than a left border with centered text.
+   Apply "cpa-note" to the section, "cpa-note-box" to the inner Box.
+   Content should be left-aligned in Zoho.
+   ============================================================ */
+
+/* Teal short accent line above headline — add a Divider element
+   in Zoho with class "cpa-accent-line" before the heading */
+.cpa-accent-line {
+  width: 40px !important;
+  height: 3px !important;
+  background-color: var(--accent-teal) !important;
+  border: none !important;
+  margin: 0 0 var(--space-sm) 0 !important;
+  display: block !important;
+}
+
+/* Box container — clean white card with subtle shadow on teal bg */
+.cpa-note-box {
+  background: var(--color-white) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px 0 rgba(131, 174, 175, 0.18) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
+}
+
+.cpa-note-box:hover {
+  box-shadow: 0 8px 36px 0 rgba(131, 174, 175, 0.28) !important;
+  transform: translateY(-3px) !important;
+}
 
 /* ============================================================
    14. FINAL CTA SECTION
@@ -1007,39 +1128,70 @@ body {
    17. RESPONSIVE
    ============================================================ */
 
-@media (max-width: 768px) {
-  .hero-section .zpheading h1 {
-    font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
-  }
+/* ── Tablet (max 991px) ── */
+@media (max-width: 991px) {
+  /* Type scaling — Zoho doesn't scale type across breakpoints */
+  .zpheading h1 { font-size: 2.4rem !important; }
+  .zpheading h2 { font-size: 1.9rem !important; }
+  .zpheading h3 { font-size: 1.5rem !important; }
+  .zpheading h4 { font-size: 1.2rem !important; }
+  .zpheading h5 { font-size: 1rem !important; }
+  .zptext p     { font-size: 1rem !important; }
 
-  /* MAP process: hide connecting line, center each column */
+  /* MAP — stack vertically, full center */
   .map-process-row::before {
     display: none;
   }
 
+  /* Force every element inside a map column to center */
   .map-process-row .zprow-col,
-  .map-process-row .zp-col {
+  .map-process-row .zp-col,
+  .map-process-row [class*="zpelem-col"],
+  .map-process-row [class*="zpcol-"] {
+    display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
-    margin-bottom: 2rem !important;
+    padding-bottom: 2.5rem !important;
   }
 
-  /* MAP and stats icons/text — force center on small screens */
+  .map-process-row .zprow-col > *,
+  .map-process-row .zp-col > *,
+  .map-process-row [class*="zpelem-col"] > *,
+  .map-process-row [class*="zpcol-"] > * {
+    text-align: center !important;
+    align-self: center !important;
+  }
+
   .map-icon-planning,
-  .map-icon-impl,
+  .map-icon-impl {
+    margin: 0 auto 12px auto !important;
+  }
+
   .map-step-num-planning,
   .map-step-num-impl {
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto 12px auto !important;
   }
 
-  /* Stats columns — center everything */
+  /* Stats — center all */
   .stat-number,
-  .stat-number *,
-  .stat-label,
-  .stat-label * {
+  .stat-label {
     text-align: center !important;
   }
+}
+
+/* ── Mobile (max 768px) ── */
+@media (max-width: 768px) {
+  .hero-section .zpheading h1 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important;
+  }
+
+  /* Tighter type on mobile */
+  .zpheading h1 { font-size: 1.9rem !important; }
+  .zpheading h2 { font-size: 1.55rem !important; }
+  .zpheading h3 { font-size: 1.3rem !important; }
+  .zpheading h4 { font-size: 1.1rem !important; }
+  .zptext p     { font-size: 0.95rem !important; }
 }
 
 @media (max-width: 480px) {
@@ -1073,6 +1225,12 @@ body {
 
   .animate-float,
   .animate-pulse {
+    animation: none !important;
+  }
+
+  .hero-section::before,
+  .hero-section::after,
+  .cta-final::before {
     animation: none !important;
   }
 
