@@ -306,25 +306,41 @@
   }
 
 
+
   /* ============================================================
-     7. MAP PHASE LABEL DISPLAY FIX
-     Zoho can strip display:flex from custom-classed text elements.
-     This ensures .map-phase-label gets its flex layout on load.
+     8. AURORA LAYER INJECTION
+     Finds sections with gradient-bg-animated or hero-section
+     classes and injects an aurora-layer div directly into the
+     section element. No code snippets, no Zoho wrappers.
+
+     hero-section gets aurora-layer--hero (adds diagonal lines).
+     All others get aurora-layer only.
      ============================================================ */
 
-  function initMapPhaseLabels() {
-    document.querySelectorAll('.map-phase-label').forEach(function (el) {
-      el.style.display = 'flex';
-      el.style.alignItems = 'center';
+  function initAuroraLayers() {
+    const sections = document.querySelectorAll(
+      '.gradient-bg-animated, .hero-section'
+    );
+
+    sections.forEach(section => {
+      // Don't double-inject
+      if (section.querySelector('.aurora-layer')) return;
+
+      const div = document.createElement('div');
+      const isHero = section.classList.contains('hero-section');
+      div.className = isHero ? 'aurora-layer aurora-layer--hero' : 'aurora-layer';
+
+      // Insert as the very first child of the section
+      section.insertBefore(div, section.firstChild);
     });
   }
 
-
   /* ============================================================
-     8. INIT — Run everything on DOM ready
+     7. INIT — Run everything on DOM ready
      ============================================================ */
 
   function init() {
+    initAuroraLayers();
     initScrollReveal();
     initMobileMenuFix();
     initNavScroll();
@@ -332,7 +348,6 @@
     initTiltCards();
     initCounters();
     initActiveNav();
-    initMapPhaseLabels();
   }
 
   if (document.readyState === 'loading') {
