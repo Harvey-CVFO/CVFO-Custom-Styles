@@ -404,19 +404,11 @@ body {
 .text-right  { text-align: right !important; }
 
 /* Stat number — gold color for the large number; size set in Zoho */
-/* stat-number — gold color only. Size set in Zoho.
-   No wildcard child selector — that was overriding heading font sizes. */
+/* stat-number — center alignment only. Set color directly in Zoho.
+   Color override removed — it was corrupting the heading element output. */
 .stat-number {
-  color: var(--accent-gold) !important;
   text-align: center !important;
   display: block !important;
-}
-.zpheading.stat-number h1,
-.zpheading.stat-number h2,
-.zpheading.stat-number h3,
-.zpheading.stat-number h4 {
-  color: var(--accent-gold) !important;
-  text-align: center !important;
 }
 
 /* stat-label — light color on dark section; size/weight set in Zoho */
@@ -577,11 +569,17 @@ body {
   100% { filter: hue-rotate(-12deg); opacity: 1; }
 }
 
-/* Diagonal lines — hero only, animated scroll across the surface */
+/* Diagonal lines — hero only, animated scroll across the surface.
+   inset: -60px gives just enough bleed for the animation without
+   causing page overflow. The section must have overflow:hidden. */
+.hero-section {
+  overflow: hidden !important;
+}
+
 .hero-section::after {
   content: '';
   position: absolute;
-  inset: -100%;
+  inset: -60px;
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,
@@ -769,25 +767,29 @@ body {
 
 
 /* Service card top border — Zoho can't target one border side independently.
-   Apply "card-border-top" to any card Box element. */
-.card-border-top {
+   Apply "card-border-top" to a Box element in Zoho.
+   Targets both the box element and its inner wrapper div. */
+.zpelem-box.card-border-top,
+.zpelem-box.card-border-top > div,
+.zpelem-box.card-border-top > .zpbox {
   border-top: 3px solid var(--accent-primary) !important;
-  /* Override any existing top border Zoho sets */
   border-top-color: var(--accent-primary) !important;
   border-top-width: 3px !important;
   border-top-style: solid !important;
 }
 
-/* Gold variant */
-.card-border-top-gold {
+.zpelem-box.card-border-top-gold,
+.zpelem-box.card-border-top-gold > div,
+.zpelem-box.card-border-top-gold > .zpbox {
   border-top: 3px solid var(--accent-gold) !important;
   border-top-color: var(--accent-gold) !important;
   border-top-width: 3px !important;
   border-top-style: solid !important;
 }
 
-/* Teal variant */
-.card-border-top-teal {
+.zpelem-box.card-border-top-teal,
+.zpelem-box.card-border-top-teal > div,
+.zpelem-box.card-border-top-teal > .zpbox {
   border-top: 3px solid var(--accent-teal) !important;
   border-top-color: var(--accent-teal) !important;
   border-top-width: 3px !important;
@@ -869,15 +871,23 @@ body {
    Content should be left-aligned in Zoho.
    ============================================================ */
 
-/* Teal short accent line above headline — add a Divider element
-   in Zoho with class "cpa-accent-line" before the heading */
-.cpa-accent-line {
+/* CPA note heading accent line — applied via ::before on the heading
+   element. Add class "cpa-note-heading" to the H3 in Zoho.
+   No extra element needed. */
+.cpa-note-heading {
+  position: relative !important;
+  padding-top: 20px !important;
+}
+
+.cpa-note-heading::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 40px !important;
   height: 3px !important;
-  background-color: var(--accent-teal) !important;
-  border: none !important;
-  margin: 0 0 var(--space-sm) 0 !important;
-  display: block !important;
+  background: var(--accent-teal) !important;
+  border-radius: 2px !important;
 }
 
 /* Box container — clean white card with subtle shadow on teal bg */
@@ -1130,13 +1140,15 @@ body {
 
 /* ── Tablet (max 991px) ── */
 @media (max-width: 991px) {
-  /* Type scaling — Zoho doesn't scale type across breakpoints */
-  .zpheading h1 { font-size: 2.4rem !important; }
-  .zpheading h2 { font-size: 1.9rem !important; }
-  .zpheading h3 { font-size: 1.5rem !important; }
-  .zpheading h4 { font-size: 1.2rem !important; }
-  .zpheading h5 { font-size: 1rem !important; }
-  .zptext p     { font-size: 1rem !important; }
+  /* Type scaling — Zoho heading structure: .zpelem-heading > h1/h2/etc
+     The .zpheading selector doesn't exist — must target .zpelem-heading */
+  .zpelem-heading h1 { font-size: 2.4rem !important; }
+  .zpelem-heading h2 { font-size: 1.9rem !important; }
+  .zpelem-heading h3 { font-size: 1.5rem !important; }
+  .zpelem-heading h4 { font-size: 1.2rem !important; }
+  .zpelem-heading h5 { font-size: 1rem !important; }
+  .zpelem-text p,
+  .zpelem-text span  { font-size: 1rem !important; }
 
   /* MAP — stack vertically, full center */
   .map-process-row::before {
@@ -1187,11 +1199,12 @@ body {
   }
 
   /* Tighter type on mobile */
-  .zpheading h1 { font-size: 1.9rem !important; }
-  .zpheading h2 { font-size: 1.55rem !important; }
-  .zpheading h3 { font-size: 1.3rem !important; }
-  .zpheading h4 { font-size: 1.1rem !important; }
-  .zptext p     { font-size: 0.95rem !important; }
+  .zpelem-heading h1 { font-size: 1.9rem !important; }
+  .zpelem-heading h2 { font-size: 1.55rem !important; }
+  .zpelem-heading h3 { font-size: 1.3rem !important; }
+  .zpelem-heading h4 { font-size: 1.1rem !important; }
+  .zpelem-text p,
+  .zpelem-text span  { font-size: 0.95rem !important; }
 }
 
 @media (max-width: 480px) {
@@ -1232,6 +1245,7 @@ body {
   .hero-section::after,
   .cta-final::before {
     animation: none !important;
+    will-change: auto !important;
   }
 
   .problem-card::before,
