@@ -404,11 +404,15 @@ body {
 .text-right  { text-align: right !important; }
 
 /* Stat number — gold color for the large number; size set in Zoho */
-/* stat-number — center alignment only. Set color directly in Zoho.
-   Color override removed — it was corrupting the heading element output. */
-.stat-number {
+/* stat-number — center alignment only. Set color directly in Zoho. */
+.stat-number,
+.zpelem-heading.stat-number,
+.zpelem-heading.stat-number h1,
+.zpelem-heading.stat-number h2,
+.zpelem-heading.stat-number h3,
+.zpelem-heading.stat-number h4,
+.zpelem-heading.stat-number h5 {
   text-align: center !important;
-  display: block !important;
 }
 
 /* stat-label — light color on dark section; size/weight set in Zoho */
@@ -564,9 +568,11 @@ body {
 }
 
 @keyframes hueShift {
-  0%   { filter: hue-rotate(0deg);   opacity: 1; }
-  40%  { filter: hue-rotate(18deg);  opacity: 0.82; }
-  100% { filter: hue-rotate(-12deg); opacity: 1; }
+  0%   { filter: hue-rotate(0deg);   opacity: 1;    transform: scale(1)    translateX(0%); }
+  25%  { filter: hue-rotate(15deg);  opacity: 0.75; transform: scale(1.12) translateX(4%); }
+  55%  { filter: hue-rotate(-10deg); opacity: 0.9;  transform: scale(0.92) translateX(-5%); }
+  80%  { filter: hue-rotate(22deg);  opacity: 0.7;  transform: scale(1.08) translateX(3%); }
+  100% { filter: hue-rotate(-8deg);  opacity: 1;    transform: scale(1)    translateX(0%); }
 }
 
 /* Diagonal lines — hero only, animated scroll across the surface.
@@ -635,7 +641,7 @@ body {
 .map-process-row::before {
   content: '';
   position: absolute;
-  top: 33px; /* aligns with center of icon circles */
+  top: 14px; /* aligns with center of 28px step number badges */
   left: 10%;
   right: 10%;
   height: 1px;
@@ -769,31 +775,41 @@ body {
 /* Service card top border — Zoho can't target one border side independently.
    Apply "card-border-top" to a Box element in Zoho.
    Targets both the box element and its inner wrapper div. */
-.zpelem-box.card-border-top,
-.zpelem-box.card-border-top > div,
-.zpelem-box.card-border-top > .zpbox {
+/* card-border-top — apply to Box element only.
+   Do NOT apply to a column/row — only a Box (zpelem-box).
+   Zoho Box renders as: .zpelem-box > .zpbox-container > .zpbox-inner
+   We target the element itself and suppress borders on all its children. */
+.zpelem-box.card-border-top {
   border-top: 3px solid var(--accent-primary) !important;
-  border-top-color: var(--accent-primary) !important;
-  border-top-width: 3px !important;
-  border-top-style: solid !important;
+}
+.zpelem-box.card-border-top .zpelem-box,
+.zpelem-box.card-border-top .zpelem-heading,
+.zpelem-box.card-border-top .zpelem-text,
+.zpelem-box.card-border-top .zpelem-icon,
+.zpelem-box.card-border-top .zpelem-button {
+  border-top: none !important;
 }
 
-.zpelem-box.card-border-top-gold,
-.zpelem-box.card-border-top-gold > div,
-.zpelem-box.card-border-top-gold > .zpbox {
+.zpelem-box.card-border-top-gold {
   border-top: 3px solid var(--accent-gold) !important;
-  border-top-color: var(--accent-gold) !important;
-  border-top-width: 3px !important;
-  border-top-style: solid !important;
+}
+.zpelem-box.card-border-top-gold .zpelem-box,
+.zpelem-box.card-border-top-gold .zpelem-heading,
+.zpelem-box.card-border-top-gold .zpelem-text,
+.zpelem-box.card-border-top-gold .zpelem-icon,
+.zpelem-box.card-border-top-gold .zpelem-button {
+  border-top: none !important;
 }
 
-.zpelem-box.card-border-top-teal,
-.zpelem-box.card-border-top-teal > div,
-.zpelem-box.card-border-top-teal > .zpbox {
+.zpelem-box.card-border-top-teal {
   border-top: 3px solid var(--accent-teal) !important;
-  border-top-color: var(--accent-teal) !important;
-  border-top-width: 3px !important;
-  border-top-style: solid !important;
+}
+.zpelem-box.card-border-top-teal .zpelem-box,
+.zpelem-box.card-border-top-teal .zpelem-heading,
+.zpelem-box.card-border-top-teal .zpelem-text,
+.zpelem-box.card-border-top-teal .zpelem-icon,
+.zpelem-box.card-border-top-teal .zpelem-button {
+  border-top: none !important;
 }
 
 /* ============================================================
@@ -1140,15 +1156,14 @@ body {
 
 /* ── Tablet (max 991px) ── */
 @media (max-width: 991px) {
-  /* Type scaling — Zoho heading structure: .zpelem-heading > h1/h2/etc
-     The .zpheading selector doesn't exist — must target .zpelem-heading */
-  .zpelem-heading h1 { font-size: 2.4rem !important; }
-  .zpelem-heading h2 { font-size: 1.9rem !important; }
-  .zpelem-heading h3 { font-size: 1.5rem !important; }
-  .zpelem-heading h4 { font-size: 1.2rem !important; }
-  .zpelem-heading h5 { font-size: 1rem !important; }
+  /* Type scaling — confirmed selector: .zpelem-heading is the Zoho heading wrapper */
+  .zpelem-heading h1 { font-size: 2.2rem !important; line-height: 1.2 !important; }
+  .zpelem-heading h2 { font-size: 1.8rem !important; line-height: 1.25 !important; }
+  .zpelem-heading h3 { font-size: 1.4rem !important; line-height: 1.3 !important; }
+  .zpelem-heading h4 { font-size: 1.15rem !important; }
+  .zpelem-heading h5 { font-size: 0.95rem !important; }
   .zpelem-text p,
-  .zpelem-text span  { font-size: 1rem !important; }
+  .zpelem-text span  { font-size: 0.95rem !important; line-height: 1.7 !important; }
 
   /* MAP — stack vertically, full center */
   .map-process-row::before {
@@ -1185,9 +1200,20 @@ body {
     margin: 0 auto 12px auto !important;
   }
 
-  /* Stats — center all */
+  /* Stats section — force center on all heading/text inside stat elements */
   .stat-number,
-  .stat-label {
+  .zpelem-heading.stat-number,
+  .zpelem-heading.stat-number h1,
+  .zpelem-heading.stat-number h2,
+  .zpelem-heading.stat-number h3,
+  .zpelem-heading.stat-number h4,
+  .stat-label,
+  .zpelem-heading.stat-label,
+  .zpelem-heading.stat-label h1,
+  .zpelem-heading.stat-label h2,
+  .zpelem-heading.stat-label h3,
+  .zpelem-heading.stat-label h4,
+  .zpelem-text.stat-label p {
     text-align: center !important;
   }
 }
