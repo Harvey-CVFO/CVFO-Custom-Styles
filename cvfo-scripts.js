@@ -99,13 +99,22 @@
       const menuLeft = Math.round(pillRect.left) + LEFT_CORRECTION;
       const menuWidth = Math.round(pillRect.width);
 
+      // Clamp left — Zoho sometimes sets -1px causing a white edge bleed
+      const safeLeft = Math.max(menuLeft, 0);
+
       menuPanel.style.setProperty('position', 'fixed', 'important');
       menuPanel.style.setProperty('top', menuTop + 'px', 'important');
-      menuPanel.style.setProperty('left', menuLeft + 'px', 'important');
+      menuPanel.style.setProperty('left', safeLeft + 'px', 'important');
       menuPanel.style.setProperty('right', 'auto', 'important');
       menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
       menuPanel.style.setProperty('border-radius', '14px 14px 14px 14px', 'important');
       menuPanel.style.setProperty('border-top', '1px solid rgba(255,255,255,0.1)', 'important');
+
+      // background + blur set here so they override Zoho's inline styles
+      // and render correctly on a fixed element outside pill stacking context
+      menuPanel.style.setProperty('background', 'rgba(13, 28, 58, 0.55)', 'important');
+      menuPanel.style.setProperty('backdrop-filter', 'blur(32px) saturate(200%)', 'important');
+      menuPanel.style.setProperty('-webkit-backdrop-filter', 'blur(32px) saturate(200%)', 'important');
     }
 
     // Watch for Zoho adding/removing the open state class
