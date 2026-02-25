@@ -95,6 +95,12 @@
   box-sizing: border-box;
 }
 
+/* Prevent horizontal overflow from pseudo-element bleeds */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 /* Subpixel antialiasing — Zoho doesn't set this */
 body {
   -webkit-font-smoothing: antialiased;
@@ -126,14 +132,15 @@ body {
   color: var(--color-white) !important;
 }
 
-/* Exception: stat-number headings set their own color in Zoho — don't override */
+/* Exception: stat-number headings use gold — don't let section-dark override.
+   Use unset to remove the white color and let Zoho's inline color show through. */
 .section-dark .zpelem-heading.stat-number,
 .section-dark .zpelem-heading.stat-number h1,
 .section-dark .zpelem-heading.stat-number h2,
 .section-dark .zpelem-heading.stat-number h3,
 .section-dark .zpelem-heading.stat-number h4,
 .section-dark .zpelem-heading.stat-number h5 {
-  color: inherit !important;
+  color: unset !important;
 }
 
 .section-dark .zptext,
@@ -560,29 +567,42 @@ body {
   ) !important;
 }
 
-/* Radial glow overlay — hue-rotate shifts the teal accent color.
-   Increased opacity so it's actually visible against the dark bg. */
+/* Glow overlay — two layers that cross-fade independently.
+   No transform or translate — just opacity on fixed-position gradients.
+   Each layer is position:absolute inset:0 so no edges ever appear.
+   The alternating opacity creates the sense of movement. */
 .hero-section::before,
 .cta-final::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 75% 55% at 25% 55%, rgba(56, 182, 255, 0.28) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 65% at 80% 35%, rgba(14, 61, 68, 0.6) 0%, transparent 55%);
-  animation: hueShift 14s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 20% 60%, rgba(56, 182, 255, 0.32) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 70% at 80% 30%, rgba(0, 112, 139, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 55% 80%, rgba(27, 166, 99, 0.15) 0%, transparent 45%);
+  animation: glowPulse 10s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
-  will-change: filter;
+  will-change: opacity;
 }
 
-@keyframes hueShift {
-  /* scale() from center only — never reveals edges unlike translate */
-  0%   { filter: hue-rotate(0deg);   opacity: 1;    transform: scale(1); }
-  20%  { filter: hue-rotate(18deg);  opacity: 0.7;  transform: scale(1.18); }
-  45%  { filter: hue-rotate(-12deg); opacity: 0.85; transform: scale(0.88); }
-  70%  { filter: hue-rotate(25deg);  opacity: 0.65; transform: scale(1.22); }
-  100% { filter: hue-rotate(-6deg);  opacity: 1;    transform: scale(1); }
+/* Second layer — offset phase for cross-fade movement feel */
+.hero-section::after {
+  /* keep diagonal lines but also cross-fade */
+  animation: linesDrift 28s linear infinite, lineFade 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glowPulse {
+  0%   { opacity: 1; }
+  30%  { opacity: 0.55; }
+  60%  { opacity: 0.8; }
+  100% { opacity: 0.45; }
+}
+
+@keyframes lineFade {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.4; }
 }
 
 /* Diagonal lines — hero only, animated scroll across the surface.
@@ -785,33 +805,28 @@ body {
 /* Service card top border — Zoho can't target one border side independently.
    Apply "card-border-top" to a Box element in Zoho.
    Targets both the box element and its inner wrapper div. */
-/* card-border-top — uses ::before pseudo-element to draw the top accent.
-   This bypasses Zoho's inline border-color !important entirely.
+/* card-border-top — uses inset box-shadow to fake a top border.
+   box-shadow is additive and never conflicts with ::before pseudo-elements.
+   Zoho's inline border styles don't affect box-shadow at all.
+   The inset values: 0 3px 0 0 draws a 3px line at the top only.
    Apply class to the Box element in Zoho. */
-.card-border-top,
-.card-border-top-gold,
+.card-border-top {
+  box-shadow:
+    inset 0 3px 0 0 var(--accent-primary),
+    0 3px 4px 0 rgba(0,0,0,0.08) !important;
+}
+
+.card-border-top-gold {
+  box-shadow:
+    inset 0 3px 0 0 var(--accent-gold),
+    0 3px 4px 0 rgba(0,0,0,0.08) !important;
+}
+
 .card-border-top-teal {
-  position: relative !important;
-  overflow: visible !important;
+  box-shadow:
+    inset 0 3px 0 0 var(--accent-teal),
+    0 3px 4px 0 rgba(0,0,0,0.08) !important;
 }
-
-.card-border-top::before,
-.card-border-top-gold::before,
-.card-border-top-teal::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -1px !important;
-  left: -1px !important;
-  right: -1px !important;
-  height: 3px !important;
-  border-radius: 10px 10px 0 0 !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-}
-
-.card-border-top::before      { background: var(--accent-primary) !important; }
-.card-border-top-gold::before { background: var(--accent-gold) !important; }
-.card-border-top-teal::before { background: var(--accent-teal) !important; }
 
 /* ============================================================
    12. SERVICE CARDS
@@ -1155,26 +1170,54 @@ body {
    17. RESPONSIVE
    ============================================================ */
 
-/* ── Tablet (max 991px) ── */
+/* ── Tablet (768–991px) ── 
+   Proportional scale of Zoho base sizes (approx 80%):
+   H1 56→44 | H2 40→32 | H3 28→23 | H4 22→19 | H5 18→16 | H6 14→13
+   body 17→16 | btn-md 18→16 */
 @media (max-width: 991px) {
-  /* Headings — .zpelem-heading wraps the h tag in Zoho */
-  .zpelem-heading h1 { font-size: 2.2rem !important; line-height: 1.2 !important; }
-  .zpelem-heading h2 { font-size: 1.8rem !important; line-height: 1.25 !important; }
-  .zpelem-heading h3 { font-size: 1.4rem !important; line-height: 1.3 !important; }
-  .zpelem-heading h4 { font-size: 1.15rem !important; line-height: 1.35 !important; }
-  .zpelem-heading h5 { font-size: 0.95rem !important; }
-  .zpelem-heading h6 { font-size: 0.85rem !important; }
+  /* Headings */
+  .zpelem-heading h1,
+  .zpelem-iconheading h1,
+  .zpelem-iconheadingtext h1 { font-size: 44px !important; line-height: 1.15 !important; }
 
-  /* Body text — actual structure is .zpelem-text > .zptext > p */
+  .zpelem-heading h2,
+  .zpelem-iconheading h2,
+  .zpelem-iconheadingtext h2 { font-size: 32px !important; line-height: 1.2 !important; }
+
+  .zpelem-heading h3,
+  .zpelem-iconheading h3,
+  .zpelem-iconheadingtext h3 { font-size: 23px !important; line-height: 1.3 !important; }
+
+  .zpelem-heading h4,
+  .zpelem-iconheading h4,
+  .zpelem-iconheadingtext h4 { font-size: 19px !important; line-height: 1.35 !important; }
+
+  .zpelem-heading h5,
+  .zpelem-iconheading h5,
+  .zpelem-iconheadingtext h5 { font-size: 16px !important; }
+
+  .zpelem-heading h6,
+  .zpelem-iconheading h6,
+  .zpelem-iconheadingtext h6 { font-size: 13px !important; }
+
+  /* Stat-number headings are sized individually in Zoho — don't scale them */
+  .zpelem-heading.stat-number h1,
+  .zpelem-heading.stat-number h2,
+  .zpelem-heading.stat-number h3,
+  .zpelem-heading.stat-number h4,
+  .zpelem-heading.stat-number h5 { font-size: unset !important; }
+
+  /* Body text — .zpelem-text > .zptext > p/span/div */
   .zptext p,
-  .zptext span,
-  .zptext div { font-size: 0.95rem !important; line-height: 1.7 !important; }
+  .zptext span { font-size: 16px !important; line-height: 1.7 !important; }
 
-  /* Eyebrow / small labels */
-  .eyebrow { font-size: 0.7rem !important; }
+  /* Eyebrow labels */
+  .eyebrow { font-size: 11px !important; letter-spacing: 0.1em !important; }
 
   /* Buttons */
-  .zpbutton { font-size: 0.9rem !important; padding: 10px 22px !important; }
+  .zpbutton.zpbutton-size-sm { font-size: 14px !important; }
+  .zpbutton.zpbutton-size-md { font-size: 16px !important; }
+  .zpbutton.zpbutton-size-lg { font-size: 17px !important; }
 
   /* MAP — stack vertically, full center */
   .map-process-row::before {
@@ -1235,20 +1278,48 @@ body {
     font-size: clamp(1.6rem, 7vw, 2.2rem) !important;
   }
 
-  /* Tighter type on mobile */
-  .zpelem-heading h1 { font-size: 1.75rem !important; line-height: 1.2 !important; }
-  .zpelem-heading h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
-  .zpelem-heading h3 { font-size: 1.2rem !important; line-height: 1.3 !important; }
-  .zpelem-heading h4 { font-size: 1.05rem !important; }
-  .zpelem-heading h5 { font-size: 0.9rem !important; }
-  .zpelem-heading h6 { font-size: 0.8rem !important; }
+  /* Mobile type scaling (approx 65% of desktop):
+     H1 56→36 | H2 40→27 | H3 28→21 | H4 22→18 | H5 18→15 | H6 14→12
+     body 17→15 | btn-md 18→15 */
+  .zpelem-heading h1,
+  .zpelem-iconheading h1,
+  .zpelem-iconheadingtext h1 { font-size: 36px !important; line-height: 1.15 !important; }
+
+  .zpelem-heading h2,
+  .zpelem-iconheading h2,
+  .zpelem-iconheadingtext h2 { font-size: 27px !important; line-height: 1.2 !important; }
+
+  .zpelem-heading h3,
+  .zpelem-iconheading h3,
+  .zpelem-iconheadingtext h3 { font-size: 21px !important; line-height: 1.3 !important; }
+
+  .zpelem-heading h4,
+  .zpelem-iconheading h4,
+  .zpelem-iconheadingtext h4 { font-size: 18px !important; }
+
+  .zpelem-heading h5,
+  .zpelem-iconheading h5,
+  .zpelem-iconheadingtext h5 { font-size: 15px !important; }
+
+  .zpelem-heading h6,
+  .zpelem-iconheading h6,
+  .zpelem-iconheadingtext h6 { font-size: 12px !important; }
+
+  /* Stat-number exempt on mobile too */
+  .zpelem-heading.stat-number h1,
+  .zpelem-heading.stat-number h2,
+  .zpelem-heading.stat-number h3,
+  .zpelem-heading.stat-number h4,
+  .zpelem-heading.stat-number h5 { font-size: unset !important; }
 
   .zptext p,
-  .zptext span,
-  .zptext div { font-size: 0.9rem !important; line-height: 1.65 !important; }
+  .zptext span { font-size: 15px !important; line-height: 1.65 !important; }
 
-  .eyebrow { font-size: 0.65rem !important; }
-  .zpbutton { font-size: 0.85rem !important; padding: 9px 18px !important; }
+  .eyebrow { font-size: 10px !important; }
+
+  .zpbutton.zpbutton-size-sm { font-size: 13px !important; }
+  .zpbutton.zpbutton-size-md { font-size: 15px !important; }
+  .zpbutton.zpbutton-size-lg { font-size: 16px !important; }
 }
 
 @media (max-width: 480px) {
