@@ -1,11 +1,25 @@
 /* ============================================================
    CVFO CUSTOM STYLESHEET
    Hosted on GitHub Pages — referenced in Zoho Sites head code
-   
+
    USAGE IN ZOHO SITES:
    Settings → Custom Code → Head → paste:
    <link rel="stylesheet" href="YOUR_GITHUB_PAGES_URL/cvfo-styles.css">
-   
+
+   PHILOSOPHY:
+   This file EXTENDS Zoho Sites — it does not override it.
+   Typography, colors, spacing, borders, and shadows are set
+   directly in the Zoho Visual Editor and element style panels.
+   This file only adds things Zoho cannot do natively:
+     - CSS custom properties (design tokens)
+     - Google Fonts import
+     - Gradient/animated backgrounds
+     - Pseudo-element overlays (::before / ::after)
+     - Scroll reveal animations (requires JS)
+     - Hover transitions that need transform/keyframes
+     - Navigation pill-float behavior
+     - Dark section text color flips (scoped tightly)
+
    Last updated: 2026
    ============================================================ */
 
@@ -26,34 +40,15 @@
   --color-offwhite:   #f7fafc;
   --color-lightgray:  #f0f0f0;
   --color-darkgray:   #2d3748;
-  --color-black:      #000000;
   --color-white:      #ffffff;
 
   /* Semantic Aliases */
-  --bg-light:         var(--color-offwhite);
-  --bg-dark:          var(--color-navy);
   --text-primary:     var(--color-darkgray);
   --text-light:       var(--color-offwhite);
-  --text-muted:       var(--color-teal);
   --accent-primary:   var(--color-sky);
   --accent-hover:     var(--color-blue);
   --accent-gold:      var(--color-gold);
   --accent-teal:      var(--color-teal);
-
-  /* Typography */
-  --font-heading:     'Playfair Display', Georgia, serif;
-  --font-body:        'Montserrat', sans-serif;
-
-  /* Type Scale */
-  --text-xs:    0.75rem;
-  --text-sm:    0.875rem;
-  --text-base:  1rem;
-  --text-lg:    1.125rem;
-  --text-xl:    1.25rem;
-  --text-2xl:   1.5rem;
-  --text-3xl:   1.875rem;
-  --text-4xl:   2.25rem;
-  --text-5xl:   3rem;
 
   /* Spacing */
   --space-xs:   0.5rem;
@@ -69,14 +64,18 @@
   --radius-lg:  16px;
   --radius-pill: 100px;
 
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.08);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.10);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.14);
-  --shadow-lift: 0 16px 40px rgba(0,0,0,0.16);
+  --shadow-sm:   0 1px 3px 0 rgba(0,0,0,0.08);
+  --shadow-md:   0 4px 16px 0 rgba(0,0,0,0.10);
+  --shadow-lg:   0 8px 32px 0 rgba(0,0,0,0.14);
+  --shadow-lift: 0 16px 40px 0 rgba(0,0,0,0.16);
 
-  --transition-fast:   150ms ease;
-  --transition-base:   250ms ease;
-  --transition-slow:   400ms ease;
+  /* Typography — font variables only; sizes set in Zoho */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body:    'Montserrat', sans-serif;
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
 }
 
 
@@ -88,182 +87,104 @@
 
 
 /* ============================================================
-   3. BASE RESETS & GLOBAL
+   3. MINIMAL BASE
+   Only what Zoho doesn't provide.
    ============================================================ */
 
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
+/* Subpixel antialiasing — Zoho doesn't set this */
 body {
-  font-family: var(--font-body);
-  color: var(--text-primary);
-  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Sections need position:relative so ::before/::after overlays work */
+.zpsection {
+  position: relative;
 }
 
 
 /* ============================================================
-   4. ZOHO NATIVE ELEMENT OVERRIDES
-   Targets Zoho's zp-prefixed classes directly.
-   These apply globally without adding custom classes.
+   4. DARK SECTION TEXT FLIPS
+   Only the things Zoho's editor genuinely cannot do:
+   flipping text/heading color based on a parent class.
+
+   Apply "section-dark" to any section with a dark background
+   to automatically flip heading and text colors to white.
    ============================================================ */
 
-/* --- Headings --- */
-
-.zpheading h1,
-.zpheading h2,
-.zpheading h3,
-.zpheading h4,
-.zpheading h5,
-.zpheading h6,
-h1.zpheading,
-h2.zpheading,
-h3.zpheading,
-h4.zpheading {
-  font-family: var(--font-heading);
-  color: var(--color-navy);
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-/* Headings inside dark sections flip to light */
+.section-dark .zpheading,
 .section-dark .zpheading h1,
 .section-dark .zpheading h2,
 .section-dark .zpheading h3,
 .section-dark .zpheading h4,
-.section-dark h1.zpheading,
-.section-dark h2.zpheading,
-.section-dark h3.zpheading,
-.section-dark h4.zpheading {
-  color: var(--color-white);
-}
-
-/* --- Body Text --- */
-
-.zptext,
-.zptext p,
-.zptext h4,
-.zptext span {
-  font-family: var(--font-body);
-  color: var(--text-primary);
-  line-height: 1.7;
+.section-dark .zpheading h5,
+.section-dark .zpheading h6 {
+  color: var(--color-white) !important;
 }
 
 .section-dark .zptext,
 .section-dark .zptext p,
-.section-dark .zptext h4,
 .section-dark .zptext span {
-  color: rgba(247, 250, 252, 0.85);
+  color: rgba(247, 250, 252, 0.85) !important;
 }
 
-/* --- Primary Button --- */
+
+/* Secondary button inverts on dark backgrounds */
+.section-dark .zpbutton.zpbutton-type-secondary {
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  color: var(--color-white) !important;
+}
+
+.section-dark .zpbutton.zpbutton-type-secondary:hover {
+  background-color: var(--color-white) !important;
+  color: var(--color-navy) !important;
+}
+
+
+/* ============================================================
+   5. BUTTON HOVER TRANSITIONS
+   Zoho's Visual Editor sets colors. This adds transitions,
+   transform lifts, and box-shadow — none of which Zoho supports.
+   ============================================================ */
 
 .zpbutton.zpbutton-type-primary {
-  background-color: var(--accent-primary) !important;
-  border-color: var(--accent-primary) !important;
-  color: var(--color-white) !important;
-  font-family: var(--font-body) !important;
-  font-weight: 600 !important;
-  font-size: var(--text-sm) !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  border-radius: var(--radius-md) !important;
-  padding: 14px 28px !important;
   transition: background-color var(--transition-base),
               transform var(--transition-fast),
               box-shadow var(--transition-base) !important;
-  box-shadow: 0 2px 8px rgba(56, 182, 255, 0.3) !important;
+  box-shadow: 0 2px 8px 0 rgba(56, 182, 255, 0.25) !important;
 }
 
 .zpbutton.zpbutton-type-primary:hover {
-  background-color: var(--accent-hover) !important;
-  border-color: var(--accent-hover) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(56, 182, 255, 0.4) !important;
+  box-shadow: 0 6px 20px 0 rgba(56, 182, 255, 0.4) !important;
 }
 
-/* --- Secondary Button --- */
-
 .zpbutton.zpbutton-type-secondary {
-  background-color: transparent !important;
-  border: 2px solid var(--color-navy) !important;
-  color: var(--color-navy) !important;
-  font-family: var(--font-body) !important;
-  font-weight: 600 !important;
-  font-size: var(--text-sm) !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  border-radius: var(--radius-md) !important;
-  padding: 14px 28px !important;
   transition: background-color var(--transition-base),
               color var(--transition-base),
               transform var(--transition-fast) !important;
 }
 
 .zpbutton.zpbutton-type-secondary:hover {
-  background-color: var(--color-navy) !important;
-  color: var(--color-white) !important;
   transform: translateY(-2px) !important;
 }
 
-/* Secondary button on dark sections */
-.section-dark .zpbutton.zpbutton-type-secondary {
-  border-color: var(--color-offwhite) !important;
-  color: var(--color-offwhite) !important;
-}
-
-.section-dark .zpbutton.zpbutton-type-secondary:hover {
-  background-color: var(--color-offwhite) !important;
-  color: var(--color-navy) !important;
-}
-
-/* ---- Section Base ---- */
-
-.zpsection {
-  position: relative;
-}
 
 /* ============================================================
-   5. SECTION THEME CLASSES
-   Apply these in Zoho Sites → section Advanced → Custom Classes
-   
-   section-dark   → Navy background, light text
-   section-light  → Off-white background
-   section-white  → Pure white background
-   ============================================================ */
+   6. SCROLL REVEAL ANIMATIONS
+   JS (cvfo-scripts.js) adds "is-visible" when element enters
+   viewport. These classes define the before/after states.
 
-.section-dark {
-  background-color: var(--color-navy) !important;
-}
-
-.section-light {
-  background-color: var(--color-offwhite) !important;
-}
-
-.section-white {
-  background-color: var(--color-white) !important;
-}
-
-/* Generous section padding */
-.section-dark .zpcontainer,
-.section-light .zpcontainer,
-.section-white .zpcontainer {
-  padding-top: var(--space-2xl);
-  padding-bottom: var(--space-2xl);
-}
-
-
-/* ============================================================
-   6. UTILITY CLASSES — SCROLL ANIMATIONS
-   Apply to any element. JS handles the trigger.
-   
-   scroll-reveal       → fade up (default)
-   scroll-reveal-left  → slide from left
-   scroll-reveal-right → slide from right
-   scroll-reveal-scale → scale up from 95%
-   stagger-children    → apply to parent; children animate in sequence
+   Usage — add ONE of these classes to any element:
+     scroll-reveal        → fade up
+     scroll-reveal-left   → slide in from left
+     scroll-reveal-right  → slide in from right
+     scroll-reveal-scale  → scale up from 95%
+     stagger-children     → apply to parent; children stagger in
    ============================================================ */
 
 .scroll-reveal,
@@ -275,23 +196,11 @@ h4.zpheading {
   will-change: opacity, transform;
 }
 
-.scroll-reveal {
-  transform: translateY(28px);
-}
+.scroll-reveal       { transform: translateY(28px); }
+.scroll-reveal-left  { transform: translateX(-40px); }
+.scroll-reveal-right { transform: translateX(40px); }
+.scroll-reveal-scale { transform: scale(0.95) translateY(16px); }
 
-.scroll-reveal-left {
-  transform: translateX(-40px);
-}
-
-.scroll-reveal-right {
-  transform: translateX(40px);
-}
-
-.scroll-reveal-scale {
-  transform: scale(0.95) translateY(16px);
-}
-
-/* Visible state — JS adds this class */
 .scroll-reveal.is-visible,
 .scroll-reveal-left.is-visible,
 .scroll-reveal-right.is-visible,
@@ -300,10 +209,10 @@ h4.zpheading {
   transform: none;
 }
 
-/* Stagger: children get delay increments */
+/* Staggered children — parent gets stagger-children, JS adds is-visible */
 .stagger-children > * {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
@@ -316,15 +225,14 @@ h4.zpheading {
 
 
 /* ============================================================
-   7. UTILITY CLASSES — HOVER EFFECTS
-   Apply to cards, icons, images, buttons
+   7. HOVER EFFECTS
+   Zoho cannot animate transform or box-shadow on hover.
+   Apply these classes to any card or interactive element.
    ============================================================ */
 
 .hover-lift {
   transition: transform var(--transition-base), box-shadow var(--transition-base);
-  cursor: default;
 }
-
 .hover-lift:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lift);
@@ -333,76 +241,44 @@ h4.zpheading {
 .hover-lift-sm {
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
-
 .hover-lift-sm:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
+}
+
+.hover-scale {
+  transition: transform var(--transition-base);
+}
+.hover-scale:hover {
+  transform: scale(1.03);
 }
 
 .hover-glow:hover {
   box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.25), var(--shadow-md);
 }
 
-.hover-scale {
-  transition: transform var(--transition-base);
-}
-
-.hover-scale:hover {
-  transform: scale(1.03);
+/* 3D tilt — JS handles mouse tracking, this sets up the 3D context */
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 
 /* ============================================================
-   8. UTILITY CLASSES — VISUAL EFFECTS
-   ============================================================ */
+   8. BACKGROUNDS & GRADIENTS
+   Zoho's background picker is limited to solid colors and
+   basic images. These classes add gradient and animation.
 
-/* Gradient text — works on headings */
-.gradient-text {
-  background: linear-gradient(135deg, var(--color-sky) 0%, var(--color-teal) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Gold accent text */
-.text-gold {
-  color: var(--accent-gold) !important;
-}
-
-/* Teal accent text */
-.text-teal {
-  color: var(--accent-teal) !important;
-}
-
-/* Sky blue accent text */
-.text-sky {
-  color: var(--accent-primary) !important;
-}
-
-/* Glassmorphism — light */
-.glass {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
-}
-
-/* ============================================================
-   8. UTILITY CLASSES — BACKGROUNDS & GRADIENTS
-   
-   Static gradients:
-     gradient-navy        → dark navy to deep blue (default dark hero)
-     gradient-navy-teal   → navy fading toward teal (warm dark)
-     gradient-light       → soft off-white to light gray (light sections)
-     gradient-sky         → light sky blue wash (accent light)
-     gradient-gold-dark   → dark navy with subtle gold warmth (premium)
-
+   Static:
+     gradient-navy        → dark navy to deep blue
+     gradient-navy-teal   → navy fading to teal
+     gradient-light       → off-white to light gray
+     gradient-sky         → light sky blue wash
    Animated:
-     gradient-bg-animated → slow diagonal shift across navy/teal palette
+     gradient-bg-animated → slow diagonal navy/teal drift
+   Texture:
+     gradient-noise       → subtle SVG noise overlay (use with gradients)
    ============================================================ */
-
-/* --- Static gradients --- */
 
 .gradient-navy {
   background: linear-gradient(160deg, #1a365d 0%, #0d2240 100%);
@@ -419,14 +295,6 @@ h4.zpheading {
 .gradient-sky {
   background: linear-gradient(150deg, #ebf8ff 0%, #e0f4ff 100%);
 }
-
-.gradient-gold-dark {
-  background: linear-gradient(150deg, #1a2d1a 0%, #1a365d 50%, #2d2510 100%);
-}
-
-/* --- Animated gradient --- */
-/* Slow diagonal drift across navy and deep teal.
-   Stays within brand palette — no jarring color jumps. */
 
 .gradient-bg-animated {
   background: linear-gradient(
@@ -449,8 +317,7 @@ h4.zpheading {
   100% { background-position: 0% 0%; }
 }
 
-/* Subtle noise texture overlay — add this alongside any gradient class
-   for a more premium, less flat look */
+/* SVG noise texture — apply alongside any gradient class */
 .gradient-noise::after {
   content: '';
   position: absolute;
@@ -460,12 +327,17 @@ h4.zpheading {
   z-index: 0;
 }
 
+/* Ensure section content sits above noise overlay */
+.gradient-noise > .zpcontainer,
+.gradient-noise > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
 
 /* Gentle float animation */
 .animate-float {
   animation: float 5s ease-in-out infinite;
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-10px); }
@@ -475,74 +347,98 @@ h4.zpheading {
 .animate-pulse {
   animation: pulse 3s ease-in-out infinite;
 }
-
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.6; }
 }
 
+/* Gradient text — apply to heading elements */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-sky) 0%, var(--color-teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 
 /* ============================================================
    9. COMPONENT CLASSES
+   Color and display-mode overrides only.
+   Font, size, weight, spacing → set in Zoho element style panel.
    ============================================================ */
 
-/* --- Eyebrow Label (above headings) ---
-   Usage: wrap a text element with class "eyebrow"
-   Displays as small teal uppercase label */
+/* Gold accent text */
+.text-gold  { color: var(--accent-gold) !important; }
+.text-teal  { color: var(--accent-teal) !important; }
+.text-sky   { color: var(--accent-primary) !important; }
+.text-white { color: var(--color-white) !important; }
+.text-navy  { color: var(--color-navy) !important; }
+.text-muted { color: var(--accent-teal) !important; }
+.text-light { color: rgba(247, 250, 252, 0.75) !important; }
 
-.eyebrow {
-  display: block;
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent-teal);
-  margin-bottom: var(--space-xs);
-}
+/* Text alignment */
+.text-left   { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right  { text-align: right !important; }
 
-.section-dark .eyebrow {
-  color: var(--color-teal);
-}
-
-/* --- Gold Step Number ---
-   Usage: add class "step-number" to a text element containing "01", "02" etc */
-
-.step-number {
-  font-family: var(--font-heading);
-  font-size: var(--text-4xl);
-  font-weight: 700;
-  color: var(--accent-gold);
-  line-height: 1;
-  display: block;
-  margin-bottom: var(--space-xs);
-}
-
-/* --- Stat Block ---
-   Usage: "stat-number" on the big number, "stat-label" on the descriptor */
-
+/* Stat number — gold color for the large number; size set in Zoho */
 .stat-number {
-  font-family: var(--font-heading);
-  font-size: var(--text-4xl);
-  font-weight: 700;
   color: var(--accent-gold);
-  line-height: 1;
   display: block;
+  line-height: 1;
 }
 
+/* Stat label — uppercase tracking; size/weight set in Zoho */
 .stat-label {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 500;
   color: rgba(247, 250, 252, 0.75);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-top: var(--space-xs);
   display: block;
 }
 
-/* --- Teal Divider Line --- */
+/* Step number — gold color; size set in Zoho */
+.step-number {
+  color: var(--accent-gold);
+  line-height: 1;
+  display: block;
+}
 
+/* Glassmorphism container */
+.glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+}
+
+/* Section badge / pill label */
+.section-badge {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-white);
+  background-color: var(--accent-teal);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+}
+.section-badge.gold {
+  background-color: var(--accent-gold);
+  color: var(--color-navy);
+}
+
+/* Gold divider — for stat section */
+.divider-gold {
+  width: 48px;
+  height: 3px;
+  background-color: var(--accent-gold);
+  border: none;
+  border-radius: 2px;
+  margin: var(--space-sm) auto;
+  display: block;
+}
+
+/* Teal divider */
 .divider-teal {
   width: 48px;
   height: 3px;
@@ -551,552 +447,47 @@ h4.zpheading {
   border-radius: 2px;
   margin: var(--space-sm) 0;
 }
-
 .divider-teal.centered {
   margin-left: auto;
   margin-right: auto;
 }
 
-/* --- Section Label / Badge ---
-   Small pill label for tagging sections */
+/* Left accent bars */
+.border-left-teal { border-left: 3px solid var(--accent-teal) !important; }
+.border-left-sky  { border-left: 3px solid var(--accent-primary) !important; }
+.border-left-gold { border-left: 3px solid var(--accent-gold) !important; }
 
-.section-badge {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-white);
-  background-color: var(--accent-teal);
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  margin-bottom: var(--space-sm);
-}
+/* Opacity utilities */
+.opacity-50 { opacity: 0.5 !important; }
+.opacity-70 { opacity: 0.7 !important; }
+.opacity-80 { opacity: 0.8 !important; }
 
-/* Gold variant */
-.section-badge.gold {
-  background-color: var(--accent-gold);
-  color: var(--color-navy);
-}
-
-/* --- Card Base --- */
-
-.card {
-  background-color: var(--color-white);
-  border-radius: var(--radius-md);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-lightgray);
-  transition: box-shadow var(--transition-base), transform var(--transition-base);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
-}
-
-/* Card on dark background */
-.section-dark .card {
-  background-color: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.section-dark .card:hover {
-  background-color: rgba(255, 255, 255, 0.10);
-}
-
-/* --- Teal Icon Container --- */
-
-.icon-teal {
-  width: 48px;
-  height: 48px;
-  background-color: rgba(131, 174, 175, 0.15);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-teal);
-  margin-bottom: var(--space-sm);
-}
-
-/* --- Horizontal Rule --- */
-
-hr.brand-rule {
-  border: none;
-  border-top: 1px solid rgba(131, 174, 175, 0.3);
-  margin: var(--space-xl) 0;
-}
-
-
-/* ============================================================
-   9b. UTILITY CLASSES — EXTENDED
-   ============================================================ */
-
-/* --- Text alignment --- */
-.text-left    { text-align: left !important; }
-.text-center  { text-align: center !important; }
-.text-right   { text-align: right !important; }
-
-/* --- Text colors --- */
-.text-white   { color: var(--color-white) !important; }
-.text-navy    { color: var(--color-navy) !important; }
-.text-muted   { color: var(--text-muted) !important; }
-.text-light   { color: rgba(247, 250, 252, 0.75) !important; }
-
-/* --- Font weight --- */
-.font-normal  { font-weight: 400 !important; }
-.font-medium  { font-weight: 500 !important; }
-.font-semibold { font-weight: 600 !important; }
-.font-bold    { font-weight: 700 !important; }
-
-/* --- Font size --- */
-.text-sm      { font-size: var(--text-sm) !important; }
-.text-base    { font-size: var(--text-base) !important; }
-.text-lg      { font-size: var(--text-lg) !important; }
-.text-xl      { font-size: var(--text-xl) !important; }
-.text-2xl     { font-size: var(--text-2xl) !important; }
-.text-3xl     { font-size: var(--text-3xl) !important; }
-
-/* --- Opacity --- */
-.opacity-50   { opacity: 0.5 !important; }
-.opacity-70   { opacity: 0.7 !important; }
-.opacity-80   { opacity: 0.8 !important; }
-
-/* --- Spacing — margin --- */
-.mt-0   { margin-top: 0 !important; }
-.mt-sm  { margin-top: var(--space-sm) !important; }
-.mt-md  { margin-top: var(--space-md) !important; }
-.mt-lg  { margin-top: var(--space-lg) !important; }
-.mt-xl  { margin-top: var(--space-xl) !important; }
-
-.mb-0   { margin-bottom: 0 !important; }
-.mb-sm  { margin-bottom: var(--space-sm) !important; }
-.mb-md  { margin-bottom: var(--space-md) !important; }
-.mb-lg  { margin-bottom: var(--space-lg) !important; }
-.mb-xl  { margin-bottom: var(--space-xl) !important; }
-
-/* --- Spacing — padding --- */
-.pt-sm  { padding-top: var(--space-sm) !important; }
-.pt-md  { padding-top: var(--space-md) !important; }
-.pt-lg  { padding-top: var(--space-lg) !important; }
-.pt-xl  { padding-top: var(--space-xl) !important; }
-.pt-2xl { padding-top: var(--space-2xl) !important; }
-
-.pb-sm  { padding-bottom: var(--space-sm) !important; }
-.pb-md  { padding-bottom: var(--space-md) !important; }
-.pb-lg  { padding-bottom: var(--space-lg) !important; }
-.pb-xl  { padding-bottom: var(--space-xl) !important; }
-.pb-2xl { padding-bottom: var(--space-2xl) !important; }
-
-/* --- Border radius --- */
-.rounded-sm   { border-radius: var(--radius-sm) !important; }
-.rounded-md   { border-radius: var(--radius-md) !important; }
-.rounded-lg   { border-radius: var(--radius-lg) !important; }
-.rounded-pill { border-radius: var(--radius-pill) !important; }
-
-/* --- Border accents --- */
-.border-teal  { border: 1px solid rgba(131, 174, 175, 0.4) !important; }
-.border-navy  { border: 1px solid rgba(26, 54, 93, 0.3) !important; }
-.border-white { border: 1px solid rgba(255, 255, 255, 0.15) !important; }
-
-/* Left accent bar — useful for callout blocks */
-.border-left-teal { border-left: 3px solid var(--accent-teal) !important; padding-left: var(--space-sm) !important; }
-.border-left-sky  { border-left: 3px solid var(--accent-primary) !important; padding-left: var(--space-sm) !important; }
-.border-left-gold { border-left: 3px solid var(--accent-gold) !important; padding-left: var(--space-sm) !important; }
-
-/* --- Max width constrain --- */
-.max-w-sm   { max-width: 480px !important; }
-.max-w-md   { max-width: 640px !important; }
-.max-w-lg   { max-width: 800px !important; }
-.max-w-xl   { max-width: 960px !important; }
-
-/* --- Display --- */
+/* Display utilities */
 .block        { display: block !important; }
 .inline-block { display: inline-block !important; }
 .hidden       { display: none !important; }
-
-/* --- Overflow --- */
 .overflow-hidden { overflow: hidden !important; }
-
-/* --- Position --- */
-.relative { position: relative !important; }
-
-/* --- Z-index --- */
-.z-1  { z-index: 1 !important; }
-.z-10 { z-index: 10 !important; }
+.relative     { position: relative !important; }
+.z-1          { z-index: 1 !important; }
+.z-10         { z-index: 10 !important; }
 
 
 /* ============================================================
-   10. HERO SECTION SPECIFICS
+   10. HERO SECTION
+   Only handles what Zoho cannot:
+   - Fluid H1 font-size via clamp()
+   - Diagonal line texture overlay (::before)
+   - Z-index stacking for content above overlays
    ============================================================ */
 
+/* Fluid H1 sizing — Zoho's size picker is a fixed px value */
 .hero-section .zpheading h1 {
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  line-height: 1.15;
-  margin-bottom: var(--space-md);
+  font-size: clamp(2.2rem, 5vw, 3.8rem) !important;
+  line-height: 1.12 !important;
 }
 
-.hero-section .zptext h4 {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  font-weight: 400;
-  color: var(--color-darkgray);
-  line-height: 1.7;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-/* Subtle gradient underlay on hero */
+/* Diagonal line texture — purely decorative depth */
 .hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(56, 182, 255, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hero-section .zpcontainer {
-  position: relative;
-  z-index: 1;
-}
-
-
-/* ============================================================
-   11. NAVIGATION — ALWAYS DARK, FLOATS ON SCROLL
-   
-   One color scheme only — dark navy always.
-   Only position/shape changes on scroll.
-   No color switching. No state conflicts.
-   ============================================================ */
-
-/* Kill Zoho's entrance animation */
-.theme-header,
-[data-megamenu-content-container] {
-  animation: none !important;
-}
-
-/* Remove Zoho's default border-bottom on the header outer wrapper */
-.zpheader-style-01 {
-  border-bottom: none !important;
-  border-block-end: none !important;
-}
-
-/* Temporarily hides nav during state swap so pill transition happens off-screen */
-/* Not applied when burger menu is open (theme-toggle-animate = menu open state) */
-.theme-header.nav-hidden:not(.theme-toggle-animate) {
-  transition: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-
-
-/* ---- Base state: layout + transition only ---- */
-
-.theme-header {
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  transition:
-    top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Nav link font — no color override */
-.theme-header .theme-menu-name {
-  font-family: var(--font-body) !important;
-  font-weight: 500 !important;
-  transition: color var(--transition-fast) !important;
-}
-
-/* ---- Scrolled state: floating pill only ----
-   Shape/position change only. Colors from Zoho editor. */
-
-/* ---- Scrolled state: floating pill ---- */
-
-/* Desktop */
-@media (min-width: 992px) {
-  .theme-header.scrolled {
-    top: 12px !important;
-    left: 24px !important;
-    right: 24px !important;
-    width: calc(100% - 48px) !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.28) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-  }
-}
-
-/* Tablet and mobile */
-@media (max-width: 991px) {
-  .theme-header.scrolled {
-    position: fixed !important;
-    top: 10px !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: calc(100% - 24px) !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.28) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-  }
-}
-
-/* ---- Desktop submenu: frosted glass ---- */
-/* Targets the dropdown panel on hover */
-
-@media (min-width: 992px) {
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul {
-    background: rgba(22, 46, 80, 0.75) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: var(--radius-md) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24) !important;
-    overflow: hidden !important;
-    /* Reset Zoho's top border stripe */
-    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-  }
-
-  /* Individual submenu items — no own background */
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li {
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
-  /* Override Zoho's :first-of-type top border */
-  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:first-of-type {
-    border-top: none !important;
-  }
-
-
-}
-
-/* ---- Mobile/tablet menu panel: frosted glass ---- */
-/* Element structure confirmed via devtools:
-   .theme-responsive-menu (flex container, collapses to ~23px)
-     └── .theme-menu.theme-toggle-animate (position:absolute, inset-inline-start:0, width:100%) */
-
-@media (max-width: 991px) {
-  /* Fix the flex container collapsing */
-  .theme-responsive-menu-area .theme-responsive-menu {
-    position: relative !important;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  /* The actual dropdown panel */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
-    width: 100% !important;
-    background: rgba(22, 46, 80, 0.95) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    border-block-start: none !important;
-    border-top: none !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28) !important;
-  }
-
-  /* Remove dividers on all list items */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li {
-    border-bottom: none !important;
-    border-top: none !important;
-    border-block-end: none !important;
-    border-block-start: none !important;
-  }
-
-  /* Top-level text */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-name {
-    color: rgba(255, 255, 255, 0.82) !important;
-  }
-
-  /* Top-level hover */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-  }
-
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover a .theme-menu-name {
-    color: #ffffff !important;
-  }
-
-  /* Constrain the a tag */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    white-space: nowrap !important;
-    position: relative !important;
-  }
-
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-content {
-    display: inline-flex !important;
-    align-items: center !important;
-  }
-
-  /* Hide Zoho's broken chevron span entirely */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
-    display: none !important;
-  }
-
-  /* Draw our own chevron via ::after on the a tag for items that have submenus */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a[aria-haspopup="true"]::after {
-    content: '' !important;
-    display: inline-block !important;
-    width: 7px !important;
-    height: 7px !important;
-    border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
-    transform: rotate(45deg) !important;
-    margin-left: 8px !important;
-    flex-shrink: 0 !important;
-    vertical-align: middle !important;
-    position: relative !important;
-    top: -2px !important;
-  }
-
-  /* Submenu items — slightly darker tint */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li {
-    background: rgba(0, 0, 0, 0.15) !important;
-    border-block-end: none !important;
-    border-block-start: none !important;
-  }
-
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li a .theme-menu-name {
-    color: rgba(255, 255, 255, 0.7) !important;
-  }
-
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-  }
-
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover a .theme-menu-name {
-    color: #ffffff !important;
-  }
-}
-
-
-
-
-/* ============================================================
-   13. SCROLLBAR (subtle brand touch)
-   ============================================================ */
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-lightgray);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--accent-teal);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-navy);
-}
-
-
-/* ============================================================
-   14. RESPONSIVE ADJUSTMENTS
-   ============================================================ */
-
-@media (max-width: 768px) {
-  .hero-section .zpheading h1 {
-    font-size: clamp(1.8rem, 6vw, 2.4rem);
-  }
-
-  .hero-section .zptext h4 {
-    font-size: var(--text-base);
-  }
-
-  .step-number,
-  .stat-number {
-    font-size: var(--text-3xl);
-  }
-
-  .section-dark .zpcontainer,
-  .section-light .zpcontainer,
-  .section-white .zpcontainer {
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-xl);
-  }
-}
-
-@media (max-width: 480px) {
-  .zpbutton.zpbutton-type-primary,
-  .zpbutton.zpbutton-type-secondary {
-    width: 100% !important;
-    text-align: center !important;
-  }
-}
-
-
-/* ============================================================
-   15. REDUCED MOTION SUPPORT
-   ============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-reveal,
-  .scroll-reveal-left,
-  .scroll-reveal-right,
-  .scroll-reveal-scale,
-  .stagger-children > * {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .gradient-bg-animated {
-    animation: none !important;
-  }
-
-  .animate-float,
-  .animate-pulse {
-    animation: none !important;
-  }
-
-  .problem-card::before,
-  .service-card::before {
-    transition: none !important;
-  }
-}
-
-
-/* ============================================================
-   16. HOMEPAGE COMPONENTS
-   
-   These classes handle things Zoho Sites cannot do natively:
-   - Pseudo-element overlays (::before / ::after)
-   - Animated gradient backgrounds
-   - MAP phase labels with decorative lines
-   - Service card top-accent + reveal effect on hover
-   - Problem card animated left-bar reveal on hover
-   - Hero diagonal texture overlay
-   - CTA watermark text
-   - Hero content z-index stacking
-   
-   Zoho handles natively (NOT overridden here):
-   - Padding, margin, spacing
-   - Background colors
-   - Border radius, box shadow
-   - Text color, font size
-   - Column layouts
-   ============================================================ */
-
-
-/* ---- Section 1: Hero ---- */
-
-/* Diagonal line texture — adds depth without stock photos */
-.hero-section::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -1111,33 +502,200 @@ hr.brand-rule {
   z-index: 0;
 }
 
-/* Hero content above all overlays */
+/* Radial glow — subtle accent */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 65% 50%, rgba(56, 182, 255, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content above overlays */
 .hero-section .zpcontainer,
-.hero-section > .zpsection-inner {
+.hero-section .zpsection-inner {
   position: relative;
   z-index: 1;
 }
 
-/* Fluid H1 sizing — Zoho's font size picker doesn't support clamp() */
-.hero-section .zpheading h1 {
-  font-size: clamp(2.4rem, 5vw, 4rem) !important;
-  line-height: 1.12 !important;
-  letter-spacing: -0.02em !important;
+
+/* ============================================================
+   11. MAP PROCESS — HORIZONTAL LAYOUT
+   5 steps in a horizontal row with connecting line and
+   phase color differentiation. Cannot be done in Zoho natively.
+
+   Build in Zoho: one Row with 5 equal columns (width 2:2:2:2:2).
+   Apply "map-process-row" to the Row element.
+   Apply "map-step-planning" or "map-step-impl" to each column's Box.
+
+   Phase label: a full-width Paragraph element ABOVE the row.
+   Apply "map-phase-label map-phase-planning" or
+         "map-phase-label map-phase-impl" to those paragraphs.
+   ============================================================ */
+
+/* Connecting line between steps — drawn as ::before on the row */
+.map-process-row {
+  position: relative;
+}
+.map-process-row::before {
+  content: '';
+  position: absolute;
+  top: 36px; /* aligns with center of icon circles */
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(56, 182, 255, 0.3) 0%,
+    rgba(56, 182, 255, 0.3) 70%,
+    rgba(27, 166, 99, 0.3) 80%,
+    rgba(27, 166, 99, 0.3) 100%
+  );
+  z-index: 0;
 }
 
-/* Subheadline max-width for readability */
-.hero-subheadline .zptext p {
-  max-width: 660px;
-  margin-left: auto;
-  margin-right: auto;
+/* Each step column content needs to sit above the line */
+.map-process-row .zprow-col,
+.map-process-row .zp-col {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Icon circle — planning phase (teal/blue) */
+.map-icon-planning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(56, 182, 255, 0.12);
+  color: var(--color-sky);
+  margin: 0 auto var(--space-sm);
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon circle — implementation phase (green) */
+.map-icon-impl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(27, 166, 99, 0.12);
+  color: #1ba663;
+  margin: 0 auto var(--space-sm);
+  position: relative;
+  z-index: 1;
+}
+
+/* Phase label with horizontal rules flanking the text */
+.map-phase-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.map-phase-label::before,
+.map-phase-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+
+.map-phase-planning {
+  color: var(--color-sky);
+}
+.map-phase-planning::before,
+.map-phase-planning::after {
+  background: rgba(56, 182, 255, 0.3);
+}
+
+.map-phase-impl {
+  color: #1ba663;
+}
+.map-phase-impl::before,
+.map-phase-impl::after {
+  background: rgba(27, 166, 99, 0.3);
+}
+
+/* Step number badge — small colored circle above step name */
+.map-step-num-planning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-sky);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.map-step-num-impl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1ba663;
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
 }
 
 
-/* ---- Section 2: Problem / Solution ---- */
+/* ============================================================
+   12. SERVICE CARDS
+   Hover reveal effect — left accent bar scales in on hover.
+   Background, border, shadow, padding → set in Zoho.
+   ============================================================ */
 
-/* Left red accent bar — animates in on hover.
-   The static border-left color itself can be set in Zoho,
-   but the scaleY reveal requires CSS. */
+.service-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-primary);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+}
+
+.service-card:hover::before {
+  transform: scaleY(1);
+}
+
+
+/* ============================================================
+   13. PROBLEM CARDS (Section 2)
+   Left red accent bar animates in on hover.
+   The static border-left is set in Zoho — this adds the reveal.
+   ============================================================ */
+
 .problem-card {
   position: relative;
   overflow: hidden;
@@ -1166,120 +724,11 @@ hr.brand-rule {
 }
 
 
-/* ---- Section 3: MAP Process ---- */
+/* ============================================================
+   14. FINAL CTA SECTION
+   Faint watermark word behind the headline — decorative only.
+   ============================================================ */
 
-/* Phase label with horizontal rules on each side.
-   Zoho's text element can't draw these lines natively. */
-.map-phase-label {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  text-align: center;
-}
-
-.map-phase-label::before,
-.map-phase-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-}
-
-.map-phase-planning {
-  color: var(--color-sky);
-}
-.map-phase-planning::before,
-.map-phase-planning::after {
-  background: rgba(56, 182, 255, 0.35);
-}
-
-.map-phase-implementation {
-  color: #1ba663;
-}
-.map-phase-implementation::before,
-.map-phase-implementation::after {
-  background: rgba(27, 166, 99, 0.35);
-}
-
-/* Step icon circle backgrounds — phase color variants */
-.map-icon-planning {
-  background: rgba(56, 182, 255, 0.1);
-  color: var(--color-sky);
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.map-icon-implementation {
-  background: rgba(27, 166, 99, 0.1);
-  color: #1ba663;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-/* ---- Section 4: Service Cards ---- */
-
-/* Left-side accent reveal on hover.
-   Top border color and shadow set in Zoho. */
-.service-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition-base);
-}
-
-.service-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent-primary);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.4s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-6px);
-}
-
-.service-card:hover::before {
-  transform: scaleY(1);
-}
-
-/* Icon container tint — size and padding set in Zoho */
-.service-icon-wrap {
-  background: rgba(56, 182, 255, 0.1);
-  border-radius: var(--radius-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-primary);
-}
-
-
-/* ---- Section 5: Trust / Stats ---- */
-
-/* Gold divider variant (stat section uses gold, not teal) */
-.divider-gold {
-  width: 48px;
-  height: 3px;
-  background-color: var(--accent-gold);
-  border: none;
-  border-radius: 2px;
-  margin: var(--space-sm) auto;
-  display: block;
-}
-
-
-/* ---- Section 7: Final CTA ---- */
-
-/* Faint watermark word — decorative texture, not readable text */
 .cta-final {
   position: relative;
   overflow: hidden;
@@ -1302,38 +751,262 @@ hr.brand-rule {
   z-index: 0;
 }
 
-.cta-final .zpcontainer,
+.cta-final > .zpcontainer,
 .cta-final > .zpsection-inner {
   position: relative;
   z-index: 1;
 }
 
 
-/* ---- Responsive ---- */
+/* ============================================================
+   15. NAVIGATION — FLOATING PILL ON SCROLL
+   Zoho cannot animate header position/shape on scroll.
+   The JS adds "scrolled" class; this CSS handles the visual change.
+   ============================================================ */
 
-@media (max-width: 768px) {
-  .hero-section .zpheading h1 {
-    font-size: clamp(1.9rem, 7vw, 2.6rem) !important;
+/* Kill Zoho's entrance animation on header */
+.theme-header,
+[data-megamenu-content-container] {
+  animation: none !important;
+}
+
+/* Remove Zoho's default header bottom border */
+.zpheader-style-01 {
+  border-bottom: none !important;
+  border-block-end: none !important;
+}
+
+/* Hidden state during pill ↔ bar swap (prevents flash) */
+.theme-header.nav-hidden:not(.theme-toggle-animate) {
+  transition: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Base state — only transition properties, no colors */
+.theme-header {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transition:
+    top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Nav link font only — no color (set in Zoho) */
+.theme-header .theme-menu-name {
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+  transition: color var(--transition-fast) !important;
+}
+
+/* Scrolled pill — desktop */
+@media (min-width: 992px) {
+  .theme-header.scrolled {
+    top: 12px !important;
+    left: 24px !important;
+    right: 24px !important;
+    width: calc(100% - 48px) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+}
+
+/* Scrolled pill — tablet and mobile */
+@media (max-width: 991px) {
+  .theme-header.scrolled {
+    position: fixed !important;
+    top: 10px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+}
+
+/* Desktop submenu — frosted glass */
+@media (min-width: 992px) {
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul {
+    background: rgba(22, 46, 80, 0.75) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24) !important;
+    overflow: hidden !important;
   }
 
-  .map-phase-label {
-    font-size: var(--text-xs);
-    gap: var(--space-xs);
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li {
+    background: transparent !important;
+    box-shadow: none !important;
   }
 
-  .cta-final::before {
-    font-size: clamp(5rem, 30vw, 10rem);
+  .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul li:first-of-type {
+    border-top: none !important;
+  }
+}
+
+/* Mobile menu — frosted glass */
+@media (max-width: 991px) {
+  .theme-responsive-menu-area .theme-responsive-menu {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
+    width: 100% !important;
+    background: rgba(22, 46, 80, 0.95) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-block-start: none !important;
+    border-top: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li {
+    border-bottom: none !important;
+    border-top: none !important;
+    border-block-end: none !important;
+    border-block-start: none !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-name {
+    color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li:hover a .theme-menu-name {
+    color: #ffffff !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    position: relative !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-menu-content {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  /* Hide Zoho's broken chevron, draw our own */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
+    display: none !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a[aria-haspopup="true"]::after {
+    content: '' !important;
+    display: inline-block !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
+    transform: rotate(45deg) !important;
+    margin-left: 8px !important;
+    flex-shrink: 0 !important;
+    vertical-align: middle !important;
+    position: relative !important;
+    top: -2px !important;
+  }
+
+  /* Submenu items */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li {
+    background: rgba(0, 0, 0, 0.15) !important;
+    border-block-end: none !important;
+    border-block-start: none !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li a .theme-menu-name {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li > ul li:hover a .theme-menu-name {
+    color: #ffffff !important;
   }
 }
 
 
 /* ============================================================
-   17. TILT CARD BASE
-   JS handles mouse tracking. This just sets up the 3D context.
-   Apply "tilt-card" alongside any card class.
+   16. SCROLLBAR
    ============================================================ */
 
-.tilt-card {
-  transform-style: preserve-3d;
-  will-change: transform;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-lightgray); }
+::-webkit-scrollbar-thumb { background: var(--accent-teal); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-navy); }
+
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .hero-section .zpheading h1 {
+    font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
+  }
+
+  /* MAP process: stack vertically on mobile */
+  .map-process-row::before {
+    display: none; /* hide horizontal connecting line */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Full-width buttons on small screens */
+  .zpbutton.zpbutton-type-primary,
+  .zpbutton.zpbutton-type-secondary {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+
+/* ============================================================
+   18. REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .stagger-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .gradient-bg-animated {
+    animation: none !important;
+  }
+
+  .animate-float,
+  .animate-pulse {
+    animation: none !important;
+  }
+
+  .problem-card::before,
+  .service-card::before {
+    transition: none !important;
+  }
 }
