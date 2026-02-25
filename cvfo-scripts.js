@@ -104,7 +104,7 @@
       menuPanel.style.setProperty('left', menuLeft + 'px', 'important');
       menuPanel.style.setProperty('right', 'auto', 'important');
       menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
-      menuPanel.style.setProperty('border-radius', isScrolled ? '0 0 14px 14px' : '0', 'important');
+      menuPanel.style.setProperty('border-radius', '14px 14px 14px 14px', 'important');
       menuPanel.style.setProperty('border-top', '1px solid rgba(255,255,255,0.1)', 'important');
     }
 
