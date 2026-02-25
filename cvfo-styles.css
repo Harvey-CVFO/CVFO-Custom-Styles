@@ -126,6 +126,16 @@ body {
   color: var(--color-white) !important;
 }
 
+/* Exception: stat-number headings set their own color in Zoho — don't override */
+.section-dark .zpelem-heading.stat-number,
+.section-dark .zpelem-heading.stat-number h1,
+.section-dark .zpelem-heading.stat-number h2,
+.section-dark .zpelem-heading.stat-number h3,
+.section-dark .zpelem-heading.stat-number h4,
+.section-dark .zpelem-heading.stat-number h5 {
+  color: inherit !important;
+}
+
 .section-dark .zptext,
 .section-dark .zptext p,
 .section-dark .zptext span {
@@ -405,7 +415,6 @@ body {
 
 /* Stat number — gold color for the large number; size set in Zoho */
 /* stat-number — center alignment only. Set color directly in Zoho. */
-.stat-number,
 .zpelem-heading.stat-number,
 .zpelem-heading.stat-number h1,
 .zpelem-heading.stat-number h2,
@@ -568,11 +577,12 @@ body {
 }
 
 @keyframes hueShift {
-  0%   { filter: hue-rotate(0deg);   opacity: 1;    transform: scale(1)    translateX(0%); }
-  25%  { filter: hue-rotate(15deg);  opacity: 0.75; transform: scale(1.12) translateX(4%); }
-  55%  { filter: hue-rotate(-10deg); opacity: 0.9;  transform: scale(0.92) translateX(-5%); }
-  80%  { filter: hue-rotate(22deg);  opacity: 0.7;  transform: scale(1.08) translateX(3%); }
-  100% { filter: hue-rotate(-8deg);  opacity: 1;    transform: scale(1)    translateX(0%); }
+  /* scale() from center only — never reveals edges unlike translate */
+  0%   { filter: hue-rotate(0deg);   opacity: 1;    transform: scale(1); }
+  20%  { filter: hue-rotate(18deg);  opacity: 0.7;  transform: scale(1.18); }
+  45%  { filter: hue-rotate(-12deg); opacity: 0.85; transform: scale(0.88); }
+  70%  { filter: hue-rotate(25deg);  opacity: 0.65; transform: scale(1.22); }
+  100% { filter: hue-rotate(-6deg);  opacity: 1;    transform: scale(1); }
 }
 
 /* Diagonal lines — hero only, animated scroll across the surface.
@@ -775,42 +785,33 @@ body {
 /* Service card top border — Zoho can't target one border side independently.
    Apply "card-border-top" to a Box element in Zoho.
    Targets both the box element and its inner wrapper div. */
-/* card-border-top — apply to Box element only.
-   Do NOT apply to a column/row — only a Box (zpelem-box).
-   Zoho Box renders as: .zpelem-box > .zpbox-container > .zpbox-inner
-   We target the element itself and suppress borders on all its children. */
-.zpelem-box.card-border-top {
-  border-top: 3px solid var(--accent-primary) !important;
-}
-.zpelem-box.card-border-top .zpelem-box,
-.zpelem-box.card-border-top .zpelem-heading,
-.zpelem-box.card-border-top .zpelem-text,
-.zpelem-box.card-border-top .zpelem-icon,
-.zpelem-box.card-border-top .zpelem-button {
-  border-top: none !important;
+/* card-border-top — uses ::before pseudo-element to draw the top accent.
+   This bypasses Zoho's inline border-color !important entirely.
+   Apply class to the Box element in Zoho. */
+.card-border-top,
+.card-border-top-gold,
+.card-border-top-teal {
+  position: relative !important;
+  overflow: visible !important;
 }
 
-.zpelem-box.card-border-top-gold {
-  border-top: 3px solid var(--accent-gold) !important;
-}
-.zpelem-box.card-border-top-gold .zpelem-box,
-.zpelem-box.card-border-top-gold .zpelem-heading,
-.zpelem-box.card-border-top-gold .zpelem-text,
-.zpelem-box.card-border-top-gold .zpelem-icon,
-.zpelem-box.card-border-top-gold .zpelem-button {
-  border-top: none !important;
+.card-border-top::before,
+.card-border-top-gold::before,
+.card-border-top-teal::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -1px !important;
+  left: -1px !important;
+  right: -1px !important;
+  height: 3px !important;
+  border-radius: 10px 10px 0 0 !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
 }
 
-.zpelem-box.card-border-top-teal {
-  border-top: 3px solid var(--accent-teal) !important;
-}
-.zpelem-box.card-border-top-teal .zpelem-box,
-.zpelem-box.card-border-top-teal .zpelem-heading,
-.zpelem-box.card-border-top-teal .zpelem-text,
-.zpelem-box.card-border-top-teal .zpelem-icon,
-.zpelem-box.card-border-top-teal .zpelem-button {
-  border-top: none !important;
-}
+.card-border-top::before      { background: var(--accent-primary) !important; }
+.card-border-top-gold::before { background: var(--accent-gold) !important; }
+.card-border-top-teal::before { background: var(--accent-teal) !important; }
 
 /* ============================================================
    12. SERVICE CARDS
@@ -1156,14 +1157,24 @@ body {
 
 /* ── Tablet (max 991px) ── */
 @media (max-width: 991px) {
-  /* Type scaling — confirmed selector: .zpelem-heading is the Zoho heading wrapper */
+  /* Headings — .zpelem-heading wraps the h tag in Zoho */
   .zpelem-heading h1 { font-size: 2.2rem !important; line-height: 1.2 !important; }
   .zpelem-heading h2 { font-size: 1.8rem !important; line-height: 1.25 !important; }
   .zpelem-heading h3 { font-size: 1.4rem !important; line-height: 1.3 !important; }
-  .zpelem-heading h4 { font-size: 1.15rem !important; }
+  .zpelem-heading h4 { font-size: 1.15rem !important; line-height: 1.35 !important; }
   .zpelem-heading h5 { font-size: 0.95rem !important; }
-  .zpelem-text p,
-  .zpelem-text span  { font-size: 0.95rem !important; line-height: 1.7 !important; }
+  .zpelem-heading h6 { font-size: 0.85rem !important; }
+
+  /* Body text — actual structure is .zpelem-text > .zptext > p */
+  .zptext p,
+  .zptext span,
+  .zptext div { font-size: 0.95rem !important; line-height: 1.7 !important; }
+
+  /* Eyebrow / small labels */
+  .eyebrow { font-size: 0.7rem !important; }
+
+  /* Buttons */
+  .zpbutton { font-size: 0.9rem !important; padding: 10px 22px !important; }
 
   /* MAP — stack vertically, full center */
   .map-process-row::before {
@@ -1225,12 +1236,19 @@ body {
   }
 
   /* Tighter type on mobile */
-  .zpelem-heading h1 { font-size: 1.9rem !important; }
-  .zpelem-heading h2 { font-size: 1.55rem !important; }
-  .zpelem-heading h3 { font-size: 1.3rem !important; }
-  .zpelem-heading h4 { font-size: 1.1rem !important; }
-  .zpelem-text p,
-  .zpelem-text span  { font-size: 0.95rem !important; }
+  .zpelem-heading h1 { font-size: 1.75rem !important; line-height: 1.2 !important; }
+  .zpelem-heading h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
+  .zpelem-heading h3 { font-size: 1.2rem !important; line-height: 1.3 !important; }
+  .zpelem-heading h4 { font-size: 1.05rem !important; }
+  .zpelem-heading h5 { font-size: 0.9rem !important; }
+  .zpelem-heading h6 { font-size: 0.8rem !important; }
+
+  .zptext p,
+  .zptext span,
+  .zptext div { font-size: 0.9rem !important; line-height: 1.65 !important; }
+
+  .eyebrow { font-size: 0.65rem !important; }
+  .zpbutton { font-size: 0.85rem !important; padding: 9px 18px !important; }
 }
 
 @media (max-width: 480px) {
