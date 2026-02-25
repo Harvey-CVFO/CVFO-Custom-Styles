@@ -1078,12 +1078,12 @@ body {
 
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
     width: 100% !important;
-    background: rgba(13, 28, 58, 0.88) !important;
-    backdrop-filter: blur(24px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    background: rgba(13, 28, 58, 0.55) !important;
+    backdrop-filter: blur(32px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
     border-block-start: none !important;
     border-top: none !important;
-    border-radius: 10px 10px 14px 14px !important;
+    /* border-radius handled by JS — overrides Zoho inline style */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22) !important;
   }
 
@@ -1118,32 +1118,35 @@ body {
     align-items: center !important;
   }
 
-  /* Hide only the desktop arrow span — keep the responsive one for mobile/tablet */
+  /* Hide the desktop arrow span — Zoho shows the responsive one on mobile */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-non-responsive-menu {
     display: none !important;
   }
 
-  /* Style the responsive arrow span that Zoho shows on mobile/tablet */
+  /* Collapse the span's own box — it renders as a visible rectangle otherwise.
+     Draw the chevron entirely via ::after. */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin-left: 8px !important;
-    flex-shrink: 0 !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 0 !important;
+    overflow: hidden !important;
+    vertical-align: middle !important;
     position: static !important;
     inset: unset !important;
+    flex-shrink: 0 !important;
+    margin-left: 6px !important;
   }
 
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu::after {
     content: '' !important;
     display: block !important;
-    width: 7px !important;
-    height: 7px !important;
-    border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-right: 1.5px solid rgba(255, 255, 255, 0.65) !important;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.65) !important;
     transform: rotate(45deg) !important;
-    position: relative !important;
-    top: -2px !important;
+    margin: 4px auto 0 !important;
   }
 
   /* Submenu items */
