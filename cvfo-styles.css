@@ -281,7 +281,7 @@ body {
    ============================================================ */
 
 .gradient-navy {
-  background: linear-gradient(160deg, #1a365d 0%, #0d2240 100%);
+  background: linear-gradient(160deg, #1e4a8a 0%, #0a1628 100%);
 }
 
 .gradient-navy-teal {
@@ -298,7 +298,7 @@ body {
 
 .gradient-bg-animated {
   /* Background set in Zoho — this class now only provides overflow clipping
-     and the stacking context for the .aurora-layer child div */
+     and the stacking context for section overlay pseudo-elements */
   overflow: hidden;
   isolation: isolate;
 }
@@ -368,18 +368,25 @@ body {
 .text-right  { text-align: right !important; }
 
 /* Stat number — gold color for the large number; size set in Zoho */
-.stat-number {
-  color: var(--accent-gold);
-  display: block;
-  line-height: 1;
+.stat-number,
+.stat-number *,
+.zpheading.stat-number,
+.zptext.stat-number,
+.zptext.stat-number p {
+  color: var(--accent-gold) !important;
+  text-align: center !important;
 }
 
-/* Stat label — uppercase tracking; size/weight set in Zoho */
-.stat-label {
-  color: rgba(247, 250, 252, 0.75);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: block;
+/* Stat label — light color on dark section; size/weight set in Zoho */
+.stat-label,
+.stat-label *,
+.zpheading.stat-label,
+.zptext.stat-label,
+.zptext.stat-label p {
+  color: rgba(247, 250, 252, 0.75) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  text-align: center !important;
 }
 
 /* Step number — gold color; size set in Zoho */
@@ -439,9 +446,7 @@ body {
 }
 
 /* Left accent bars */
-.border-left-teal { border-left: 3px solid var(--accent-teal) !important; }
-.border-left-sky  { border-left: 3px solid var(--accent-primary) !important; }
-.border-left-gold { border-left: 3px solid var(--accent-gold) !important; }
+/* border-left-* removed — apply border directly in Zoho element style panel */
 
 /* Opacity utilities */
 .opacity-50 { opacity: 0.5 !important; }
@@ -475,69 +480,83 @@ body {
 
 
 /* ============================================================
-   10b. AURORA LAYER
-   Injected automatically by cvfo-scripts.js into any section
-   with class "gradient-bg-animated" or "hero-section".
-   No manual setup needed in Zoho.
+   10b. HERO & CTA DARK SECTION VISUAL TREATMENT
+   
+   Instead of animated overlays (which fight Zoho's rendering),
+   we use a static multi-stop gradient applied directly via the
+   class. Set the section background to transparent in Zoho,
+   or set it to #0d2240 as a fallback.
 
-   hero-section   → gets aurora-layer + aurora-layer--hero
-   gradient-bg-animated (non-hero) → gets aurora-layer only
+   For a living background feel: a single hue-rotate animation
+   on a ::after overlay. hue-rotate is GPU-composited and only
+   shifts the teal accent color — no position changes, no edges.
    ============================================================ */
 
-.aurora-layer {
+/* Rich static dark gradient — applied directly, no JS needed */
+.hero-section,
+.cta-final {
+  background: linear-gradient(
+    135deg,
+    #0d1f3c 0%,
+    #0d3347 35%,
+    #0a2535 65%,
+    #0d1f3c 100%
+  ) !important;
+}
+
+/* Subtle color-shift overlay — hue-rotate only, fully GPU composited */
+.hero-section::before,
+.cta-final::before {
+  content: '';
   position: absolute;
   inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 30% 50%,
+    rgba(56, 182, 255, 0.15) 0%,
+    transparent 65%
+  );
+  animation: hueShift 12s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
-  overflow: hidden;
-  /* Aurora glow — three soft radial blooms */
-  background:
-    radial-gradient(ellipse 70% 60% at 25% 55%, rgba(56, 182, 255, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 70% at 75% 30%, rgba(14, 61, 68, 0.85) 0%, transparent 55%),
-    radial-gradient(ellipse 90% 80% at 55% 70%, rgba(13, 42, 74, 0.6) 0%, transparent 65%);
-  /* Drift via transform only — GPU composited, no repaints */
-  animation: auroraFloat 24s ease-in-out infinite alternate;
-  will-change: transform, opacity;
 }
 
-/* Hero variant — adds diagonal line texture on top of the aurora */
-.aurora-layer--hero {
-  background:
-    /* Diagonal lines */
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 60px,
-      rgba(255, 255, 255, 0.022) 60px,
-      rgba(255, 255, 255, 0.022) 61px
-    ),
-    /* Aurora blooms */
-    radial-gradient(ellipse 70% 60% at 25% 55%, rgba(56, 182, 255, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 70% at 75% 30%, rgba(14, 61, 68, 0.85) 0%, transparent 55%),
-    radial-gradient(ellipse 90% 80% at 55% 70%, rgba(13, 42, 74, 0.6) 0%, transparent 65%);
-  /* Lines are static; only the position of the whole layer drifts */
-  animation: auroraFloat 24s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+@keyframes hueShift {
+  0%   { filter: hue-rotate(0deg)   opacity(1); }
+  50%  { filter: hue-rotate(20deg)  opacity(0.85); }
+  100% { filter: hue-rotate(-15deg) opacity(1); }
 }
 
-@keyframes auroraFloat {
-  0%   { transform: translate(0%,   0%)   scale(1);    opacity: 1; }
-  20%  { transform: translate(3%,  -2%)   scale(1.03); opacity: 0.9; }
-  40%  { transform: translate(-2%,  4%)   scale(0.98); opacity: 1; }
-  60%  { transform: translate(4%,   2%)   scale(1.02); opacity: 0.92; }
-  80%  { transform: translate(-3%, -3%)   scale(1.04); opacity: 0.95; }
-  100% { transform: translate(2%,   3%)   scale(0.99); opacity: 1; }
+/* Diagonal lines — hero only, static, no animation */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 60px,
+    rgba(255, 255, 255, 0.02) 60px,
+    rgba(255, 255, 255, 0.02) 61px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Ensure section content (Zoho elements) sits above the aurora layer */
-.gradient-bg-animated > .zpcontainer,
-.gradient-bg-animated > .zpsection-inner,
+/* Section content sits above all overlays */
 .hero-section > .zpcontainer,
-.hero-section > .zpsection-inner {
+.hero-section > .zpsection-inner,
+.cta-final > .zpcontainer,
+.cta-final > .zpsection-inner {
   position: relative;
   z-index: 1;
 }
 
+/* gradient-bg-animated is now a no-op — keeping class name so existing
+   Zoho sections don't error, but visual is handled by hero-section/cta-final */
+.gradient-bg-animated {
+  overflow: hidden;
+  isolation: isolate;
+}
 
 /* ============================================================
    11. MAP PROCESS — HORIZONTAL LAYOUT
@@ -560,7 +579,7 @@ body {
 .map-process-row::before {
   content: '';
   position: absolute;
-  top: 36px; /* aligns with center of icon circles */
+  top: 33px; /* aligns with center of icon circles */
   left: 10%;
   right: 10%;
   height: 1px;
@@ -574,12 +593,22 @@ body {
   z-index: 0;
 }
 
-/* Each step column content needs to sit above the line */
+/* Each step column: flex column, centered, above the connecting line */
 .map-process-row .zprow-col,
 .map-process-row .zp-col {
   position: relative;
   z-index: 1;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* All direct children of step columns center themselves */
+.map-process-row .zprow-col > *,
+.map-process-row .zp-col > * {
+  text-align: center !important;
+  align-self: center !important;
 }
 
 /* Icon circle — planning phase (teal/blue) */
@@ -983,9 +1012,33 @@ body {
     font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
   }
 
-  /* MAP process: stack vertically on mobile */
+  /* MAP process: hide connecting line, center each column */
   .map-process-row::before {
-    display: none; /* hide horizontal connecting line */
+    display: none;
+  }
+
+  .map-process-row .zprow-col,
+  .map-process-row .zp-col {
+    align-items: center !important;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+  }
+
+  /* MAP and stats icons/text — force center on small screens */
+  .map-icon-planning,
+  .map-icon-impl,
+  .map-step-num-planning,
+  .map-step-num-impl {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Stats columns — center everything */
+  .stat-number,
+  .stat-number *,
+  .stat-label,
+  .stat-label * {
+    text-align: center !important;
   }
 }
 
