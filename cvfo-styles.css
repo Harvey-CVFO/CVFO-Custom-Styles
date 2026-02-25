@@ -1118,22 +1118,30 @@ body {
     align-items: center !important;
   }
 
-  /* Hide Zoho's broken chevron, draw our own */
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu {
+  /* Hide only the desktop arrow span — keep the responsive one for mobile/tablet */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-non-responsive-menu {
     display: none !important;
   }
 
-  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a[aria-haspopup="true"]::after {
+  /* Style the responsive arrow span that Zoho shows on mobile/tablet */
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 8px !important;
+    flex-shrink: 0 !important;
+    position: static !important;
+    inset: unset !important;
+  }
+
+  .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu::after {
     content: '' !important;
-    display: inline-block !important;
+    display: block !important;
     width: 7px !important;
     height: 7px !important;
     border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
     border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
     transform: rotate(45deg) !important;
-    margin-left: 8px !important;
-    flex-shrink: 0 !important;
-    vertical-align: middle !important;
     position: relative !important;
     top: -2px !important;
   }
@@ -1178,30 +1186,37 @@ body {
    H1 56→44 | H2 40→32 | H3 28→23 | H4 22→19 | H5 18→16 | H6 14→13
    body 17→16 | btn-md 18→16 */
 @media (max-width: 991px) {
-  /* Headings */
+  /* Headings — covers both dedicated heading elements AND text elements
+     with heading tags typed directly inside them (zptext h3 pattern) */
   .zpelem-heading h1,
   .zpelem-iconheading h1,
-  .zpelem-iconheadingtext h1 { font-size: 44px !important; line-height: 1.15 !important; }
+  .zpelem-iconheadingtext h1,
+  .zptext h1 { font-size: 44px !important; line-height: 1.15 !important; }
 
   .zpelem-heading h2,
   .zpelem-iconheading h2,
-  .zpelem-iconheadingtext h2 { font-size: 32px !important; line-height: 1.2 !important; }
+  .zpelem-iconheadingtext h2,
+  .zptext h2 { font-size: 32px !important; line-height: 1.2 !important; }
 
   .zpelem-heading h3,
   .zpelem-iconheading h3,
-  .zpelem-iconheadingtext h3 { font-size: 23px !important; line-height: 1.3 !important; }
+  .zpelem-iconheadingtext h3,
+  .zptext h3 { font-size: 23px !important; line-height: 1.3 !important; }
 
   .zpelem-heading h4,
   .zpelem-iconheading h4,
-  .zpelem-iconheadingtext h4 { font-size: 19px !important; line-height: 1.35 !important; }
+  .zpelem-iconheadingtext h4,
+  .zptext h4 { font-size: 19px !important; line-height: 1.35 !important; }
 
   .zpelem-heading h5,
   .zpelem-iconheading h5,
-  .zpelem-iconheadingtext h5 { font-size: 16px !important; }
+  .zpelem-iconheadingtext h5,
+  .zptext h5 { font-size: 16px !important; }
 
   .zpelem-heading h6,
   .zpelem-iconheading h6,
-  .zpelem-iconheadingtext h6 { font-size: 13px !important; }
+  .zpelem-iconheadingtext h6,
+  .zptext h6 { font-size: 13px !important; }
 
   /* Stat-number headings are sized individually in Zoho — don't scale them */
   .zpelem-heading.stat-number h1,
@@ -1286,27 +1301,33 @@ body {
      body 17→15 | btn-md 18→15 */
   .zpelem-heading h1,
   .zpelem-iconheading h1,
-  .zpelem-iconheadingtext h1 { font-size: 36px !important; line-height: 1.15 !important; }
+  .zpelem-iconheadingtext h1,
+  .zptext h1 { font-size: 36px !important; line-height: 1.15 !important; }
 
   .zpelem-heading h2,
   .zpelem-iconheading h2,
-  .zpelem-iconheadingtext h2 { font-size: 27px !important; line-height: 1.2 !important; }
+  .zpelem-iconheadingtext h2,
+  .zptext h2 { font-size: 27px !important; line-height: 1.2 !important; }
 
   .zpelem-heading h3,
   .zpelem-iconheading h3,
-  .zpelem-iconheadingtext h3 { font-size: 21px !important; line-height: 1.3 !important; }
+  .zpelem-iconheadingtext h3,
+  .zptext h3 { font-size: 21px !important; line-height: 1.3 !important; }
 
   .zpelem-heading h4,
   .zpelem-iconheading h4,
-  .zpelem-iconheadingtext h4 { font-size: 18px !important; }
+  .zpelem-iconheadingtext h4,
+  .zptext h4 { font-size: 18px !important; }
 
   .zpelem-heading h5,
   .zpelem-iconheading h5,
-  .zpelem-iconheadingtext h5 { font-size: 15px !important; }
+  .zpelem-iconheadingtext h5,
+  .zptext h5 { font-size: 15px !important; }
 
   .zpelem-heading h6,
   .zpelem-iconheading h6,
-  .zpelem-iconheadingtext h6 { font-size: 12px !important; }
+  .zpelem-iconheadingtext h6,
+  .zptext h6 { font-size: 12px !important; }
 
   /* Stat-number exempt on mobile too */
   .zpelem-heading.stat-number h1,
