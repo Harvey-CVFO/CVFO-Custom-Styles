@@ -253,23 +253,48 @@
           if (!entry.isIntersecting) return;
 
           const el = entry.target;
-          const target = parseInt(el.textContent.replace(/\D/g, ''), 10);
-          const suffix = el.textContent.replace(/[0-9]/g, '').trim(); // preserve "+" or "%"
+
+          // Zoho sometimes leaks broken inline CSS into element textContent.
+          // We look for a data-count attribute first (most reliable), then
+          // fall back to scanning for the LAST standalone number in the text.
+          // "Standalone" = digits optionally followed by +/% at a word boundary.
+          let targetNum;
+          let suffix = '';
+
+          if (el.dataset.count) {
+            // Preferred: <h2 class="count-up" data-count="75" data-suffix="+">
+            targetNum = parseInt(el.dataset.count, 10);
+            suffix = el.dataset.suffix || '';
+          } else {
+            // Fallback: find the last sequence of digits + optional suffix in text.
+            // This skips any hex colors or IDs in leaked Zoho CSS.
+            const raw = el.textContent;
+            const match = raw.match(/(\d+)([+%]?)(?!\d)(?=[^a-zA-Z0-9]|$)/g);
+            if (!match) return; // nothing countable, skip
+            const last = match[match.length - 1];
+            targetNum = parseInt(last, 10);
+            suffix = last.replace(/\d/g, '');
+          }
+
+          if (isNaN(targetNum)) return;
+
+          // Store the clean final value so we can restore it if needed
+          el.dataset.finalText = targetNum + suffix;
+
           const duration = 1400;
           const start = performance.now();
 
           function update(now) {
             const elapsed = now - start;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
             const eased = 1 - Math.pow(1 - progress, 3);
-            const current = Math.floor(eased * target);
+            const current = Math.floor(eased * targetNum);
             el.textContent = current + suffix;
 
             if (progress < 1) {
               requestAnimationFrame(update);
             } else {
-              el.textContent = target + suffix;
+              el.textContent = targetNum + suffix;
             }
           }
 
