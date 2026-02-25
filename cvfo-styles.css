@@ -1077,13 +1077,10 @@ body {
   }
 
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu {
-    width: 100% !important;
-    background: rgba(13, 28, 58, 0.55) !important;
-    backdrop-filter: blur(32px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+    /* background, backdrop-filter, border-radius all set via JS inline style
+       to override Zoho's own inline styles and fix stacking context issues */
     border-block-start: none !important;
     border-top: none !important;
-    /* border-radius handled by JS — overrides Zoho inline style */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22) !important;
   }
 
@@ -1118,35 +1115,26 @@ body {
     align-items: center !important;
   }
 
-  /* Hide the desktop arrow span — Zoho shows the responsive one on mobile */
+  /* Hide the desktop arrow span only */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-non-responsive-menu {
     display: none !important;
   }
 
-  /* Collapse the span's own box — it renders as a visible rectangle otherwise.
-     Draw the chevron entirely via ::after. */
+  /* Let Zoho draw its own arrow on the responsive span — just fix positioning.
+     Zoho renders the chevron via border-inline-end/border-block-start on the span itself.
+     Don't set width/height/font-size or it breaks Zoho's rendering. */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu {
-    display: inline-block !important;
-    width: 16px !important;
-    height: 16px !important;
-    font-size: 0 !important;
-    overflow: hidden !important;
-    vertical-align: middle !important;
     position: static !important;
     inset: unset !important;
-    flex-shrink: 0 !important;
-    margin-left: 6px !important;
+    margin-inline-start: 6px !important;
+    vertical-align: middle !important;
+    border-color: rgba(255, 255, 255, 0.65) !important;
   }
 
+  /* Kill our own ::after — Zoho handles the arrow shape */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu::after {
-    content: '' !important;
-    display: block !important;
-    width: 6px !important;
-    height: 6px !important;
-    border-right: 1.5px solid rgba(255, 255, 255, 0.65) !important;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.65) !important;
-    transform: rotate(45deg) !important;
-    margin: 4px auto 0 !important;
+    display: none !important;
+    content: none !important;
   }
 
   /* Submenu items */
