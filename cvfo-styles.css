@@ -1409,3 +1409,495 @@ body {
     transition: none !important;
   }
 }
+
+
+/* ============================================================
+   HOW IT WORKS PAGE
+   All classes scoped to this page's components.
+   Builds on the global design system — no token redefinitions.
+   ============================================================ */
+
+
+/* ============================================================
+   HIW-1. HERO VARIANT — SIMPLE
+   Same dark gradient as homepage hero but without animated
+   diagonal lines. Interior pages feel calmer than the homepage.
+   Apply "hero-section hero-simple" to the section in Zoho.
+   ============================================================ */
+
+.hero-simple::after {
+  display: none !important;
+}
+
+.hero-simple::before {
+  animation: none !important;
+  opacity: 0.7;
+}
+
+/* Slightly different radial composition — more centered, less dynamic */
+.hero-simple.hero-section::before {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, rgba(0, 112, 139, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(56, 182, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(27, 166, 99, 0.12) 0%, transparent 45%);
+}
+
+
+/* ============================================================
+   HIW-2. PULL QUOTE
+   For the "We don't just advise — we quarterback" line.
+   Apply "hiw-pull-quote" to a Paragraph element in Zoho.
+   Set the text to whatever size/color you want in Zoho —
+   this CSS only handles the decorative framing.
+   ============================================================ */
+
+.hiw-pull-quote {
+  position: relative !important;
+  padding: 32px 48px !important;
+  text-align: center !important;
+}
+
+/* Left quote mark */
+.hiw-pull-quote::before {
+  content: '\201C' !important;
+  position: absolute !important;
+  top: -12px !important;
+  left: 12px !important;
+  font-size: 96px !important;
+  line-height: 1 !important;
+  font-family: Georgia, serif !important;
+  color: var(--accent-gold) !important;
+  opacity: 0.35 !important;
+  pointer-events: none !important;
+}
+
+/* Gold underline accent */
+.hiw-pull-quote::after {
+  content: '' !important;
+  display: block !important;
+  width: 48px !important;
+  height: 3px !important;
+  background: var(--accent-gold) !important;
+  border-radius: 2px !important;
+  margin: 20px auto 0 !important;
+}
+
+
+/* ============================================================
+   HIW-3. MAP PROCESS — VERTICAL TIMELINE
+   Each step lives in its own Zoho section or box.
+
+   LAYOUT PER STEP (Zoho structure):
+   Section → Row (2 cols: 1fr 3fr) →
+     Col 1: step number badge (Paragraph with class)
+             icon (Icon element or Code Snippet SVG)
+     Col 2: heading (H3)
+             body text (Paragraph)
+             deliverables box (Box with class "hiw-deliverables")
+               heading (H4 or Paragraph)
+               bullets (Paragraph with list)
+             role box (Box with class "hiw-role")
+               heading (H4)
+               text (Paragraph)
+
+   Alternatively (simpler Zoho build):
+   Use a single-column layout per step:
+     Box (hiw-step + hiw-step-planning OR hiw-step-impl)
+       Row at top: step badge + icon side by side
+       Heading
+       Body
+       hiw-deliverables box
+       hiw-role box
+
+   The vertical timeline is drawn as a left border on hiw-step,
+   with the step badge sitting on top of it.
+   ============================================================ */
+
+/* Outer step container — the left timeline line lives here */
+.hiw-step {
+  position: relative !important;
+  padding: 40px 40px 40px 72px !important;
+  border-radius: var(--radius-lg) !important;
+  background: var(--color-white) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
+  margin-bottom: 32px !important;
+}
+
+.hiw-step:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateX(4px) !important;
+}
+
+/* Vertical timeline line — runs down the left edge of each step block */
+.hiw-step::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 28px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 2px !important;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    currentColor 8%,
+    currentColor 92%,
+    transparent 100%
+  ) !important;
+  opacity: 0.25 !important;
+  pointer-events: none !important;
+}
+
+/* Step number badge — sits on the timeline line */
+.hiw-step-badge {
+  position: absolute !important;
+  left: 16px !important;
+  top: 40px !important;
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: var(--color-white) !important;
+  z-index: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Planning phase colors (steps 1–5) */
+.hiw-step-planning {
+  color: var(--accent-teal) !important;
+  border-left: 3px solid rgba(0, 112, 139, 0.2) !important;
+}
+
+.hiw-step-planning::before {
+  color: var(--accent-teal) !important;
+}
+
+.hiw-step-planning .hiw-step-badge {
+  background: var(--accent-teal) !important;
+}
+
+/* Implementation phase colors (steps 6–7) */
+.hiw-step-impl {
+  color: #1ba663 !important;
+  border-left: 3px solid rgba(27, 166, 99, 0.2) !important;
+}
+
+.hiw-step-impl::before {
+  color: #1ba663 !important;
+}
+
+.hiw-step-impl .hiw-step-badge {
+  background: #1ba663 !important;
+}
+
+/* Icon container — sits inline with the heading */
+.hiw-icon-planning {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 12px !important;
+  background: rgba(0, 112, 139, 0.1) !important;
+  color: var(--accent-teal) !important;
+  margin-bottom: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+.hiw-icon-impl {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 12px !important;
+  background: rgba(27, 166, 99, 0.1) !important;
+  color: #1ba663 !important;
+  margin-bottom: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Deliverables and role sub-boxes */
+.hiw-deliverables {
+  background: rgba(0, 112, 139, 0.05) !important;
+  border-left: 3px solid var(--accent-teal) !important;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0 !important;
+  padding: 20px 24px !important;
+  margin-top: 20px !important;
+}
+
+.hiw-step-impl .hiw-deliverables,
+.hiw-role-impl {
+  background: rgba(27, 166, 99, 0.05) !important;
+  border-left: 3px solid #1ba663 !important;
+}
+
+.hiw-role {
+  background: var(--color-offwhite) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 16px 20px !important;
+  margin-top: 12px !important;
+}
+
+/* "Optional" badge — for MAP 4 deeper dive */
+.hiw-optional-badge {
+  display: inline-block !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--accent-teal) !important;
+  background: rgba(0, 112, 139, 0.1) !important;
+  border-radius: 100px !important;
+  padding: 3px 10px !important;
+  margin-left: 10px !important;
+  vertical-align: middle !important;
+}
+
+
+/* ============================================================
+   HIW-4. PHASE DIVIDER HEADER
+   The "Proactive Planning Phase" / "Solution Implementation Phase"
+   banners that sit between step groups.
+   Apply "hiw-phase-divider" to a Section in Zoho.
+   Then apply "hiw-phase-planning" or "hiw-phase-impl" to the
+   Paragraph element inside it.
+   ============================================================ */
+
+.hiw-phase-divider {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  margin: 48px 0 32px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+}
+
+.hiw-phase-divider::before,
+.hiw-phase-divider::after {
+  content: '' !important;
+  flex: 1 !important;
+  height: 1px !important;
+}
+
+.hiw-phase-planning {
+  color: var(--accent-teal) !important;
+}
+
+.hiw-phase-planning.hiw-phase-divider::before,
+.hiw-phase-planning.hiw-phase-divider::after {
+  background: rgba(0, 112, 139, 0.3) !important;
+}
+
+.hiw-phase-impl {
+  color: #1ba663 !important;
+}
+
+.hiw-phase-impl.hiw-phase-divider::before,
+.hiw-phase-impl.hiw-phase-divider::after {
+  background: rgba(27, 166, 99, 0.3) !important;
+}
+
+
+/* ============================================================
+   HIW-5. AFTER IMPLEMENTATION PARTNERSHIP BOX
+   Apply "hiw-partnership-box" to a Box element in Zoho.
+   ============================================================ */
+
+.hiw-partnership-box {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 112, 139, 0.06) 0%,
+    rgba(56, 182, 255, 0.04) 100%
+  ) !important;
+  border: 1px solid rgba(0, 112, 139, 0.18) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 56px 64px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Subtle corner accent */
+.hiw-partnership-box::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(
+    to right,
+    var(--accent-teal) 0%,
+    var(--accent-primary) 50%,
+    transparent 100%
+  ) !important;
+}
+
+
+/* ============================================================
+   HIW-6. FEE COMPARISON COLUMNS
+   Apply "hiw-fee-col" to each Box in the two-column row.
+   Apply "hiw-fee-structure" to the fee callout box within.
+   Apply "hiw-role-callout" to the full-width box below.
+   ============================================================ */
+
+.hiw-fee-col {
+  background: var(--color-offwhite) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 40px 36px !important;
+  height: 100% !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.hiw-fee-structure {
+  background: var(--color-white) !important;
+  border: 1px solid rgba(0, 112, 139, 0.15) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 20px 24px !important;
+  margin-top: 24px !important;
+}
+
+.hiw-fee-structure-label {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--accent-teal) !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+.hiw-role-callout {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 112, 139, 0.08) 0%,
+    rgba(56, 182, 255, 0.05) 100%
+  ) !important;
+  border: 1px solid rgba(0, 112, 139, 0.2) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 36px 48px !important;
+  margin-top: 32px !important;
+  position: relative !important;
+}
+
+.hiw-role-callout::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 4px !important;
+  background: linear-gradient(
+    to bottom,
+    var(--accent-teal),
+    var(--accent-primary)
+  ) !important;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg) !important;
+}
+
+
+/* ============================================================
+   HIW-7. QUARTERBACK BENEFIT CARDS
+   Apply "hiw-qb-card" to each Box in the three-column row.
+   ============================================================ */
+
+.hiw-qb-card {
+  background: var(--color-white) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 36px 32px !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.hiw-qb-card:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* Top accent line — teal for all three */
+.hiw-qb-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(
+    to right,
+    var(--accent-teal),
+    var(--accent-primary)
+  ) !important;
+}
+
+/* Icon wrapper */
+.hiw-qb-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: var(--radius-md) !important;
+  background: rgba(0, 112, 139, 0.1) !important;
+  color: var(--accent-teal) !important;
+  margin-bottom: 20px !important;
+}
+
+
+/* ============================================================
+   HIW-8. RESPONSIVE — mobile/tablet adjustments
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .hiw-step {
+    padding: 32px 20px 32px 52px !important;
+  }
+
+  .hiw-step::before {
+    left: 20px !important;
+  }
+
+  .hiw-step-badge {
+    left: 8px !important;
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.65rem !important;
+  }
+
+  .hiw-partnership-box {
+    padding: 36px 24px !important;
+  }
+
+  .hiw-fee-col {
+    padding: 28px 20px !important;
+  }
+
+  .hiw-role-callout {
+    padding: 28px 24px !important;
+  }
+
+  .hiw-qb-card {
+    padding: 28px 24px !important;
+  }
+
+  .hiw-pull-quote {
+    padding: 24px 24px !important;
+  }
+
+  .hiw-pull-quote::before {
+    font-size: 64px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .hiw-phase-divider {
+    margin: 32px 0 24px !important;
+  }
+}
