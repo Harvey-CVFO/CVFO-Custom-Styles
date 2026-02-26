@@ -468,19 +468,24 @@ body {
   border-radius: var(--radius-md);
 }
 
-/* Section badge / pill label */
+/* Section badge — small caps eyebrow label above headings.
+   display:block + width:fit-content + margin:auto centers it.
+   No pill shape — simple underline accent instead. */
 .section-badge {
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 12px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-white);
-  background-color: var(--accent-teal);
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-teal);
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent-teal);
 }
 .section-badge.gold {
-  background-color: var(--accent-gold);
-  color: var(--color-navy);
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
 }
 
 /* Gold divider — for stat section */
@@ -986,24 +991,12 @@ body {
   border-block-end: none !important;
 }
 
-/* Hidden state during pill ↔ bar swap (prevents flash) */
-.theme-header.nav-hidden:not(.theme-toggle-animate) {
-  transition: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
+/* nav-hidden not used — always-pill nav never swaps states */
 
-/* Base state — only transition properties, no colors */
+/* Base state — nav is always pill, no bar-to-pill animation needed */
 .theme-header {
   box-shadow: none !important;
   border-radius: 0 !important;
-  transition:
-    top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Nav link font only — no color (set in Zoho) */
@@ -1453,158 +1446,150 @@ body {
 
 .hiw-pull-quote {
   position: relative !important;
-  padding: 32px 48px !important;
+  padding: 40px 48px !important;
   text-align: center !important;
+  border-top: 1px solid rgba(210, 180, 80, 0.2) !important;
+  border-bottom: 1px solid rgba(210, 180, 80, 0.2) !important;
+  margin: 40px 0 !important;
 }
 
-/* Left quote mark */
+/* Decorative gold quote marks — inline, centered with the quote text.
+   Using padding-top on the element so the before/after sit flush
+   against the text rather than floating at absolute page edges. */
 .hiw-pull-quote::before {
   content: '\201C' !important;
-  position: absolute !important;
-  top: -12px !important;
-  left: 12px !important;
-  font-size: 96px !important;
+  display: block !important;
+  font-size: 52px !important;
   line-height: 1 !important;
   font-family: Georgia, serif !important;
   color: var(--accent-gold) !important;
-  opacity: 0.35 !important;
+  opacity: 0.5 !important;
+  margin-bottom: -8px !important;
   pointer-events: none !important;
 }
 
-/* Gold underline accent */
+/* Closing quote + gold underline combined */
 .hiw-pull-quote::after {
-  content: '' !important;
+  content: '\201D' !important;
   display: block !important;
-  width: 48px !important;
-  height: 3px !important;
-  background: var(--accent-gold) !important;
-  border-radius: 2px !important;
-  margin: 20px auto 0 !important;
+  font-size: 52px !important;
+  line-height: 1 !important;
+  font-family: Georgia, serif !important;
+  color: var(--accent-gold) !important;
+  opacity: 0.5 !important;
+  margin-top: -8px !important;
 }
 
 
 /* ============================================================
-   HIW-3. MAP PROCESS — VERTICAL TIMELINE
-   Each step lives in its own Zoho section or box.
+   HIW-3. MAP PROCESS — TWO-COLUMN CARD GRID
+   Steps render as cards in a 2-column grid (not single vertical stack).
+   Steps 1-4: two per row. Step 5: full-width solo before phase break.
+   Steps 6-7: implementation row, distinct green treatment.
 
-   LAYOUT PER STEP (Zoho structure):
-   Section → Row (2 cols: 1fr 3fr) →
-     Col 1: step number badge (Paragraph with class)
-             icon (Icon element or Code Snippet SVG)
-     Col 2: heading (H3)
-             body text (Paragraph)
-             deliverables box (Box with class "hiw-deliverables")
-               heading (H4 or Paragraph)
-               bullets (Paragraph with list)
-             role box (Box with class "hiw-role")
-               heading (H4)
-               text (Paragraph)
+   ZOHO BUILD per step pair:
+   Row (2 equal columns, no padding in Zoho — CSS handles gap via margin)
+     Column → apply "hiw-step hiw-step-planning" (or hiw-step-impl)
+       Code Snippet: step badge
+       Code Snippet: icon
+       Heading H3
+       Paragraph (body)
+       Paragraph → apply "hiw-deliverables" (left border sub-section)
+       Paragraph → apply "hiw-role"
 
-   Alternatively (simpler Zoho build):
-   Use a single-column layout per step:
-     Box (hiw-step + hiw-step-planning OR hiw-step-impl)
-       Row at top: step badge + icon side by side
-       Heading
-       Body
-       hiw-deliverables box
-       hiw-role box
+   Step 5 alone: Row (1 column, max-width 560px centered)
+     Column → apply "hiw-step hiw-step-planning hiw-step-solo"
 
-   The vertical timeline is drawn as a left border on hiw-step,
-   with the step badge sitting on top of it.
+   Gap between columns set in Zoho column settings.
+   The column IS the card. Deliverables/role boxes go inside the column as normal boxes.
    ============================================================ */
 
-/* Outer step container — the left timeline line lives here */
+/* Card container — each column IS the card */
 .hiw-step {
   position: relative !important;
-  padding: 40px 40px 40px 72px !important;
+  padding: 36px 32px 36px 32px !important;
   border-radius: var(--radius-lg) !important;
   background: var(--color-white) !important;
   box-shadow: var(--shadow-sm) !important;
   transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
-  margin-bottom: 32px !important;
+  overflow: hidden !important;
 }
 
 .hiw-step:hover {
   box-shadow: var(--shadow-md) !important;
-  transform: translateX(4px) !important;
+  transform: translateY(-3px) !important;
 }
 
-/* Vertical timeline line — runs down the left edge of each step block */
+/* Top color bar — phase color accent */
 .hiw-step::before {
   content: '' !important;
   position: absolute !important;
-  left: 28px !important;
   top: 0 !important;
-  bottom: 0 !important;
-  width: 2px !important;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    currentColor 8%,
-    currentColor 92%,
-    transparent 100%
-  ) !important;
-  opacity: 0.25 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
   pointer-events: none !important;
 }
 
-/* Step number badge — sits on the timeline line */
+/* Step number badge — top-left corner of card */
 .hiw-step-badge {
-  position: absolute !important;
-  left: 16px !important;
-  top: 40px !important;
-  width: 26px !important;
-  height: 26px !important;
-  border-radius: 50% !important;
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
   font-size: 0.72rem !important;
   font-weight: 700 !important;
   color: var(--color-white) !important;
-  z-index: 1 !important;
+  margin-bottom: 16px !important;
   flex-shrink: 0 !important;
 }
 
-/* Planning phase colors (steps 1–5) */
-.hiw-step-planning {
-  color: var(--accent-teal) !important;
-  border-left: 3px solid rgba(0, 112, 139, 0.2) !important;
-}
-
+/* Planning phase (steps 1–5) — teal */
 .hiw-step-planning::before {
-  color: var(--accent-teal) !important;
+  background: linear-gradient(
+    to right,
+    var(--accent-teal),
+    var(--accent-primary)
+  ) !important;
 }
 
 .hiw-step-planning .hiw-step-badge {
   background: var(--accent-teal) !important;
 }
 
-/* Implementation phase colors (steps 6–7) */
-.hiw-step-impl {
-  color: #1ba663 !important;
-  border-left: 3px solid rgba(27, 166, 99, 0.2) !important;
-}
-
+/* Implementation phase (steps 6–7) — green */
 .hiw-step-impl::before {
-  color: #1ba663 !important;
+  background: linear-gradient(
+    to right,
+    #1ba663,
+    #22c97a
+  ) !important;
 }
 
 .hiw-step-impl .hiw-step-badge {
   background: #1ba663 !important;
 }
 
-/* Icon container — sits inline with the heading */
+/* Solo step (step 5) — centered, narrower */
+.hiw-step-solo {
+  max-width: 560px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Icon containers */
 .hiw-icon-planning {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 52px !important;
-  height: 52px !important;
-  border-radius: 12px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: var(--radius-md) !important;
   background: rgba(0, 112, 139, 0.1) !important;
   color: var(--accent-teal) !important;
-  margin-bottom: 16px !important;
+  margin-bottom: 14px !important;
   flex-shrink: 0 !important;
 }
 
@@ -1612,52 +1597,121 @@ body {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 52px !important;
-  height: 52px !important;
-  border-radius: 12px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: var(--radius-md) !important;
   background: rgba(27, 166, 99, 0.1) !important;
   color: #1ba663 !important;
-  margin-bottom: 16px !important;
+  margin-bottom: 14px !important;
   flex-shrink: 0 !important;
 }
 
-/* Deliverables and role sub-boxes */
-.hiw-deliverables {
-  background: rgba(0, 112, 139, 0.05) !important;
+/* Deliverables sub-section — apply to a Box inside the column.
+   Creates a visual sub-block with left border + tinted background. */
+.hiw-deliverables,
+.zptext.hiw-deliverables,
+.zpelem-text.hiw-deliverables {
   border-left: 3px solid var(--accent-teal) !important;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0 !important;
-  padding: 20px 24px !important;
+  padding: 14px 16px !important;
   margin-top: 20px !important;
+  background: rgba(0, 112, 139, 0.04) !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
 }
 
 .hiw-step-impl .hiw-deliverables,
-.hiw-role-impl {
-  background: rgba(27, 166, 99, 0.05) !important;
-  border-left: 3px solid #1ba663 !important;
+.zptext.hiw-deliverables-impl,
+.zpelem-text.hiw-deliverables-impl {
+  border-left-color: #1ba663 !important;
+  background: rgba(27, 166, 99, 0.04) !important;
 }
 
-.hiw-role {
+/* Role sub-section — lighter, no border */
+.hiw-role,
+.zptext.hiw-role,
+.zpelem-text.hiw-role {
   background: var(--color-offwhite) !important;
-  border-radius: var(--radius-md) !important;
-  padding: 16px 20px !important;
-  margin-top: 12px !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 12px 16px !important;
+  margin-top: 10px !important;
 }
 
-/* "Optional" badge — for MAP 4 deeper dive */
+/* "Optional" badge */
 .hiw-optional-badge {
   display: inline-block !important;
-  font-size: 0.7rem !important;
+  font-size: 0.68rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   color: var(--accent-teal) !important;
   background: rgba(0, 112, 139, 0.1) !important;
   border-radius: 100px !important;
-  padding: 3px 10px !important;
+  padding: 2px 10px !important;
   margin-left: 10px !important;
   vertical-align: middle !important;
 }
 
+/* Implementation steps — slightly different card background to signal phase shift */
+.hiw-step-impl {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    rgba(27, 166, 99, 0.03) 100%
+  ) !important;
+}
+
+/* ============================================================
+   HIW-3b. ACCORDION VARIANT (optional alternative to grid layout)
+   Apply "hiw-accordion-section" to the section containing steps.
+   JS handles open/close; CSS handles the visual transition.
+   First step is open by default (JS adds "hiw-open" on init).
+   ============================================================ */
+
+.hiw-accordion-section .hiw-step {
+  cursor: pointer !important;
+}
+
+/* The collapsible body — wraps everything below the step heading */
+.hiw-step-body {
+  overflow: hidden !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  transition:
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.hiw-step.hiw-open .hiw-step-body {
+  max-height: 600px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Chevron indicator on the step heading area */
+.hiw-step-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  cursor: pointer !important;
+}
+
+.hiw-step-toggle::after {
+  content: '' !important;
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-right: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  transform: rotate(45deg) !important;
+  transition: transform 0.3s ease !important;
+  flex-shrink: 0 !important;
+  opacity: 0.5 !important;
+  margin-left: 12px !important;
+}
+
+.hiw-step.hiw-open .hiw-step-toggle::after {
+  transform: rotate(-135deg) !important;
+}
 
 /* ============================================================
    HIW-4. PHASE DIVIDER HEADER
@@ -1851,23 +1905,165 @@ body {
 }
 
 
+
+/* ============================================================
+   BACKGROUND VARIETY — Section texture/pattern utilities
+   Apply to Section elements in Zoho. Set section background
+   color first in Zoho, then apply class for texture overlay.
+   ============================================================ */
+
+/* Soft teal background — light sections that need a "process" feel */
+.bg-teal-soft {
+  background-color: #f0f7f9 !important;
+}
+
+/* Warm off-white — for narrative/text-heavy sections */
+.bg-warm {
+  background-color: #faf9f7 !important;
+}
+
+/* Light dot pattern — for light sections (inverted from the dark CTA version) */
+.section-dots-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-dots-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 112, 139, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-dots-light > .zpcontainer,
+.section-dots-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Diagonal stripe texture — very subtle, for dark sections */
+.section-stripe-dark {
+  position: relative;
+  overflow: hidden;
+}
+.section-stripe-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 40px,
+    rgba(255, 255, 255, 0.018) 40px,
+    rgba(255, 255, 255, 0.018) 41px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-stripe-dark > .zpcontainer,
+.section-stripe-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Topographic contour lines — dark navy section.
+   Uses SVG data URI for the contour pattern.
+   Pair with a dark background color in Zoho. */
+.section-topo {
+  position: relative;
+  overflow: hidden;
+}
+.section-topo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cpath d='M 0 200 Q 100 150 200 200 T 400 200' stroke='rgba(56,182,255,0.06)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 180 Q 100 130 200 180 T 400 180' stroke='rgba(56,182,255,0.05)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 160 Q 100 110 200 160 T 400 160' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 220 Q 100 170 200 220 T 400 220' stroke='rgba(56,182,255,0.05)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 240 Q 100 190 200 240 T 400 240' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 120 Q 80 80 160 120 Q 240 160 320 120 T 400 120' stroke='rgba(0,112,139,0.06)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 280 Q 80 240 160 280 Q 240 320 320 280 T 400 280' stroke='rgba(0,112,139,0.05)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 80 Q 60 50 120 80 Q 180 110 240 80 Q 300 50 400 80' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M 0 320 Q 60 290 120 320 Q 180 350 240 320 Q 300 290 400 320' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 400px 400px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-topo > .zpcontainer,
+.section-topo > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gold radial bloom — dark section with a warm glow center.
+   Good for CTA and closing sections. Pair with dark navy background. */
+.section-gold-bloom {
+  position: relative;
+  overflow: hidden;
+}
+.section-gold-bloom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    rgba(210, 180, 80, 0.1) 0%,
+    rgba(210, 180, 80, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-gold-bloom > .zpcontainer,
+.section-gold-bloom > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Split background — left teal-tinted, right white.
+   Use on 2-column rows where left col has an image/stat.
+   Apply to the Section containing the row. */
+.section-split-light {
+  background: linear-gradient(
+    to right,
+    #f0f7f9 0%,
+    #f0f7f9 50%,
+    #ffffff 50%,
+    #ffffff 100%
+  ) !important;
+}
+
+/* Mesh grid — fine lines, dark sections */
+.section-mesh {
+  position: relative;
+  overflow: hidden;
+}
+.section-mesh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56, 182, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 182, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-mesh > .zpcontainer,
+.section-mesh > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
 /* ============================================================
    HIW-8. RESPONSIVE — mobile/tablet adjustments
    ============================================================ */
 
 @media (max-width: 767px) {
+  /* Steps stack to single column on mobile */
   .hiw-step {
-    padding: 32px 20px 32px 52px !important;
-  }
-
-  .hiw-step::before {
-    left: 20px !important;
+    padding: 28px 20px !important;
+    margin: 6px 0 !important;
   }
 
   .hiw-step-badge {
-    left: 8px !important;
-    width: 22px !important;
-    height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
     font-size: 0.65rem !important;
   }
 
@@ -1888,11 +2084,7 @@ body {
   }
 
   .hiw-pull-quote {
-    padding: 24px 24px !important;
-  }
-
-  .hiw-pull-quote::before {
-    font-size: 64px !important;
+    padding: 24px 20px !important;
   }
 }
 
