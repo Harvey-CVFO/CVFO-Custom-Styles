@@ -91,8 +91,8 @@
 
       const isScrolled = pillRect.left > 0;
 
-      // top: pill bottom + 8px breathing gap
-      const menuTop  = Math.round(pillRect.bottom) + 8;
+      // top: measured values — 91px at top of page, 101px when scrolled (pill state)
+      const menuTop = isScrolled ? 101 : 91;
       // left/width: match pill exactly
       const menuLeft  = Math.round(pillRect.left);
       const menuWidth = Math.round(pillRect.width);
