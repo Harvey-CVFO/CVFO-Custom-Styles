@@ -1024,8 +1024,20 @@ body {
     background: rgba(13, 28, 58, 0.55) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
+    /* No backdrop-filter here — moved to ::before to avoid creating a
+       stacking context that traps position:fixed children (the mobile menu) */
+  }
+
+  /* Blur lives on ::before so it doesn't affect child stacking contexts */
+  .theme-header.scrolled::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: 14px !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
   }
 }
 
@@ -1041,15 +1053,25 @@ body {
     background: rgba(13, 28, 58, 0.55) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
+    /* No backdrop-filter here — moved to ::before */
+  }
+
+  .theme-header.scrolled::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: 14px !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
   }
 }
 
 /* Desktop submenu — frosted glass */
 @media (min-width: 992px) {
   .theme-navigation-and-icons .theme-menu-area .theme-menu ul li > ul {
-    background: rgba(13, 28, 58, 0.88) !important;
+    background: rgba(13, 28, 58, 0.55) !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -1115,26 +1137,26 @@ body {
     align-items: center !important;
   }
 
-  /* Hide the desktop arrow span only */
+  /* Hide desktop arrow span — Zoho shows the responsive one on mobile/tablet */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-non-responsive-menu {
     display: none !important;
   }
 
-  /* Let Zoho draw its own arrow on the responsive span — just fix positioning.
-     Zoho renders the chevron via border-inline-end/border-block-start on the span itself.
-     Don't set width/height/font-size or it breaks Zoho's rendering. */
+  /* Zoho draws the chevron on .theme-submenu-down-arrow::after using:
+     border-inline-end + border-block-start + rotate(135deg)
+     We just need to fix position (Zoho uses position:absolute which drifts)
+     and tint the border white. Don't touch ::after — Zoho owns it. */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu {
     position: static !important;
     inset: unset !important;
+    transform: none !important;
     margin-inline-start: 6px !important;
     vertical-align: middle !important;
-    border-color: rgba(255, 255, 255, 0.65) !important;
   }
 
-  /* Kill our own ::after — Zoho handles the arrow shape */
+  /* Tint Zoho's arrow white — it inherits currentColor by default (dark on dark) */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu::after {
-    display: none !important;
-    content: none !important;
+    border-color: rgba(255, 255, 255, 0.65) !important;
   }
 
   /* Submenu items */
