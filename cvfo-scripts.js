@@ -91,20 +91,15 @@
 
       const isScrolled = pillRect.left > 0;
 
-      // Measured offsets: Zoho adds ~13px left drift and ~11px top drift after our styles apply
-      const LEFT_CORRECTION = isScrolled ? -13 : 0;
-      const TOP_CORRECTION  = isScrolled ? -11 : 0;
-
-      const menuTop  = Math.round(pillRect.bottom) + TOP_CORRECTION;
-      const menuLeft = Math.round(pillRect.left) + LEFT_CORRECTION;
+      // top: pill bottom + 8px breathing gap
+      const menuTop  = Math.round(pillRect.bottom) + 8;
+      // left/width: match pill exactly
+      const menuLeft  = Math.round(pillRect.left);
       const menuWidth = Math.round(pillRect.width);
-
-      // Clamp left — Zoho sometimes sets -1px causing a white edge bleed
-      const safeLeft = Math.max(menuLeft, 0);
 
       menuPanel.style.setProperty('position', 'fixed', 'important');
       menuPanel.style.setProperty('top', menuTop + 'px', 'important');
-      menuPanel.style.setProperty('left', safeLeft + 'px', 'important');
+      menuPanel.style.setProperty('left', menuLeft + 'px', 'important');
       menuPanel.style.setProperty('right', 'auto', 'important');
       menuPanel.style.setProperty('width', menuWidth + 'px', 'important');
       menuPanel.style.setProperty('border-radius', '14px 14px 14px 14px', 'important');
