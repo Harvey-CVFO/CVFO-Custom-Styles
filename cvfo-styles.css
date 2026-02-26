@@ -1147,11 +1147,15 @@ body {
      We just need to fix position (Zoho uses position:absolute which drifts)
      and tint the border white. Don't touch ::after — Zoho owns it. */
   .theme-responsive-menu-area .theme-responsive-menu .theme-menu ul li a .theme-sub-li-menu.theme-responsive-menu {
-    position: static !important;
+    position: relative !important;
     inset: unset !important;
     transform: none !important;
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px !important;
     margin-inline-start: 6px !important;
     vertical-align: middle !important;
+    flex-shrink: 0 !important;
   }
 
   /* Tint Zoho's arrow white — it inherits currentColor by default (dark on dark) */
