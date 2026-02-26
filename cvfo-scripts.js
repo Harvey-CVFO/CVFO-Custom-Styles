@@ -89,11 +89,9 @@
       const pillRect = pill ? pill.getBoundingClientRect() : null;
       if (!pillRect) return;
 
-      const isScrolled = pillRect.left > 0;
-
-      // top: measured values — 91px at top of page, 101px when scrolled (pill state)
-      const menuTop = isScrolled ? 101 : 91;
-      // left/width: match pill exactly
+      // Nav is always pill — always use scrolled measurements
+      const isScrolled = true;
+      const menuTop = 101;
       const menuLeft  = Math.round(pillRect.left);
       const menuWidth = Math.round(pillRect.width);
 
@@ -142,35 +140,13 @@
 
 
   function initNavScroll() {
+    // Always-pill: nav is permanently in pill/floating state.
+    // No scroll threshold, no bar-to-pill transition.
+    // The pill floats over page content from load — hero sections
+    // should have 100px top padding to ensure content clears it.
     const header = document.querySelector('.theme-header');
     if (!header) return;
-
-    const THRESHOLD = 80;
-    let isScrolled = false;
-
-    function onScroll() {
-      const shouldBeScrolled = window.scrollY > THRESHOLD;
-      if (shouldBeScrolled === isScrolled) return;
-      isScrolled = shouldBeScrolled;
-
-      if (shouldBeScrolled) {
-        // Hide nav, swap to pill state off-screen, then fade back in
-        header.classList.add('nav-hidden');
-        setTimeout(() => {
-          header.classList.add('scrolled');
-          header.classList.remove('nav-hidden');
-        }, 200);
-      } else {
-        // Same on the way back — hide, revert to bar, fade in
-        header.classList.add('nav-hidden');
-        setTimeout(() => {
-          header.classList.remove('scrolled');
-          header.classList.remove('nav-hidden');
-        }, 200);
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
+    header.classList.add('scrolled');
   }
 
 
@@ -351,6 +327,52 @@
 
 
 
+
+
+  /* ============================================================
+     8. MAP ACCORDION (optional)
+     Apply class "hiw-accordion-section" to the section wrapper
+     that contains all step columns.
+
+     ZOHO STRUCTURE for accordion mode:
+     Each step is a Row (1 col) with the column having "hiw-step".
+     Inside the column:
+       - Box: "hiw-step-toggle" → contains badge + icon + H3
+       - Box: "hiw-step-body"   → contains body text + deliverables + role
+
+     JS opens the first step on load, toggles others on click.
+     ============================================================ */
+
+  function initMapAccordion() {
+    const sections = document.querySelectorAll('.hiw-accordion-section');
+    if (!sections.length) return;
+
+    sections.forEach(section => {
+      const steps = section.querySelectorAll('.hiw-step');
+      if (!steps.length) return;
+
+      // Open first step by default
+      steps[0].classList.add('hiw-open');
+
+      steps.forEach(step => {
+        const toggle = step.querySelector('.hiw-step-toggle');
+        if (!toggle) return;
+
+        toggle.addEventListener('click', () => {
+          const isOpen = step.classList.contains('hiw-open');
+
+          // Close all steps in this section
+          steps.forEach(s => s.classList.remove('hiw-open'));
+
+          // If it wasn't open, open it
+          if (!isOpen) {
+            step.classList.add('hiw-open');
+          }
+        });
+      });
+    });
+  }
+
   /* ============================================================
      7. INIT — Run everything on DOM ready
      ============================================================ */
@@ -363,6 +385,7 @@
     initTiltCards();
     initCounters();
     initActiveNav();
+    initMapAccordion();
   }
 
   if (document.readyState === 'loading') {
