@@ -993,10 +993,61 @@ body {
 
 /* nav-hidden not used — always-pill nav never swaps states */
 
-/* Base state — nav is always pill, no bar-to-pill animation needed */
+/* Base state — pill from first paint, no JS needed for positioning.
+   JS still adds "scrolled" class (mobile menu JS reads isScrolled),
+   but visually the pill is already correct before JS runs.
+   This eliminates the top-of-page flash where nav sits at 0/full-width. */
 .theme-header {
-  box-shadow: none !important;
-  border-radius: 0 !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
+  border-radius: 14px !important;
+}
+
+/* Desktop base pill — matches .scrolled exactly */
+@media (min-width: 992px) {
+  .theme-header {
+    top: 12px !important;
+    left: 24px !important;
+    right: 24px !important;
+    width: calc(100% - 48px) !important;
+    background: rgba(13, 28, 58, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Blur on ::before — avoids stacking context trap (same as .scrolled::before) */
+  .theme-header::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Mobile/tablet base pill */
+@media (max-width: 991px) {
+  .theme-header {
+    position: fixed !important;
+    top: 10px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    background: rgba(13, 28, 58, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .theme-header::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
 }
 
 /* Nav link font only — no color (set in Zoho) */
@@ -1006,7 +1057,7 @@ body {
   transition: color var(--transition-fast) !important;
 }
 
-/* Scrolled pill — desktop */
+/* Scrolled pill — desktop (values match base; kept for JS hook compat) */
 @media (min-width: 992px) {
   .theme-header.scrolled {
     top: 12px !important;
@@ -1017,11 +1068,8 @@ body {
     background: rgba(13, 28, 58, 0.55) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
-    /* No backdrop-filter here — moved to ::before to avoid creating a
-       stacking context that traps position:fixed children (the mobile menu) */
   }
 
-  /* Blur lives on ::before so it doesn't affect child stacking contexts */
   .theme-header.scrolled::before {
     content: '' !important;
     position: absolute !important;
@@ -1034,7 +1082,7 @@ body {
   }
 }
 
-/* Scrolled pill — tablet and mobile */
+/* Scrolled pill — tablet and mobile (values match base; kept for JS hook compat) */
 @media (max-width: 991px) {
   .theme-header.scrolled {
     position: fixed !important;
@@ -1046,7 +1094,6 @@ body {
     background: rgba(13, 28, 58, 0.55) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
-    /* No backdrop-filter here — moved to ::before */
   }
 
   .theme-header.scrolled::before {
@@ -1446,38 +1493,45 @@ body {
 
 .hiw-pull-quote {
   position: relative !important;
-  padding: 40px 48px !important;
+  /* Horizontal padding creates room for the quote marks on each side.
+     The marks are absolute-positioned within this padding zone.
+     At max-width ~700px the marks sit roughly 8–10px inside each edge
+     of the element — close to the text but not touching it. */
+  padding: 32px 72px !important;
   text-align: center !important;
   border-top: 1px solid rgba(210, 180, 80, 0.2) !important;
   border-bottom: 1px solid rgba(210, 180, 80, 0.2) !important;
   margin: 40px 0 !important;
 }
 
-/* Decorative gold quote marks — inline, centered with the quote text.
-   Using padding-top on the element so the before/after sit flush
-   against the text rather than floating at absolute page edges. */
+/* Opening " — left side, vertically centered with the text */
 .hiw-pull-quote::before {
   content: '\201C' !important;
-  display: block !important;
-  font-size: 52px !important;
+  position: absolute !important;
+  left: 16px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 56px !important;
   line-height: 1 !important;
   font-family: Georgia, serif !important;
   color: var(--accent-gold) !important;
-  opacity: 0.5 !important;
-  margin-bottom: -8px !important;
+  opacity: 0.45 !important;
   pointer-events: none !important;
 }
 
-/* Closing quote + gold underline combined */
+/* Closing " — right side, vertically centered */
 .hiw-pull-quote::after {
   content: '\201D' !important;
-  display: block !important;
-  font-size: 52px !important;
+  position: absolute !important;
+  right: 16px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 56px !important;
   line-height: 1 !important;
   font-family: Georgia, serif !important;
   color: var(--accent-gold) !important;
-  opacity: 0.5 !important;
-  margin-top: -8px !important;
+  opacity: 0.45 !important;
+  pointer-events: none !important;
 }
 
 
@@ -2084,7 +2138,7 @@ body {
   }
 
   .hiw-pull-quote {
-    padding: 24px 20px !important;
+    padding: 28px 52px !important;
   }
 }
 
