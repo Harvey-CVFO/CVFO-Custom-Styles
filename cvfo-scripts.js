@@ -140,12 +140,17 @@
 
 
   function initNavScroll() {
-    // Always-pill: nav is permanently in pill/floating state.
-    // No scroll threshold, no bar-to-pill transition.
-    // The pill floats over page content from load — hero sections
-    // should have 100px top padding to ensure content clears it.
     const header = document.querySelector('.theme-header');
     if (!header) return;
+
+    // Zoho injects animation:noTopBarAni as an inline style at runtime.
+    // Inline styles beat !important in stylesheets on the same property.
+    // Strip it immediately so our CSS controls the element from first paint.
+    // We redefine noTopBarAni as a no-op keyframe in CSS as a belt-and-suspenders fix.
+    header.style.removeProperty('animation');
+    header.style.removeProperty('-webkit-animation');
+
+    // Add scrolled for mobile menu JS (reads pillRect.left to position dropdown)
     header.classList.add('scrolled');
   }
 
