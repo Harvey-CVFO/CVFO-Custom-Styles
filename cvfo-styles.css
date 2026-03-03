@@ -2070,32 +2070,16 @@ body {
 
 /* ============================================================
    SERVICES OVERVIEW PAGE
-   Classes for the /services page.
-
-   ZOHO CONSTRAINTS REMINDER:
-   - max 100px section padding
-   - no box-in-box (column IS the card)
-   - no column gap (set in Zoho column settings)
-   - line-height in Zoho UI must be px
-   - apply classes to column elements directly
+   Only things Zoho cannot do natively.
+   Background colors, font sizes, spacing, button styles,
+   column borders → all handled in Zoho visual editor.
    ============================================================ */
 
 
-/* ── SECTION 1: HERO ─────────────────────────────────────────
-   Reuse hero-section + hero-simple (same as HIW page).
-   Dark gradient, centered content, no animated lines.
-   See HIW build guide for full setup.
-   ──────────────────────────────────────────────────────────── */
-
-/* The hero-section and hero-simple classes are already defined above.
-   No new CSS needed for the hero. */
-
-
-/* ── SECTION 2: AUTHORITY STRIP ──────────────────────────────
-   Thin horizontal bar with trust signals.
-   Apply "authority-strip" to the section.
-   Apply "authority-strip-item" to each column (3 columns recommended).
-   Apply "authority-strip-divider" to a 1px-wide spacer column between items.
+/* ── AUTHORITY STRIP ─────────────────────────────────────────
+   Apply "authority-strip" to the section for top/bottom borders.
+   Apply "authority-strip-item" to each column for right border dividers.
+   In Zoho: set background, font sizes, and text colors natively.
    ──────────────────────────────────────────────────────────── */
 
 .authority-strip {
@@ -2103,21 +2087,16 @@ body {
   border-bottom: 1px solid rgba(0, 112, 139, 0.15) !important;
 }
 
+/* Right border acts as divider — last item in the row has no right border */
 .authority-strip-item {
-  text-align: center !important;
-  padding: 28px 24px !important;
-  position: relative !important;
+  border-right: 1px solid rgba(0, 112, 139, 0.15) !important;
 }
 
-/* Vertical divider between items — apply to a 1px-wide empty column */
-.authority-strip-divider {
-  width: 1px !important;
-  background: rgba(0, 112, 139, 0.15) !important;
-  align-self: stretch !important;
-  margin: 16px 0 !important;
+.authority-strip-item:last-child {
+  border-right: none !important;
 }
 
-/* Eyebrow label above the trust signal text */
+/* Eyebrow label — Zoho can't do the uppercase letter-spacing tint combo */
 .authority-strip-label {
   display: block !important;
   font-size: 0.68rem !important;
@@ -2128,29 +2107,15 @@ body {
   margin-bottom: 6px !important;
 }
 
-/* Main text */
-.authority-strip-text {
-  font-size: 0.95rem !important;
-  color: var(--color-navy) !important;
-  font-weight: 500 !important;
-  line-height: 26px !important;
-}
 
-
-/* ── SECTION 3: SERVICE CARDS ────────────────────────────────
-   2-column grid, card 5 full-width centered (svc-card-solo).
-   Apply "svc-card" to each column element.
-   Apply "svc-card-solo" to card 5's column in addition to svc-card.
-   The column IS the card — no box-in-box.
-   Inside the column: boxes for icon, content, examples, CTA.
+/* ── SERVICE CARDS ───────────────────────────────────────────
+   Apply "svc-card" to each column (column = card).
+   Apply "svc-card-solo" additionally to card 5 column.
+   Background, padding, font sizes → set in Zoho natively.
    ──────────────────────────────────────────────────────────── */
 
-/* Card base — column element */
+/* Hover lift + shadow — Zoho can't animate transforms */
 .svc-card {
-  background: var(--color-white) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
-  padding: 40px 36px !important;
   position: relative !important;
   overflow: hidden !important;
   transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
@@ -2161,7 +2126,7 @@ body {
   transform: translateY(-4px) !important;
 }
 
-/* Top gradient bar — service color identity */
+/* Teal/sky gradient top bar */
 .svc-card::before {
   content: '' !important;
   position: absolute !important;
@@ -2169,94 +2134,34 @@ body {
   left: 0 !important;
   right: 0 !important;
   height: 4px !important;
-  background: linear-gradient(
-    to right,
-    var(--accent-teal),
-    var(--accent-primary)
-  ) !important;
+  background: linear-gradient(to right, var(--accent-teal), var(--accent-primary)) !important;
   pointer-events: none !important;
 }
 
-/* Card 5 — full-width, narrower, centered */
+/* Card 5 — solo, centered, max-width constrained */
 .svc-card-solo {
   max-width: 640px !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
 
-/* Icon container */
-.svc-icon {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 56px !important;
-  height: 56px !important;
-  border-radius: var(--radius-md) !important;
-  background: rgba(0, 112, 139, 0.08) !important;
-  color: var(--accent-teal) !important;
-  margin-bottom: 20px !important;
-  flex-shrink: 0 !important;
-}
 
-/* Service name badge — small pill above H3 */
-.svc-area-badge {
-  display: inline-block !important;
-  font-size: 0.68rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: var(--accent-teal) !important;
-  border-bottom: 2px solid var(--accent-teal) !important;
-  padding-bottom: 4px !important;
-  margin-bottom: 12px !important;
-}
+/* ── EXAMPLES SUB-SECTION ────────────────────────────────────
+   Apply "svc-examples" to a Box inside the card.
+   The teal left border + tinted background can't be done natively.
+   ──────────────────────────────────────────────────────────── */
 
-/* Examples paragraph — applied to the Box containing "Examples: ..." */
 .svc-examples {
   background: rgba(0, 112, 139, 0.04) !important;
   border-left: 3px solid var(--accent-teal) !important;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
   padding: 14px 16px !important;
-  margin-top: 20px !important;
-  margin-bottom: 16px !important;
-}
-
-/* "Best suited for..." qualifier line */
-.svc-qualifier {
-  font-style: italic !important;
-  color: #4a5568 !important;
-  border-top: 1px solid rgba(0, 112, 139, 0.12) !important;
-  padding-top: 16px !important;
-  margin-top: 16px !important;
-  margin-bottom: 24px !important;
-}
-
-/* CTA button within card — navy, full-width on card */
-.svc-cta {
-  display: block !important;
-  background: var(--color-navy) !important;
-  color: var(--color-white) !important;
-  text-align: center !important;
-  border-radius: var(--radius-md) !important;
-  padding: 14px 24px !important;
-  font-weight: 500 !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.02em !important;
-  transition: background var(--transition-base) !important;
-  text-decoration: none !important;
-  border: none !important;
-  cursor: pointer !important;
-}
-
-.svc-cta:hover {
-  background: #152a47 !important;
 }
 
 
 /* ── SECTION 4: HOW SERVICES CONNECT ─────────────────────────
-   Light background, centered text + SVG diagram.
-   Apply "services-connect" to the section.
-   Apply "services-connect-diagram" to the Code Snippet containing the SVG.
+   Apply "services-connect-diagram" to the Code Snippet holding the SVG.
+   Centers and constrains the diagram width.
    ──────────────────────────────────────────────────────────── */
 
 .services-connect-diagram {
@@ -2271,14 +2176,11 @@ body {
 }
 
 
-/* ── SECTION 5: DIAGNOSTIC CTA ───────────────────────────────
-   Reuses cta-final dark section.
-   No new CSS needed — add cta-final to the section.
-   Use btn-glow-gold for primary CTA.
-   Use a plain white underline text link for secondary.
+/* ── SECONDARY LINK (dark CTA section) ───────────────────────
+   Apply "svc-secondary-link" to an <a> Code Snippet
+   in the final dark CTA section.
    ──────────────────────────────────────────────────────────── */
 
-/* Secondary link — "Or schedule a discovery call →" */
 .svc-secondary-link {
   display: inline-block !important;
   color: rgba(255, 255, 255, 0.75) !important;
@@ -2292,32 +2194,22 @@ body {
 
 .svc-secondary-link:hover {
   color: var(--accent-gold) !important;
-  text-decoration: underline !important;
 }
 
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 
 @media (max-width: 767px) {
-  .svc-card {
-    padding: 32px 24px !important;
-  }
-
-  .svc-icon {
-    width: 48px !important;
-    height: 48px !important;
-    margin-bottom: 16px !important;
-  }
-
   .authority-strip-item {
-    padding: 20px 16px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(0, 112, 139, 0.15) !important;
   }
 
-  .services-connect-diagram {
-    max-width: 100% !important;
-    margin-top: 28px !important;
+  .authority-strip-item:last-child {
+    border-bottom: none !important;
   }
 }
+
 
 /* ============================================================
    HIW-8. RESPONSIVE — mobile/tablet adjustments
