@@ -52,8 +52,8 @@
         });
       },
       {
-        threshold: 0.12,      // Trigger when 12% of element is visible
-        rootMargin: '0px 0px -40px 0px', // Offset so it triggers slightly before edge
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px',
       }
     );
 
@@ -64,7 +64,6 @@
   /* ============================================================
      2. NAVBAR SCROLL BEHAVIOR
      Adds "scrolled" class to header when page is scrolled.
-     Lets you style the nav differently once user leaves top.
      
      CSS to add in cvfo-styles.css if you want this effect:
      .zpheader.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
@@ -89,9 +88,11 @@
       const pillRect = pill ? pill.getBoundingClientRect() : null;
       if (!pillRect) return;
 
-      // Nav is always pill — always use scrolled measurements
-      const isScrolled = true;
-      const menuTop = 101;
+      const isScrolled = pillRect.left > 0;
+
+      // top: measured values — 91px at top of page, 101px when scrolled (pill state)
+      const menuTop = isScrolled ? 101 : 91;
+      // left/width: match pill exactly
       const menuLeft  = Math.round(pillRect.left);
       const menuWidth = Math.round(pillRect.width);
 
@@ -132,7 +133,6 @@
     const burger = header.querySelector('[data-zp-burger-clickable-area]');
     if (burger) {
       burger.addEventListener('click', () => {
-        // Single measurement after Zoho's open animation (0.2s) plus buffer
         setTimeout(fixMenuWidth, 250);
       });
     }
@@ -143,49 +143,37 @@
     const header = document.querySelector('.theme-header');
     if (!header) return;
 
-    // THE PROBLEM:
-    // Zoho's style.css defines @keyframes noTopBarAni { 0% { inset-block-start: -300px } }
-    // Zoho's own JS then sets animation:noTopBarAni as an inline style on .theme-header.
-    // This fires BEFORE our deferred script runs — so stripping it in init() is too late.
-    //
-    // THE FIX:
-    // A MutationObserver watches .theme-header's style attribute.
-    // The instant Zoho sets the inline animation, the observer fires synchronously
-    // and strips it — faster than the browser can start the animation.
-    // This works regardless of script load order.
+    const THRESHOLD = 80;
+    let isScrolled = false;
 
-    function stripAnimation() {
-      if (header.style.animationName === 'noTopBarAni' ||
-          header.style.animation.includes('noTopBarAni')) {
-        header.style.removeProperty('animation');
-        header.style.removeProperty('-webkit-animation');
-        header.style.removeProperty('animation-name');
+    function onScroll() {
+      const shouldBeScrolled = window.scrollY > THRESHOLD;
+      if (shouldBeScrolled === isScrolled) return;
+      isScrolled = shouldBeScrolled;
+
+      if (shouldBeScrolled) {
+        // Hide nav, swap to pill state off-screen, then fade back in
+        header.classList.add('nav-hidden');
+        setTimeout(() => {
+          header.classList.add('scrolled');
+          header.classList.remove('nav-hidden');
+        }, 200);
+      } else {
+        // Same on the way back — hide, revert to bar, fade in
+        header.classList.add('nav-hidden');
+        setTimeout(() => {
+          header.classList.remove('scrolled');
+          header.classList.remove('nav-hidden');
+        }, 200);
       }
     }
 
-    // Watch for Zoho setting the inline style attribute
-    const animObserver = new MutationObserver(function(mutations) {
-      mutations.forEach(function(m) {
-        if (m.type === 'attributes' && m.attributeName === 'style') {
-          stripAnimation();
-        }
-      });
-    });
-
-    animObserver.observe(header, { attributes: true, attributeFilter: ['style'] });
-
-    // Also strip immediately in case Zoho already set it before this ran
-    stripAnimation();
-
-    // Scrolled class for mobile menu dropdown positioning
-    header.classList.add('scrolled');
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
 
   /* ============================================================
      3. SMOOTH SCROLL FOR ANCHOR LINKS
-     Catches any href="#section-id" links and smooth scrolls.
-     Zoho Sites sometimes uses these for in-page navigation.
      ============================================================ */
 
   function initSmoothScroll() {
@@ -199,7 +187,7 @@
 
         e.preventDefault();
 
-        const offset = 80; // Account for fixed nav height
+        const offset = 80;
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
 
         window.scrollTo({ top, behavior: 'smooth' });
@@ -209,16 +197,14 @@
 
 
   /* ============================================================
-     4. CARD TILT EFFECT (Optional — subtle 3D on hover)
+     4. CARD TILT EFFECT
      Apply class "tilt-card" to any card element.
-     Creates a gentle perspective tilt following the mouse.
      ============================================================ */
 
   function initTiltCards() {
     const cards = document.querySelectorAll('.tilt-card');
     if (!cards.length) return;
 
-    // Skip on touch devices
     if ('ontouchstart' in window) return;
 
     cards.forEach(card => {
@@ -232,7 +218,7 @@
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        const rotateX = ((y - centerY) / centerY) * -6; // max 6deg
+        const rotateX = ((y - centerY) / centerY) * -6;
         const rotateY = ((x - centerX) / centerX) * 6;
 
         card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(4px)`;
@@ -248,9 +234,6 @@
   /* ============================================================
      5. COUNTER ANIMATION
      Apply class "count-up" to any element containing a number.
-     It will animate from 0 to that number when scrolled into view.
-     
-     Example: <span class="count-up">75</span>
      ============================================================ */
 
   function initCounters() {
@@ -266,23 +249,16 @@
 
           const el = entry.target;
 
-          // Zoho sometimes leaks broken inline CSS into element textContent.
-          // We look for a data-count attribute first (most reliable), then
-          // fall back to scanning for the LAST standalone number in the text.
-          // "Standalone" = digits optionally followed by +/% at a word boundary.
           let targetNum;
           let suffix = '';
 
           if (el.dataset.count) {
-            // Preferred: <h2 class="count-up" data-count="75" data-suffix="+">
             targetNum = parseInt(el.dataset.count, 10);
             suffix = el.dataset.suffix || '';
           } else {
-            // Fallback: find the last sequence of digits + optional suffix in text.
-            // This skips any hex colors or IDs in leaked Zoho CSS.
             const raw = el.textContent;
             const match = raw.match(/(\d+)([+%]?)(?!\d)(?=[^a-zA-Z0-9]|$)/g);
-            if (!match) return; // nothing countable, skip
+            if (!match) return;
             const last = match[match.length - 1];
             targetNum = parseInt(last, 10);
             suffix = last.replace(/\d/g, '');
@@ -290,8 +266,6 @@
 
           if (isNaN(targetNum)) return;
 
-          // Find the text node to update — avoids wiping child elements
-          // Zoho headings sometimes have child spans/divs we must preserve
           let textNode = null;
           for (const node of el.childNodes) {
             if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
@@ -299,7 +273,6 @@
               break;
             }
           }
-          // If no direct text node, fall back to a wrapper span
           if (!textNode) {
             const span = document.createElement('span');
             span.textContent = targetNum + suffix;
@@ -338,7 +311,6 @@
 
   /* ============================================================
      6. ACTIVE NAV LINK HIGHLIGHTING
-     Adds "active" class to nav links matching current page URL.
      ============================================================ */
 
   function initActiveNav() {
@@ -358,21 +330,9 @@
   }
 
 
-
-
-
   /* ============================================================
-     8. MAP ACCORDION (optional)
-     Apply class "hiw-accordion-section" to the section wrapper
-     that contains all step columns.
-
-     ZOHO STRUCTURE for accordion mode:
-     Each step is a Row (1 col) with the column having "hiw-step".
-     Inside the column:
-       - Box: "hiw-step-toggle" → contains badge + icon + H3
-       - Box: "hiw-step-body"   → contains body text + deliverables + role
-
-     JS opens the first step on load, toggles others on click.
+     7. MAP ACCORDION (optional)
+     Apply "hiw-accordion-section" to section wrapping steps.
      ============================================================ */
 
   function initMapAccordion() {
@@ -383,7 +343,6 @@
       const steps = section.querySelectorAll('.hiw-step');
       if (!steps.length) return;
 
-      // Open first step by default
       steps[0].classList.add('hiw-open');
 
       steps.forEach(step => {
@@ -392,11 +351,7 @@
 
         toggle.addEventListener('click', () => {
           const isOpen = step.classList.contains('hiw-open');
-
-          // Close all steps in this section
           steps.forEach(s => s.classList.remove('hiw-open'));
-
-          // If it wasn't open, open it
           if (!isOpen) {
             step.classList.add('hiw-open');
           }
@@ -405,8 +360,9 @@
     });
   }
 
+
   /* ============================================================
-     7. INIT — Run everything on DOM ready
+     8. INIT — Run everything on DOM ready
      ============================================================ */
 
   function init() {
