@@ -989,10 +989,9 @@ body {
   animation: none !important;
 }
 
-@keyframes noTopBarAni {
-  0%   { opacity: 1; transform: none; top: 12px; left: 24px; }
-  100% { opacity: 1; transform: none; top: 12px; left: 24px; }
-}
+/* noTopBarAni override is injected via JS (cvfo-scripts.js) as a <style> tag
+   appended after all stylesheets — that guarantees cascade priority over
+   Zoho's own keyframe definition. CSS-only override here would lose. */
 
 /* Remove Zoho's default header bottom border */
 /* Zoho's outer header wrapper — neutralize its own positioning/background.
