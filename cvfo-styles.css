@@ -986,67 +986,69 @@ body {
 }
 
 /* Remove Zoho's default header bottom border */
+/* Zoho's outer header wrapper — neutralize its own positioning/background.
+   We position .theme-header (the inner element) directly instead.
+   Making the wrapper position:relative and unset its fixed/width lets
+   .theme-header float freely as position:fixed with our pill geometry. */
 .zpheader-style-01 {
   border-bottom: none !important;
   border-block-end: none !important;
+  position: static !important;
+  background: transparent !important;
+  width: auto !important;
+  left: auto !important;
+  top: auto !important;
+  box-shadow: none !important;
 }
 
 /* nav-hidden not used — always-pill nav never swaps states */
 
-/* Base state — pill from first paint, no JS needed for positioning.
-   JS still adds "scrolled" class (mobile menu JS reads isScrolled),
-   but visually the pill is already correct before JS runs.
-   This eliminates the top-of-page flash where nav sits at 0/full-width. */
+/* Always-pill — all positioning set directly on .theme-header.
+   Zoho sets position:fixed, left:0, width:100% on its header via its own
+   stylesheet. We must override ALL of those here with !important so the
+   pill geometry is correct from the very first CSS paint — before JS runs.
+   JS still adds "scrolled" for legacy compat (mobile menu reads pillRect.left)
+   but the visual is entirely driven by CSS, no JS dependency. */
+
+/* Shared across all breakpoints */
 .theme-header {
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
+  position: fixed !important;
   border-radius: 14px !important;
+  background: rgba(13, 28, 58, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
 }
 
-/* Desktop base pill — matches .scrolled exactly */
+/* Blur on ::before — keeps backdrop-filter off .theme-header itself
+   so it doesn't create a stacking context that traps fixed children */
+.theme-header::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
+/* Desktop pill geometry */
 @media (min-width: 992px) {
   .theme-header {
     top: 12px !important;
     left: 24px !important;
     right: 24px !important;
     width: calc(100% - 48px) !important;
-    background: rgba(13, 28, 58, 0.55) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  }
-
-  /* Blur on ::before — avoids stacking context trap (same as .scrolled::before) */
-  .theme-header::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: 14px !important;
-    backdrop-filter: blur(24px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
   }
 }
 
-/* Mobile/tablet base pill */
+/* Tablet/mobile pill geometry */
 @media (max-width: 991px) {
   .theme-header {
-    position: fixed !important;
     top: 10px !important;
     left: 12px !important;
     right: 12px !important;
     width: calc(100% - 24px) !important;
-    background: rgba(13, 28, 58, 0.55) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  }
-
-  .theme-header::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: 14px !important;
-    backdrop-filter: blur(24px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
   }
 }
 
@@ -1057,55 +1059,10 @@ body {
   transition: color var(--transition-fast) !important;
 }
 
-/* Scrolled pill — desktop (values match base; kept for JS hook compat) */
-@media (min-width: 992px) {
-  .theme-header.scrolled {
-    top: 12px !important;
-    left: 24px !important;
-    right: 24px !important;
-    width: calc(100% - 48px) !important;
-    border-radius: 14px !important;
-    background: rgba(13, 28, 58, 0.55) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
-  }
-
-  .theme-header.scrolled::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: 14px !important;
-    backdrop-filter: blur(24px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
-  }
-}
-
-/* Scrolled pill — tablet and mobile (values match base; kept for JS hook compat) */
-@media (max-width: 991px) {
-  .theme-header.scrolled {
-    position: fixed !important;
-    top: 10px !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: calc(100% - 24px) !important;
-    border-radius: 14px !important;
-    background: rgba(13, 28, 58, 0.55) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22) !important;
-  }
-
-  .theme-header.scrolled::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: 14px !important;
-    backdrop-filter: blur(24px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
-  }
+/* .scrolled — redundant visually (base already sets pill).
+   Kept only so JS hook and any selector that checks for .scrolled still works. */
+.theme-header.scrolled {
+  /* inherits all pill styles from base — nothing to override */
 }
 
 /* Desktop submenu — frosted glass */
