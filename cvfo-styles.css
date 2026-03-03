@@ -979,10 +979,19 @@ body {
    The JS adds "scrolled" class; this CSS handles the visual change.
    ============================================================ */
 
-/* Kill Zoho's entrance animation on header */
+/* Kill Zoho's entrance animation on header.
+   Zoho injects animation:noTopBarAni via inline style at runtime.
+   Inline styles beat stylesheet !important on the same property,
+   so we redefine noTopBarAni as a zero-change keyframe — the animation
+   runs but does nothing. JS clears the inline style on load as backup. */
 .theme-header,
 [data-megamenu-content-container] {
   animation: none !important;
+}
+
+@keyframes noTopBarAni {
+  0%   { opacity: 1; transform: none; top: 12px; left: 24px; }
+  100% { opacity: 1; transform: none; top: 12px; left: 24px; }
 }
 
 /* Remove Zoho's default header bottom border */
