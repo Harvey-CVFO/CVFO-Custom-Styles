@@ -143,35 +143,39 @@
     const header = document.querySelector('.theme-header');
     if (!header) return;
 
-    // Zoho's own stylesheet defines:
-    //   @keyframes noTopBarAni { 0% { inset-block-start: -300px; } }
-    // and injects animation:noTopBarAni via inline style.
-    // This throws the nav 300px off-screen on load.
+    // THE PROBLEM:
+    // Zoho's style.css defines @keyframes noTopBarAni { 0% { inset-block-start: -300px } }
+    // Zoho's own JS then sets animation:noTopBarAni as an inline style on .theme-header.
+    // This fires BEFORE our deferred script runs — so stripping it in init() is too late.
     //
-    // Fix: inject a <style> tag AFTER all other stylesheets so our
-    // redefined keyframe wins the cascade. Then strip the inline style
-    // and hard-set the correct position as belt-and-suspenders.
-    const killStyle = document.createElement('style');
-    killStyle.textContent = [
-      '@keyframes noTopBarAni {',
-      '  0%   { inset-block-start: 12px; top: 12px; opacity: 1; }',
-      '  100% { inset-block-start: 12px; top: 12px; opacity: 1; }',
-      '}',
-      '@keyframes noTopBarAni {',  // duplicate for webkit
-      '  from { inset-block-start: 12px; top: 12px; opacity: 1; }',
-      '  to   { inset-block-start: 12px; top: 12px; opacity: 1; }',
-      '}',
-    ].join('
-');
-    document.head.appendChild(killStyle);
+    // THE FIX:
+    // A MutationObserver watches .theme-header's style attribute.
+    // The instant Zoho sets the inline animation, the observer fires synchronously
+    // and strips it — faster than the browser can start the animation.
+    // This works regardless of script load order.
 
-    // Strip inline animation style Zoho sets at runtime
-    header.style.removeProperty('animation');
-    header.style.removeProperty('-webkit-animation');
+    function stripAnimation() {
+      if (header.style.animationName === 'noTopBarAni' ||
+          header.style.animation.includes('noTopBarAni')) {
+        header.style.removeProperty('animation');
+        header.style.removeProperty('-webkit-animation');
+        header.style.removeProperty('animation-name');
+      }
+    }
 
-    // Hard-set position as final fallback
-    header.style.setProperty('top', '12px', 'important');
-    header.style.setProperty('inset-block-start', '12px', 'important');
+    // Watch for Zoho setting the inline style attribute
+    const animObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        if (m.type === 'attributes' && m.attributeName === 'style') {
+          stripAnimation();
+        }
+      });
+    });
+
+    animObserver.observe(header, { attributes: true, attributeFilter: ['style'] });
+
+    // Also strip immediately in case Zoho already set it before this ran
+    stripAnimation();
 
     // Scrolled class for mobile menu dropdown positioning
     header.classList.add('scrolled');
