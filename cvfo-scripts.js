@@ -143,14 +143,37 @@
     const header = document.querySelector('.theme-header');
     if (!header) return;
 
-    // Zoho injects animation:noTopBarAni as an inline style at runtime.
-    // Inline styles beat !important in stylesheets on the same property.
-    // Strip it immediately so our CSS controls the element from first paint.
-    // We redefine noTopBarAni as a no-op keyframe in CSS as a belt-and-suspenders fix.
+    // Zoho's own stylesheet defines:
+    //   @keyframes noTopBarAni { 0% { inset-block-start: -300px; } }
+    // and injects animation:noTopBarAni via inline style.
+    // This throws the nav 300px off-screen on load.
+    //
+    // Fix: inject a <style> tag AFTER all other stylesheets so our
+    // redefined keyframe wins the cascade. Then strip the inline style
+    // and hard-set the correct position as belt-and-suspenders.
+    const killStyle = document.createElement('style');
+    killStyle.textContent = [
+      '@keyframes noTopBarAni {',
+      '  0%   { inset-block-start: 12px; top: 12px; opacity: 1; }',
+      '  100% { inset-block-start: 12px; top: 12px; opacity: 1; }',
+      '}',
+      '@keyframes noTopBarAni {',  // duplicate for webkit
+      '  from { inset-block-start: 12px; top: 12px; opacity: 1; }',
+      '  to   { inset-block-start: 12px; top: 12px; opacity: 1; }',
+      '}',
+    ].join('
+');
+    document.head.appendChild(killStyle);
+
+    // Strip inline animation style Zoho sets at runtime
     header.style.removeProperty('animation');
     header.style.removeProperty('-webkit-animation');
 
-    // Add scrolled for mobile menu JS (reads pillRect.left to position dropdown)
+    // Hard-set position as final fallback
+    header.style.setProperty('top', '12px', 'important');
+    header.style.setProperty('inset-block-start', '12px', 'important');
+
+    // Scrolled class for mobile menu dropdown positioning
     header.classList.add('scrolled');
   }
 
