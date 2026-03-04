@@ -483,7 +483,6 @@ body {
 .hover-underline {
   position: relative;
   text-decoration: none !important;
-  display: inline-block;
 }
 .hover-underline::after {
   content: '';
@@ -575,14 +574,12 @@ body {
 /* Icon spin — the SVG or icon element inside rotates.
    Apply to the icon element directly, not the card. */
 .hover-icon-spin {
-  display: inline-block;
   transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 .hover-icon-spin:hover { transform: rotate(360deg); }
 
 /* Icon bounce — small elastic bounce up on hover */
 .hover-icon-bounce {
-  display: inline-block;
   transition: transform 0.35s cubic-bezier(0.34, 1.6, 0.64, 1);
 }
 .hover-icon-bounce:hover { transform: translateY(-6px); }
@@ -604,7 +601,6 @@ body {
    Good for button labels or card headings. */
 .hover-slide-up {
   overflow: hidden;
-  display: inline-block;
 }
 .hover-slide-up span {
   display: inline-block;
@@ -639,8 +635,6 @@ body {
    Apply to a <span> wrapping key words in a heading. */
 .highlight-draw {
   position: relative;
-  display: inline;
-  white-space: nowrap;
 }
 .highlight-draw::after {
   content: '';
@@ -735,7 +729,6 @@ body {
 .magnetic {
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
-  display: inline-block;
 }
 
 
@@ -964,9 +957,7 @@ body {
    ============================================================ */
 
 .count-up {
-  display: inline-block;
   font-variant-numeric: tabular-nums;
-  transition: color 0.2s ease;
 }
 
 
@@ -979,9 +970,7 @@ body {
    ============================================================ */
 
 .text-scramble {
-  display: inline-block;
   font-variant-numeric: tabular-nums;
-  min-width: 1ch; /* prevent layout jump during scramble */
 }
 
 
@@ -1143,9 +1132,6 @@ select:focus-visible {
    ============================================================ */
 
 .hover-arrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
   transition: gap 0.25s ease;
 }
 .hover-arrow::after {
@@ -1154,14 +1140,12 @@ select:focus-visible {
   opacity: 0;
   transform: translateX(-8px);
   transition: opacity 0.25s ease, transform 0.25s ease;
-  font-style: normal;
-}
-.hover-arrow:hover {
-  gap: 8px;
+  margin-left: 0;
 }
 .hover-arrow:hover::after {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(4px);
+  margin-left: 6px;
 }
 
 
@@ -1185,9 +1169,8 @@ select:focus-visible {
   background: var(--color-navy);
   color: white;
   font-size: 12px;
-  font-family: 'Open Sans', system-ui, sans-serif;
   line-height: 1.4;
-  white-space: nowrap;
+  white-space: normal;
   padding: 6px 10px;
   border-radius: var(--radius-sm);
   opacity: 0;
@@ -1195,7 +1178,6 @@ select:focus-visible {
   transition: opacity 0.2s ease, transform 0.2s ease;
   z-index: 100;
   max-width: 220px;
-  white-space: normal;
   text-align: center;
 }
 [data-tip]::after {
@@ -1646,8 +1628,6 @@ select:focus-visible {
   margin: 0 auto 12px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 0.72rem;
-  font-weight: 700;
   color: var(--accent-teal);
   padding-bottom: 6px;
   border-bottom: 2px solid var(--accent-teal);
