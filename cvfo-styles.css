@@ -442,13 +442,48 @@ body {
   50%       { transform: translateY(-10px); }
 }
 
-/* Pulse */
+/* Pulse — opacity only, color-neutral.
+   The element's own color shows through.
+   Use modifier classes below to add a color glow. */
 .animate-pulse {
   animation: pulse 3s ease-in-out infinite;
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.6; }
+}
+
+/* Pulse with colored box-shadow glow — pair with animate-pulse */
+.pulse-teal  { animation: pulse-teal  3s ease-in-out infinite; }
+.pulse-gold  { animation: pulse-gold  3s ease-in-out infinite; }
+.pulse-sky   { animation: pulse-sky   3s ease-in-out infinite; }
+.pulse-navy  { animation: pulse-navy  3s ease-in-out infinite; }
+.pulse-white { animation: pulse-white 3s ease-in-out infinite; }
+.pulse-red   { animation: pulse-red   3s ease-in-out infinite; }
+
+@keyframes pulse-teal {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(131, 174, 175, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(131, 174, 175, 0.4); opacity: 0.85; }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(210, 180, 80, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(210, 180, 80, 0.4); opacity: 0.85; }
+}
+@keyframes pulse-sky {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(56, 182, 255, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(56, 182, 255, 0.4); opacity: 0.85; }
+}
+@keyframes pulse-navy {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(26, 54, 93, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(26, 54, 93, 0.3); opacity: 0.85; }
+}
+@keyframes pulse-white {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(255, 255, 255, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(255, 255, 255, 0.3); opacity: 0.85; }
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(229, 62, 62, 0);    opacity: 1; }
+  50%       { box-shadow: 0 0 18px 6px rgba(229, 62, 62, 0.4); opacity: 0.85; }
 }
 
 /* Gradient text — apply to heading elements */
@@ -519,14 +554,102 @@ body {
   display: block;
 }
 
-/* Glassmorphism container */
+/* Glassmorphism container.
+   Requires a dark or image background behind the element.
+   backdrop-filter is blocked by: ancestors with overflow:hidden,
+   certain transforms, or older browsers.
+
+   Fallback: when backdrop-filter isn't supported or is blocked,
+   the semi-opaque background still looks intentional.
+
+   Variants:
+     glass          → white frost (for dark backgrounds)
+     glass-dark     → dark frost (for light or image backgrounds)
+     glass-teal     → teal-tinted frost
+     glass-navy     → navy-tinted frost
+*/
 .glass {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-md);
+  /* Stacking context — required for backdrop-filter to work */
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
+/* Apply blur to a pseudo-element so Zoho ancestor overflow:hidden
+   doesn't block it — the pseudo-element is a child, not a sibling */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
+  z-index: -1;
+  pointer-events: none;
 }
+.glass > * { position: relative; z-index: 1; }
+
+.glass-dark {
+  background: rgba(10, 22, 40, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
+.glass-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: -1;
+  pointer-events: none;
+}
+.glass-dark > * { position: relative; z-index: 1; }
+
+.glass-teal {
+  background: rgba(0, 112, 139, 0.18);
+  border: 1px solid rgba(131, 174, 175, 0.3);
+  border-radius: var(--radius-md);
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
+.glass-teal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: -1;
+  pointer-events: none;
+}
+.glass-teal > * { position: relative; z-index: 1; }
+
+.glass-navy {
+  background: rgba(26, 54, 93, 0.55);
+  border: 1px solid rgba(56, 182, 255, 0.15);
+  border-radius: var(--radius-md);
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
+.glass-navy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: -1;
+  pointer-events: none;
+}
+.glass-navy > * { position: relative; z-index: 1; }
 
 /* Section badge — small caps eyebrow label above headings.
    display:block + width:fit-content + margin:auto centers it.
@@ -895,69 +1018,40 @@ body {
 
 /* ============================================================
    12. SERVICE CARDS
-   Hover reveal effect — left accent bar scales in on hover.
+   Hover reveal effect — left accent bar animates in via inset
+   box-shadow. This approach is Zoho-safe: no pseudo-element
+   positioning dependency, no overflow-hidden clipping issues.
    Background, border, shadow, padding → set in Zoho.
    ============================================================ */
 
 .service-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition-base);
-}
-
-.service-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent-primary);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.4s ease;
+  transition: transform var(--transition-base),
+              box-shadow 0.4s ease !important;
+  box-shadow: inset 0px 0 0 0 var(--accent-primary) !important;
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
-}
-
-.service-card:hover::before {
-  transform: scaleY(1);
+  transform: translateY(-6px) !important;
+  box-shadow: inset 3px 0 0 0 var(--accent-primary),
+              var(--shadow-lift) !important;
 }
 
 
 /* ============================================================
    13. PROBLEM CARDS (Section 2)
-   Left red accent bar animates in on hover.
-   The static border-left is set in Zoho — this adds the reveal.
+   Left red accent bar animates in on hover via inset box-shadow.
+   Zoho-safe: no pseudo-element positioning dependency.
    ============================================================ */
 
 .problem-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition-base);
-}
-
-.problem-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #e53e3e;
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.35s ease;
+  transition: transform var(--transition-base),
+              box-shadow 0.35s ease !important;
+  box-shadow: inset 0px 0 0 0 #e53e3e !important;
 }
 
 .problem-card:hover {
-  transform: translateX(4px);
-}
-
-.problem-card:hover::before {
-  transform: scaleY(1);
+  transform: translateX(4px) !important;
+  box-shadow: inset 3px 0 0 0 #e53e3e !important;
 }
 
 
@@ -1455,7 +1549,13 @@ body {
   }
 
   .animate-float,
-  .animate-pulse {
+  .animate-pulse,
+  .pulse-teal,
+  .pulse-gold,
+  .pulse-sky,
+  .pulse-navy,
+  .pulse-white,
+  .pulse-red {
     animation: none !important;
   }
 
@@ -1464,11 +1564,6 @@ body {
   .cta-final::before {
     animation: none !important;
     will-change: auto !important;
-  }
-
-  .problem-card::before,
-  .service-card::before {
-    transition: none !important;
   }
 }
 
