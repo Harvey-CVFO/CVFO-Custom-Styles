@@ -2068,6 +2068,668 @@ body {
 
 
 
+
+/* ============================================================
+   BACKGROUND & TEXTURE EXPANSION
+   All classes apply to Section elements in Zoho.
+   Set a base background color in Zoho first, then add the class.
+   Each class documents which pseudo-element it uses so you can
+   layer compatible classes without collision.
+
+   PSEUDO-ELEMENT MAP (existing):
+     section-dots-light    → ::after
+     section-stripe-dark   → ::after
+     section-topo          → ::before
+     section-gold-bloom    → ::before
+     section-mesh          → ::before
+
+   NEW classes below document their pseudo-element in comments.
+   When layering two classes, confirm they use different pseudo-elements.
+   ============================================================ */
+
+
+/* ── LIGHT SECTION TEXTURES ──────────────────────────────────
+   All pair with light background colors (white, #f7fafc, #faf9f7)
+   ──────────────────────────────────────────────────────────── */
+
+/* Fine crosshatch grid — light sections.
+   Tighter than section-mesh. Good for data/stats sections.
+   Uses: ::before
+   Pair with: white or #f7fafc background */
+.section-grid-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-grid-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 112, 139, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 112, 139, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-grid-light > .zpcontainer,
+.section-grid-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Diagonal lines — light sections.
+   Subtle hatching, slightly warmer than stripe-dark.
+   Uses: ::before
+   Pair with: #f7fafc or bg-warm background */
+.section-hatch-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-hatch-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 28px,
+    rgba(0, 112, 139, 0.04) 28px,
+    rgba(0, 112, 139, 0.04) 29px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-hatch-light > .zpcontainer,
+.section-hatch-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Large dot grid — light sections.
+   Bigger, airier dots vs section-dots-light (24px → 48px grid).
+   Uses: ::before
+   Pair with: white or bg-teal-soft */
+.section-dots-large {
+  position: relative;
+  overflow: hidden;
+}
+.section-dots-large::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 112, 139, 0.07) 1.5px, transparent 1.5px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-dots-large > .zpcontainer,
+.section-dots-large > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Wavy lines — light sections.
+   Horizontal sine curves layered at varying opacity.
+   Good for hero alternates or testimonial sections.
+   Uses: ::before
+   Pair with: white or very light blue */
+.section-wave-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-wave-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Cpath d='M0 100 Q150 60 300 100 T600 100' stroke='rgba(0,112,139,0.07)' fill='none' stroke-width='1.5'/%3E%3Cpath d='M0 120 Q150 80 300 120 T600 120' stroke='rgba(0,112,139,0.05)' fill='none' stroke-width='1'/%3E%3Cpath d='M0 140 Q150 100 300 140 T600 140' stroke='rgba(0,112,139,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M0 80 Q150 40 300 80 T600 80' stroke='rgba(0,112,139,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M0 160 Q150 120 300 160 T600 160' stroke='rgba(0,112,139,0.03)' fill='none' stroke-width='1'/%3E%3Cpath d='M0 60 Q150 20 300 60 T600 60' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3Cpath d='M0 200 Q150 160 300 200 T600 200' stroke='rgba(56,182,255,0.04)' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 600px 300px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-wave-light > .zpcontainer,
+.section-wave-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Teal corner bloom — light sections.
+   Radial teal glow in the top-left corner.
+   Complements gold-bloom on dark sections.
+   Uses: ::before
+   Pair with: white or #f7fafc */
+.section-teal-bloom {
+  position: relative;
+  overflow: hidden;
+}
+.section-teal-bloom::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle at 0% 0%,
+    rgba(0, 112, 139, 0.07) 0%,
+    rgba(0, 112, 139, 0.03) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-teal-bloom > .zpcontainer,
+.section-teal-bloom > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Noise grain — light sections.
+   Subtle paper texture. Use on any light section for warmth.
+   Uses: ::after
+   Can layer with any ::before class above */
+.section-grain-light {
+  position: relative;
+}
+.section-grain-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-grain-light > .zpcontainer,
+.section-grain-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── DARK SECTION TEXTURES ───────────────────────────────────
+   Pair with navy/dark backgrounds (#0d1f3c, #1a365d)
+   ──────────────────────────────────────────────────────────── */
+
+/* Hexagonal grid — dark sections.
+   More geometric than mesh, less structured than topo.
+   Uses: ::before
+   Pair with: #0d1f3c background */
+.section-hex-dark {
+  position: relative;
+  overflow: hidden;
+}
+.section-hex-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z' fill='none' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3Cpath d='M28 64 L56 80 L56 100' fill='none' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3Cpath d='M28 64 L0 80 L0 100' fill='none' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 56px 100px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-hex-dark > .zpcontainer,
+.section-hex-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scattered dots — dark sections.
+   Randomized dot field, less grid-like than mesh.
+   Uses: ::before
+   Pair with: #1a365d or #0d1f3c background */
+.section-scatter-dark {
+  position: relative;
+  overflow: hidden;
+}
+.section-scatter-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(56, 182, 255, 0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(56, 182, 255, 0.10) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 112, 139, 0.12) 1px, transparent 1px);
+  background-size: 73px 83px, 101px 67px, 59px 109px;
+  background-position: 12px 18px, 44px 52px, 28px 76px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-scatter-dark > .zpcontainer,
+.section-scatter-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Teal radial bloom — dark sections.
+   Teal glow at center (vs gold-bloom which is warm/gold).
+   Good for process or "how it works" dark sections.
+   Uses: ::before
+   Pair with: #0d1f3c or #1a365d background */
+.section-teal-glow {
+  position: relative;
+  overflow: hidden;
+}
+.section-teal-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    rgba(0, 112, 139, 0.14) 0%,
+    rgba(56, 182, 255, 0.06) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-teal-glow > .zpcontainer,
+.section-teal-glow > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Corner accent — dark sections.
+   Bright teal/sky streak from top-right corner.
+   Directional energy, good for hero alternates.
+   Uses: ::before + ::after (both needed for the full effect)
+   Pair with: #0d1f3c background */
+.section-corner-accent {
+  position: relative;
+  overflow: hidden;
+}
+.section-corner-accent::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(56, 182, 255, 0.12) 0%,
+    rgba(56, 182, 255, 0.04) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-corner-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle at 0% 100%,
+    rgba(0, 112, 139, 0.1) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-corner-accent > .zpcontainer,
+.section-corner-accent > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark grain — dark sections.
+   Same grain overlay as light version but tuned for dark.
+   Uses: ::after
+   Can layer with any dark ::before class above */
+.section-grain-dark {
+  position: relative;
+}
+.section-grain-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-grain-dark > .zpcontainer,
+.section-grain-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── GRADIENT BACKGROUNDS ────────────────────────────────────
+   Apply to Section in Zoho — these set the background color
+   so no Zoho background color needed (or set same dark navy).
+   ──────────────────────────────────────────────────────────── */
+
+/* Deep dark — darker than gradient-navy, no blue shift */
+.gradient-deep {
+  background: linear-gradient(160deg, #0a1628 0%, #050e1a 100%) !important;
+}
+
+/* Navy to teal diagonal — vivid, good for hero sections */
+.gradient-ocean {
+  background: linear-gradient(140deg, #1a365d 0%, #0c3a52 50%, #0e5f6e 100%) !important;
+}
+
+/* Warm navy — slight amber/gold undertone, good for CTA */
+.gradient-dusk {
+  background: linear-gradient(155deg, #1a2a4a 0%, #1f1a28 60%, #2a1a1f 100%) !important;
+}
+
+/* Light teal wash — for soft intro sections */
+.gradient-mist {
+  background: linear-gradient(160deg, #f0f9fb 0%, #e8f5f8 100%) !important;
+}
+
+/* Warm cream — richer than bg-warm, slight golden tint */
+.gradient-parchment {
+  background: linear-gradient(150deg, #fdfaf5 0%, #f7f3e8 100%) !important;
+}
+
+/* Gold gradient — for accent panels or highlight rows */
+.gradient-gold {
+  background: linear-gradient(140deg, #2a1f08 0%, #1e1a0e 60%, #0d0d0a 100%) !important;
+}
+
+
+/* ── ANIMATED BACKGROUNDS ────────────────────────────────────
+   CSS-only animations — no JS needed.
+   Apply to Section in Zoho. Set background transparent or dark in Zoho
+   so the animation fills the section.
+   ──────────────────────────────────────────────────────────── */
+
+/* Slow color drift — dark navy to teal shift.
+   The classic "living" dark background.
+   Uses: direct background animation on element */
+.section-drift {
+  background: linear-gradient(
+    -45deg,
+    #0d1f3c,
+    #0c3045,
+    #0e3d44,
+    #1a365d
+  );
+  background-size: 400% 400%;
+  animation: drift 18s ease infinite;
+}
+@keyframes drift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.section-drift > .zpcontainer,
+.section-drift > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shimmer — very subtle brightness pulse on dark backgrounds.
+   Less motion than drift. Good for "premium" static-looking sections.
+   Uses: ::before shimmer sweep */
+.section-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.section-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(56, 182, 255, 0.04) 50%,
+    transparent 80%
+  );
+  animation: shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+.section-shimmer > .zpcontainer,
+.section-shimmer > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Breathing glow — centered radial pulse.
+   The glow expands and contracts slowly.
+   Good for final CTA or hero where you want live energy.
+   Uses: ::before */
+.section-breathe {
+  position: relative;
+  overflow: hidden;
+}
+.section-breathe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(0, 112, 139, 0.16) 0%,
+    rgba(56, 182, 255, 0.06) 40%,
+    transparent 70%
+  );
+  animation: breathe 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.15); opacity: 0.7; }
+}
+.section-breathe > .zpcontainer,
+.section-breathe > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Rising particles — small dots float upward on a dark bg.
+   Generated with layered CSS, no JS.
+   Uses: ::before + ::after for two particle layers */
+.section-particles {
+  position: relative;
+  overflow: hidden;
+}
+.section-particles::before {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(56, 182, 255, 0.35);
+  box-shadow:
+    /* Layer 1 — teal particles */
+    80px  10vh rgba(56, 182, 255, 0.3),
+    160px 30vh rgba(56, 182, 255, 0.2),
+    240px 60vh rgba(56, 182, 255, 0.25),
+    320px 20vh rgba(56, 182, 255, 0.15),
+    400px 70vh rgba(56, 182, 255, 0.3),
+    480px 40vh rgba(56, 182, 255, 0.2),
+    560px 80vh rgba(56, 182, 255, 0.25),
+    640px 15vh rgba(56, 182, 255, 0.2),
+    720px 55vh rgba(56, 182, 255, 0.3),
+    800px 35vh rgba(56, 182, 255, 0.2),
+    /* Layer 2 — sky highlights */
+    120px 50vh rgba(131, 174, 175, 0.2),
+    260px 10vh rgba(131, 174, 175, 0.15),
+    380px 85vh rgba(131, 174, 175, 0.2),
+    500px 25vh rgba(131, 174, 175, 0.15),
+    620px 65vh rgba(131, 174, 175, 0.2),
+    740px 45vh rgba(131, 174, 175, 0.15);
+  animation: rise 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-particles::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(210, 180, 80, 0.2);
+  box-shadow:
+    /* Gold accent particles — fewer, subtler */
+    50px  40vh rgba(210, 180, 80, 0.15),
+    190px 70vh rgba(210, 180, 80, 0.12),
+    350px 20vh rgba(210, 180, 80, 0.15),
+    530px 55vh rgba(210, 180, 80, 0.12),
+    680px 30vh rgba(210, 180, 80, 0.15);
+  animation: rise 28s linear infinite;
+  animation-delay: -10s;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes rise {
+  0%   { transform: translateY(0)    rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+.section-particles > .zpcontainer,
+.section-particles > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Slow horizontal scan — a single bright line moves across the section.
+   Subtle "radar" or "scanner" feel. Works on dark sections.
+   Uses: ::before */
+.section-scan {
+  position: relative;
+  overflow: hidden;
+}
+.section-scan::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(56, 182, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: scan 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes scan {
+  0%   { top: -1px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.section-scan > .zpcontainer,
+.section-scan > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── SPLIT / ASYMMETRIC BACKGROUNDS ──────────────────────────
+   For 2-column rows with distinct left/right treatment.
+   Apply to the Section containing the 2-col row.
+   ──────────────────────────────────────────────────────────── */
+
+/* Navy left, white right — dark feature image left side */
+.section-split-dark-left {
+  background: linear-gradient(
+    to right,
+    #1a365d 0%,
+    #1a365d 50%,
+    #ffffff 50%,
+    #ffffff 100%
+  ) !important;
+}
+
+/* Teal left, light right */
+.section-split-teal {
+  background: linear-gradient(
+    to right,
+    #0e3d44 0%,
+    #0e3d44 50%,
+    #f7fafc 50%,
+    #f7fafc 100%
+  ) !important;
+}
+
+/* Diagonal split — light to dark at a 10deg angle */
+.section-split-diagonal {
+  position: relative;
+  overflow: hidden;
+  background: #f7fafc !important;
+}
+.section-split-diagonal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 100%;
+  background: #1a365d;
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.section-split-diagonal > .zpcontainer,
+.section-split-diagonal > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Bottom fade — dark navy fades to transparent at the bottom.
+   Good for transitions between a dark hero and a light section below.
+   Apply to the dark section. Uses: ::after */
+.section-fade-bottom {
+  position: relative;
+}
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, rgba(13, 31, 60, 0.95));
+  pointer-events: none;
+  z-index: 0;
+}
+.section-fade-bottom > .zpcontainer,
+.section-fade-bottom > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── REDUCE MOTION SUPPORT ────────────────────────────────────
+   Respects OS preference to reduce animation.
+   Stops all looping animations for users who need it.
+   ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .section-drift,
+  .section-shimmer::before,
+  .section-breathe::before,
+  .section-particles::before,
+  .section-particles::after,
+  .section-scan::before,
+  .animate-float,
+  .animate-pulse,
+  .gradient-bg-animated {
+    animation: none !important;
+  }
+}
+
+
 /* ============================================================
    SERVICES OVERVIEW PAGE
    Only things Zoho cannot do natively.
@@ -2272,4 +2934,657 @@ body {
   letter-spacing: 0.04em !important;
   padding: 5px 14px !important;
   margin-bottom: 20px !important;
+}
+
+
+
+/* ============================================================
+   BACKGROUND & TEXTURE EXPANSION — ROUND 2
+   Additions: animated light, aurora, radial burst, circuit,
+   depth rings, ink blobs, dark dots, soft splits, text shimmer,
+   staggered stripes, pre-composed combos.
+
+   All pseudo-element usage noted per class.
+   ============================================================ */
+
+
+/* ── ANIMATED — LIGHT SECTIONS ───────────────────────────────
+   Subtle motion for light backgrounds. Much gentler than dark variants.
+   ──────────────────────────────────────────────────────────── */
+
+/* Warm drift — cream/parchment tones rotate slowly.
+   The light equivalent of section-drift.
+   Good for hero alternates or feature sections on white.
+   Uses: background-size animation on element itself */
+.section-drift-light {
+  background: linear-gradient(
+    -45deg,
+    #fdfaf5,
+    #f0f7f9,
+    #f7fafc,
+    #faf9f7
+  );
+  background-size: 400% 400%;
+  animation: drift-light 22s ease infinite;
+}
+@keyframes drift-light {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.section-drift-light > .zpcontainer,
+.section-drift-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Teal pulse — light section with a slow teal glow that breathes.
+   Pair with white or #f7fafc background in Zoho.
+   Uses: ::before */
+.section-breathe-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-breathe-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 45% at 50% 50%,
+    rgba(0, 112, 139, 0.06) 0%,
+    rgba(0, 112, 139, 0.02) 50%,
+    transparent 70%
+  );
+  animation: breathe-light 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes breathe-light {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.2); opacity: 0.5; }
+}
+.section-breathe-light > .zpcontainer,
+.section-breathe-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Floating ink — two soft blobs drift slowly on a light bg.
+   Organic, no hard geometry. Good for narrative sections.
+   Uses: ::before + ::after */
+.section-ink-light {
+  position: relative;
+  overflow: hidden;
+}
+.section-ink-light::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 112, 139, 0.06) 0%,
+    transparent 70%
+  );
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  animation: ink-float1 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-ink-light::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  right: -10%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse,
+    rgba(56, 182, 255, 0.05) 0%,
+    transparent 70%
+  );
+  border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%;
+  animation: ink-float2 22s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes ink-float1 {
+  0%, 100% { transform: translate(0, 0)    scale(1);    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+  33%       { transform: translate(6%, 4%)  scale(1.05); border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
+  66%       { transform: translate(-4%, 6%) scale(0.97); border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; }
+}
+@keyframes ink-float2 {
+  0%, 100% { transform: translate(0, 0)     scale(1);    border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%; }
+  33%       { transform: translate(-5%, -3%) scale(1.04); border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; }
+  66%       { transform: translate(5%, -5%)  scale(0.98); border-radius: 60% 40% 55% 45% / 55% 45% 40% 60%; }
+}
+.section-ink-light > .zpcontainer,
+.section-ink-light > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── ANIMATED — DARK SECTIONS ────────────────────────────────
+   ──────────────────────────────────────────────────────────── */
+
+/* Aurora — slow multi-color shift with purple/teal/navy.
+   More complex than drift. Best for hero or featured dark sections.
+   Uses: background-size animation on element + ::before layer */
+.section-aurora {
+  background: linear-gradient(
+    -30deg,
+    #0d1f3c,
+    #0c2e45,
+    #0b1e38,
+    #14203a,
+    #0a1a3a
+  );
+  background-size: 500% 500%;
+  animation: aurora 25s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+.section-aurora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 40% at 20% 60%, rgba(0, 112, 139, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(56, 182, 255, 0.1)  0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 90%, rgba(26, 54, 93, 0.4)    0%, transparent 60%);
+  animation: aurora-overlay 20s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes aurora {
+  0%   { background-position: 0% 30%; }
+  50%  { background-position: 100% 70%; }
+  100% { background-position: 0% 30%; }
+}
+@keyframes aurora-overlay {
+  0%   { opacity: 0.6; transform: scale(1)    translateX(0); }
+  50%  { opacity: 1;   transform: scale(1.05) translateX(-3%); }
+  100% { opacity: 0.7; transform: scale(0.98) translateX(3%); }
+}
+.section-aurora > .zpcontainer,
+.section-aurora > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ink blobs — dark version.
+   Two large soft glowing shapes drift on a dark background.
+   Organic, no hard geometry. Uses: ::before + ::after */
+.section-ink-dark {
+  position: relative;
+  overflow: hidden;
+}
+.section-ink-dark::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  right: -10%;
+  width: 55%;
+  height: 65%;
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 112, 139, 0.18) 0%,
+    transparent 65%
+  );
+  border-radius: 55% 45% 60% 40% / 45% 60% 40% 55%;
+  animation: ink-dark1 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-ink-dark::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -8%;
+  width: 50%;
+  height: 55%;
+  background: radial-gradient(
+    ellipse,
+    rgba(56, 182, 255, 0.1) 0%,
+    transparent 65%
+  );
+  border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%;
+  animation: ink-dark2 25s ease-in-out infinite;
+  animation-delay: -8s;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes ink-dark1 {
+  0%, 100% { transform: translate(0, 0)    rotate(0deg)   scale(1); }
+  40%       { transform: translate(-4%, 5%) rotate(8deg)   scale(1.06); }
+  70%       { transform: translate(5%, -4%) rotate(-5deg)  scale(0.97); }
+}
+@keyframes ink-dark2 {
+  0%, 100% { transform: translate(0, 0)     rotate(0deg)  scale(1); }
+  35%       { transform: translate(5%, -5%)  rotate(-6deg) scale(1.05); }
+  70%       { transform: translate(-3%, 4%)  rotate(4deg)  scale(0.98); }
+}
+.section-ink-dark > .zpcontainer,
+.section-ink-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Radial burst — light rays from top-left corner.
+   Like a hidden sun behind the section. Dark bg.
+   Uses: ::before */
+.section-burst {
+  position: relative;
+  overflow: hidden;
+}
+.section-burst::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 130%;
+  height: 130%;
+  background: conic-gradient(
+    from 0deg at 0% 0%,
+    transparent 0deg,
+    rgba(56, 182, 255, 0.03) 15deg,
+    transparent 30deg,
+    rgba(56, 182, 255, 0.04) 45deg,
+    transparent 60deg,
+    rgba(0, 112, 139, 0.03) 75deg,
+    transparent 90deg,
+    rgba(56, 182, 255, 0.02) 105deg,
+    transparent 120deg
+  );
+  animation: burst-rotate 40s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes burst-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.section-burst > .zpcontainer,
+.section-burst > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Circuit board — fine nodes and connecting lines. Dark sections.
+   Denser than mesh, more structured than hex.
+   Uses: ::before */
+.section-circuit {
+  position: relative;
+  overflow: hidden;
+}
+.section-circuit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3Cline x1='50' y1='0' x2='50' y2='100' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='2.5' fill='rgba(56,182,255,0.12)'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='rgba(56,182,255,0.08)'/%3E%3Ccircle cx='100' cy='0' r='1.5' fill='rgba(56,182,255,0.08)'/%3E%3Ccircle cx='0' cy='100' r='1.5' fill='rgba(56,182,255,0.08)'/%3E%3Ccircle cx='100' cy='100' r='1.5' fill='rgba(56,182,255,0.08)'/%3E%3Cline x1='0' y1='25' x2='25' y2='25' stroke='rgba(0,112,139,0.06)' stroke-width='1'/%3E%3Cline x1='75' y1='75' x2='100' y2='75' stroke='rgba(0,112,139,0.06)' stroke-width='1'/%3E%3Ccircle cx='25' cy='25' r='1.5' fill='rgba(0,112,139,0.1)'/%3E%3Ccircle cx='75' cy='75' r='1.5' fill='rgba(0,112,139,0.1)'/%3E%3C/svg%3E");
+  background-size: 100px 100px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-circuit > .zpcontainer,
+.section-circuit > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Depth rings — concentric ellipses from center. Dark sections.
+   Sonar / radar feel. Works well behind stats or process sections.
+   Uses: ::before */
+.section-rings {
+  position: relative;
+  overflow: hidden;
+}
+.section-rings::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500' viewBox='0 0 800 500'%3E%3Cellipse cx='400' cy='250' rx='80'  ry='50'  fill='none' stroke='rgba(56,182,255,0.08)' stroke-width='1'/%3E%3Cellipse cx='400' cy='250' rx='160' ry='100' fill='none' stroke='rgba(56,182,255,0.06)' stroke-width='1'/%3E%3Cellipse cx='400' cy='250' rx='240' ry='150' fill='none' stroke='rgba(56,182,255,0.05)' stroke-width='1'/%3E%3Cellipse cx='400' cy='250' rx='320' ry='200' fill='none' stroke='rgba(56,182,255,0.04)' stroke-width='1'/%3E%3Cellipse cx='400' cy='250' rx='400' ry='250' fill='none' stroke='rgba(0,112,139,0.04)' stroke-width='1'/%3E%3Cellipse cx='400' cy='250' rx='480' ry='300' fill='none' stroke='rgba(0,112,139,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-rings > .zpcontainer,
+.section-rings > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Staggered stripes — thick, offset bands. More graphic than stripe-dark.
+   Like venetian blinds at low opacity. Dark bg.
+   Uses: ::before */
+.section-bands {
+  position: relative;
+  overflow: hidden;
+}
+.section-bands::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -35deg,
+    transparent,
+    transparent 60px,
+    rgba(255, 255, 255, 0.012) 60px,
+    rgba(255, 255, 255, 0.012) 90px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-bands > .zpcontainer,
+.section-bands > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark dot grid — dots on dark background.
+   Dark equivalent of section-dots-light.
+   Uses: ::before */
+.section-dots-dark {
+  position: relative;
+  overflow: hidden;
+}
+.section-dots-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(56, 182, 255, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-dots-dark > .zpcontainer,
+.section-dots-dark > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pulsing ring — single expanding ring from center.
+   Radar ping. Good for hero stat or call-to-action.
+   Uses: ::before */
+.section-ping {
+  position: relative;
+  overflow: hidden;
+}
+.section-ping::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  border: 1px solid rgba(56, 182, 255, 0.3);
+  border-radius: 50%;
+  animation: ping 3.5s ease-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-ping::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  border: 1px solid rgba(56, 182, 255, 0.15);
+  border-radius: 50%;
+  animation: ping 3.5s ease-out infinite;
+  animation-delay: 1.2s;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes ping {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(12);  opacity: 0; }
+}
+.section-ping > .zpcontainer,
+.section-ping > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── GRADIENTS — ADDITIONAL ──────────────────────────────────
+   ──────────────────────────────────────────────────────────── */
+
+/* Midnight — deepest dark, no blue undertone. Pure shadow. */
+.gradient-midnight {
+  background: linear-gradient(160deg, #070d1a 0%, #020509 100%) !important;
+}
+
+/* Slate — cool blue-gray, between navy and pure gray */
+.gradient-slate {
+  background: linear-gradient(150deg, #1e2d45 0%, #131f30 100%) !important;
+}
+
+/* Teal deep — dark teal, good for alternating dark sections */
+.gradient-teal-deep {
+  background: linear-gradient(155deg, #0a2e38 0%, #051820 100%) !important;
+}
+
+/* Sunrise — warm amber-to-teal for accent panels */
+.gradient-sunrise {
+  background: linear-gradient(140deg, #1a2a1a 0%, #1a2816 30%, #0e3040 100%) !important;
+}
+
+/* Fog — barely-there light gray to white. For clean alternating sections. */
+.gradient-fog {
+  background: linear-gradient(170deg, #f7fafc 0%, #ffffff 100%) !important;
+}
+
+/* Ice — very pale teal-white. Colder than gradient-sky. */
+.gradient-ice {
+  background: linear-gradient(150deg, #e8f8fb 0%, #f2fcfe 100%) !important;
+}
+
+/* Warm white — white with slight amber top. Pairs with gradient-parchment. */
+.gradient-warm-white {
+  background: linear-gradient(160deg, #fefcf8 0%, #ffffff 100%) !important;
+}
+
+
+/* ── SOFT SPLITS & TRANSITIONS ───────────────────────────────
+   ──────────────────────────────────────────────────────────── */
+
+/* Gradient split — dark left, light right, with a feathered edge.
+   Softer than section-split-dark-left (which has a hard line).
+   Uses: direct background (no pseudo-element) */
+.section-split-soft {
+  background: linear-gradient(
+    to right,
+    #1a365d 0%,
+    #1a365d 35%,
+    #2a4a72 50%,
+    #f7fafc 65%,
+    #f7fafc 100%
+  ) !important;
+}
+
+/* Bottom wave clip — section clips to a wave shape at the bottom.
+   Creates a wave transition into the next section.
+   Uses: clip-path */
+.section-wave-clip {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 88%,
+    75% 96%,
+    50% 100%,
+    25% 96%,
+    0 88%
+  );
+}
+
+/* Top wave clip — section clips to a wave shape at the top.
+   Pair with the section below a wave-clipped section. */
+.section-wave-clip-top {
+  clip-path: polygon(
+    0 6%,
+    25% 0,
+    50% 5%,
+    75% 0,
+    100% 6%,
+    100% 100%,
+    0 100%
+  );
+  margin-top: -40px;
+}
+
+/* Fade to white — section fades to white at the bottom.
+   Good for flowing sections into white.
+   Uses: ::after */
+.section-fade-white {
+  position: relative;
+}
+.section-fade-white::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, #ffffff);
+  pointer-events: none;
+  z-index: 0;
+}
+.section-fade-white > .zpcontainer,
+.section-fade-white > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Vignette — darkens the edges all around. Dark sections.
+   Makes content pop visually without changing base background.
+   Uses: ::before */
+.section-vignette {
+  position: relative;
+}
+.section-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.section-vignette > .zpcontainer,
+.section-vignette > .zpsection-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── GRADIENT TEXT ANIMATIONS ────────────────────────────────
+   Apply to heading elements (H1, H2) for animated gradient text.
+   Works alongside existing .gradient-text class.
+   ──────────────────────────────────────────────────────────── */
+
+/* Shifting gradient text — the gradient position animates.
+   Apply to heading element alongside large font size. */
+.gradient-text-shift {
+  background: linear-gradient(
+    90deg,
+    var(--accent-teal) 0%,
+    var(--color-sky)   30%,
+    var(--accent-teal) 60%,
+    var(--accent-gold) 80%,
+    var(--accent-teal) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 5s linear infinite;
+}
+@keyframes gradient-shift {
+  to { background-position: 200% center; }
+}
+
+/* Gold gradient text — static gold-to-amber for subheadings */
+.gradient-text-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #c8960c 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* White-to-teal gradient text — for dark section headings */
+.gradient-text-light {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(56, 182, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ── COMPOSABLE COMBOS ───────────────────────────────────────
+   Pre-tested class combinations. Apply both classes to the Section.
+   No new CSS — just documentation of what pairs well.
+
+   DARK COMBOS:
+   section-drift + section-topo           → animated drift + contours
+   section-aurora + section-scatter-dark  → aurora + particle field
+   section-aurora + section-rings         → aurora + sonar rings
+   section-ink-dark + section-bands       → floating blobs + stripes
+   section-teal-glow + section-circuit    → glow center + circuit nodes
+   section-teal-glow + section-dots-dark  → glow center + dot field
+   section-corner-accent + section-hex-dark → corner highlight + hex grid
+   section-drift + section-grain-dark     → animated + grain texture
+   section-burst + section-dots-dark      → ray burst + dot field
+
+   LIGHT COMBOS:
+   section-drift-light + section-grain-light → animated warm + grain
+   section-ink-light + section-dots-light    → blobs + dot grid
+   section-breathe-light + section-grid-light → pulse glow + fine grid
+   section-teal-bloom + section-hatch-light  → corner teal + hatching
+   section-wave-light + section-grain-light  → waves + grain
+
+   ANIMATED COMBOS (use sparingly — max 1 animated per page):
+   section-aurora + section-scan          → aurora + scan line
+   section-drift + section-shimmer        → drift + shimmer sweep
+   section-drift + section-particles      → drift + rising particles
+   section-breathe + section-rings        → pulsing glow + sonar rings
+   ──────────────────────────────────────────────────────────── */
+
+
+/* ── REDUCE MOTION — ADDITIONS ───────────────────────────────
+   Extends existing prefers-reduced-motion block.
+   ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .section-drift-light,
+  .section-breathe-light::before,
+  .section-ink-light::before,
+  .section-ink-light::after,
+  .section-aurora,
+  .section-aurora::before,
+  .section-ink-dark::before,
+  .section-ink-dark::after,
+  .section-burst::before,
+  .section-ping::before,
+  .section-ping::after,
+  .gradient-text-shift {
+    animation: none !important;
+  }
+  .section-drift-light {
+    background: #f7fafc !important;
+    background-size: auto !important;
+  }
+  .section-aurora {
+    background: #0d1f3c !important;
+    background-size: auto !important;
+  }
 }
