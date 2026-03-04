@@ -114,6 +114,66 @@ body {
 
 
 /* ============================================================
+   TEXT SELECTION HIGHLIGHT
+   Replaces the browser default blue selection color.
+   Three variants — global default + scoped overrides for
+   dark sections and gold-accent sections.
+
+   background: the highlight fill
+   color: the selected text color (set explicitly — some browsers
+          inherit incorrectly without it)
+   ============================================================ */
+
+/* Global default — teal highlight on light sections */
+::selection {
+  background: rgba(0, 112, 139, 0.22);
+  color: #1a365d;
+}
+::-moz-selection {
+  background: rgba(0, 112, 139, 0.22);
+  color: #1a365d;
+}
+
+/* Dark sections — lighter teal so it reads on navy backgrounds */
+.section-dark ::selection,
+.cta-final ::selection,
+.gradient-navy ::selection,
+.gradient-deep ::selection,
+.gradient-ocean ::selection,
+.gradient-navy-teal ::selection,
+.section-drift ::selection,
+.section-aurora ::selection {
+  background: rgba(56, 182, 255, 0.35);
+  color: #ffffff;
+}
+.section-dark ::-moz-selection,
+.cta-final ::-moz-selection,
+.gradient-navy ::-moz-selection,
+.gradient-deep ::-moz-selection,
+.gradient-ocean ::-moz-selection,
+.gradient-navy-teal ::-moz-selection,
+.section-drift ::-moz-selection,
+.section-aurora ::-moz-selection {
+  background: rgba(56, 182, 255, 0.35);
+  color: #ffffff;
+}
+
+/* Gold accent sections — warm amber highlight */
+.section-gold-bloom ::selection,
+.gradient-gold ::selection,
+.gradient-dusk ::selection {
+  background: rgba(210, 180, 80, 0.35);
+  color: #ffffff;
+}
+.section-gold-bloom ::-moz-selection,
+.gradient-gold ::-moz-selection,
+.gradient-dusk ::-moz-selection {
+  background: rgba(210, 180, 80, 0.35);
+  color: #ffffff;
+}
+
+
+/* ============================================================
    4. DARK SECTION TEXT FLIPS
    Only the things Zoho's editor genuinely cannot do:
    flipping text/heading color based on a parent class.
