@@ -329,12 +329,998 @@ body {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.stagger-children.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0ms; }
-.stagger-children.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 100ms; }
-.stagger-children.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 200ms; }
-.stagger-children.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 300ms; }
-.stagger-children.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 400ms; }
-.stagger-children.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 500ms; }
+.stagger-children.is-visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0ms; }
+.stagger-children.is-visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 100ms; }
+.stagger-children.is-visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 200ms; }
+.stagger-children.is-visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 300ms; }
+.stagger-children.is-visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 400ms; }
+.stagger-children.is-visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 500ms; }
+.stagger-children.is-visible > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 600ms; }
+.stagger-children.is-visible > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 700ms; }
+.stagger-children.is-visible > *:nth-child(9)  { opacity: 1; transform: none; transition-delay: 800ms; }
+.stagger-children.is-visible > *:nth-child(10) { opacity: 1; transform: none; transition-delay: 900ms; }
+.stagger-children.is-visible > *:nth-child(11) { opacity: 1; transform: none; transition-delay: 1000ms; }
+.stagger-children.is-visible > *:nth-child(12) { opacity: 1; transform: none; transition-delay: 1100ms; }
+
+/* Tighter stagger — 60ms between items. Good for dense grids. */
+.stagger-fast > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.stagger-fast.is-visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0ms; }
+.stagger-fast.is-visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 60ms; }
+.stagger-fast.is-visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 120ms; }
+.stagger-fast.is-visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 180ms; }
+.stagger-fast.is-visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 240ms; }
+.stagger-fast.is-visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 300ms; }
+.stagger-fast.is-visible > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 360ms; }
+.stagger-fast.is-visible > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 420ms; }
+.stagger-fast.is-visible > *:nth-child(9)  { opacity: 1; transform: none; transition-delay: 480ms; }
+.stagger-fast.is-visible > *:nth-child(10) { opacity: 1; transform: none; transition-delay: 540ms; }
+.stagger-fast.is-visible > *:nth-child(11) { opacity: 1; transform: none; transition-delay: 600ms; }
+.stagger-fast.is-visible > *:nth-child(12) { opacity: 1; transform: none; transition-delay: 660ms; }
+
+/* Slower stagger — 200ms between items. Good for 2–4 large feature blocks. */
+.stagger-slow > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.stagger-slow.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0ms; }
+.stagger-slow.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 200ms; }
+.stagger-slow.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 400ms; }
+.stagger-slow.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 600ms; }
+.stagger-slow.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 800ms; }
+.stagger-slow.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 1000ms; }
+
+
+/* ============================================================
+   SCROLL REVEAL — ADDITIONAL VARIANTS
+   All follow the same JS pattern: class starts hidden,
+   \"is-visible\" class added when element enters viewport.
+   ============================================================ */
+
+/* Blur clear — element starts blurry and sharpens in.
+   Feels more premium than a plain fade. */
+.scroll-reveal-blur {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(12px);
+  transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
+  will-change: opacity, filter, transform;
+}
+.scroll-reveal-blur.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* Drop — falls from above. Opposite of scroll-reveal. */
+.scroll-reveal-drop {
+  opacity: 0;
+  transform: translateY(-32px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-drop.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Flip — rotates from near-vertical to flat. */
+.scroll-reveal-flip {
+  opacity: 0;
+  transform: perspective(600px) rotateX(18deg) translateY(20px);
+  transform-origin: top center;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-flip.is-visible {
+  opacity: 1;
+  transform: perspective(600px) rotateX(0) translateY(0);
+}
+
+/* Zoom out — starts slightly too large, settles to natural size. */
+.scroll-reveal-zoom {
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-zoom.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Slow variant — 1s fade, for large hero-style elements */
+.scroll-reveal-slow {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+  will-change: opacity, transform;
+}
+.scroll-reveal-slow.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Fast variant — 0.3s, for small UI elements like badges */
+.scroll-reveal-fast {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  will-change: opacity, transform;
+}
+.scroll-reveal-fast.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Repeat variant — re-animates every time the element enters the
+   viewport. JS must NOT unobserve — see initScrollRevealRepeat(). */
+.scroll-reveal-repeat {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.scroll-reveal-repeat.is-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.scroll-reveal-repeat.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ============================================================
+   HOVER MICRO-INTERACTIONS
+   All CSS-only unless noted.
+   ============================================================ */
+
+/* Animated underline — grows from left on hover.
+   Apply to inline link or nav text elements. */
+.hover-underline {
+  position: relative;
+  text-decoration: none !important;
+  display: inline-block;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+.hover-underline:hover::after { width: 100%; }
+
+/* Underline teal variant */
+.hover-underline-teal::after { background: var(--accent-teal); }
+
+/* Underline gold variant */
+.hover-underline-gold::after { background: var(--accent-gold); }
+
+/* Border draw — hairline border traces around the element.
+   Apply to buttons, badges, or card wrappers.
+   Base styles (background, border-radius) set in Zoho. */
+.hover-border-draw {
+  position: relative;
+  overflow: hidden;
+}
+.hover-border-draw::before,
+.hover-border-draw::after {
+  content: '';
+  position: absolute;
+  background: var(--accent-teal);
+  transition: transform 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Top and bottom lines */
+.hover-border-draw::before {
+  top: 0; left: 0;
+  width: 100%; height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.hover-border-draw::after {
+  bottom: 0; right: 0;
+  width: 100%; height: 1px;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+.hover-border-draw:hover::before,
+.hover-border-draw:hover::after { transform: scaleX(1); }
+
+/* Fill from bottom — background floods up on hover.
+   Apply to pill buttons or nav items.
+   Set a transparent background + border in Zoho. */
+.hover-fill {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+.hover-fill::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 0;
+  background: var(--accent-teal);
+  transition: height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+}
+.hover-fill:hover::before { height: 100%; }
+.hover-fill:hover { color: white !important; }
+
+.hover-fill-navy::before  { background: var(--color-navy); }
+.hover-fill-gold::before  { background: var(--accent-gold); }
+
+/* Image brightness — subtle brightness lift on hover.
+   Apply to image containers or thumbnail wrappers. */
+.hover-bright {
+  transition: filter var(--transition-base);
+}
+.hover-bright:hover { filter: brightness(1.08) contrast(1.02); }
+
+/* Image dim — card dims to push sibling into focus.
+   Works individually; for group dimming use JS hover-dim-group. */
+.hover-dim {
+  transition: opacity var(--transition-base);
+}
+.hover-dim:hover { opacity: 0.75; }
+
+/* Icon spin — the SVG or icon element inside rotates.
+   Apply to the icon element directly, not the card. */
+.hover-icon-spin {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.hover-icon-spin:hover { transform: rotate(360deg); }
+
+/* Icon bounce — small elastic bounce up on hover */
+.hover-icon-bounce {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+.hover-icon-bounce:hover { transform: translateY(-6px); }
+
+/* Icon wiggle — side-to-side shake on hover */
+.hover-icon-wiggle:hover {
+  animation: wiggle 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20%       { transform: rotate(-8deg); }
+  40%       { transform: rotate(8deg); }
+  60%       { transform: rotate(-5deg); }
+  80%       { transform: rotate(4deg); }
+}
+
+/* Reveal text — hides overflow, slides child text up on hover.
+   Wrap text in a <span> inside the element.
+   Good for button labels or card headings. */
+.hover-slide-up {
+  overflow: hidden;
+  display: inline-block;
+}
+.hover-slide-up span {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hover-slide-up:hover span { transform: translateY(-4px); }
+
+/* Card dim siblings — on hover, non-hovered siblings in the
+   same parent dim. Apply to the parent container. [JS-assisted]
+   JS adds .hover-dim-group-active class to parent on any child hover. */
+.hover-dim-group .hover-dim-item {
+  transition: opacity 0.25s ease;
+}
+.hover-dim-group-active .hover-dim-item:not(:hover) {
+  opacity: 0.55;
+}
+
+/* Focus ring — branded visible focus for keyboard navigation.
+   Apply to interactive elements (buttons, links, inputs). */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+
+/* ============================================================
+   TEXT MICRO-INTERACTIONS
+   ============================================================ */
+
+/* Highlight draw — animated teal underline highlight.
+   Apply to a <span> wrapping key words in a heading. */
+.highlight-draw {
+  position: relative;
+  display: inline;
+  white-space: nowrap;
+}
+.highlight-draw::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 0;
+  height: 8px;
+  background: rgba(0, 112, 139, 0.18);
+  z-index: -1;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.highlight-draw.is-visible::after { width: 100%; }
+
+/* Gold variant */
+.highlight-draw-gold::after {
+  background: rgba(210, 180, 80, 0.22);
+}
+
+/* Typewriter cursor — blinking bar after text.
+   JS populates the text; this styles the cursor. */
+.typewriter-cursor::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent-teal);
+  animation: blink 0.9s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   A thin line at the top of the viewport tracking page scroll.
+   JS sets width via CSS custom property.
+   ============================================================ */
+
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: var(--scroll-progress, 0%);
+  background: linear-gradient(to right, var(--accent-teal), var(--accent-primary));
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+/* Gold variant */
+.scroll-progress-bar.gold {
+  background: linear-gradient(to right, var(--accent-gold), #f0c040);
+}
+
+
+/* ============================================================
+   RIPPLE EFFECT
+   JS injects a .ripple span on click. This styles it.
+   Apply .ripple-host to any button or clickable element.
+   ============================================================ */
+
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-host .ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-expand 0.55s linear;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+@keyframes ripple-expand {
+  to { transform: scale(4); opacity: 0; }
+}
+/* Dark ripple — for light-background buttons */
+.ripple-host.ripple-dark .ripple {
+  background: rgba(26, 54, 93, 0.15);
+}
+
+
+/* ============================================================
+   MAGNETIC ELEMENT
+   JS nudges the element toward the cursor.
+   Apply .magnetic to any element. Strength controlled by JS.
+   ============================================================ */
+
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  display: inline-block;
+}
+
+
+/* ============================================================
+   PARALLAX
+   JS sets --parallax-y custom property per element.
+   Apply .parallax-slow or .parallax-fast to section content.
+   ============================================================ */
+
+.parallax-slow,
+.parallax-fast,
+.parallax-reverse {
+  will-change: transform;
+}
+.parallax-slow    { transform: translateY(var(--parallax-y, 0px)); }
+.parallax-fast    { transform: translateY(var(--parallax-y, 0px)); }
+.parallax-reverse { transform: translateY(var(--parallax-y, 0px)); }
+
+
+/* ============================================================
+   MARQUEE / TICKER
+   Horizontal scrolling text loop — no JS needed.
+   Wrap items in .marquee-track inside .marquee-wrapper.
+   Duplicate the content once for a seamless loop.
+   ============================================================ */
+
+.marquee-wrapper {
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+}
+.marquee-track {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+  flex-shrink: 0;
+}
+.marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* Reverse direction */
+.marquee-track.reverse { animation-direction: reverse; }
+/* Speed variants */
+.marquee-track.fast  { animation-duration: 14s; }
+.marquee-track.slow  { animation-duration: 48s; }
+
+
+
+/* ============================================================
+   SCROLL REVEAL — SKEW VARIANTS
+   ============================================================ */
+
+.scroll-reveal-skew {
+  opacity: 0;
+  transform: translateX(-24px) skewX(-4deg);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-skew.is-visible {
+  opacity: 1;
+  transform: translateX(0) skewX(0deg);
+}
+.scroll-reveal-skew-right {
+  opacity: 0;
+  transform: translateX(24px) skewX(4deg);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-skew-right.is-visible {
+  opacity: 1;
+  transform: translateX(0) skewX(0deg);
+}
+
+
+/* ============================================================
+   WORD REVEAL
+   JS splits text into word spans. Each word slides up staggered.
+   ============================================================ */
+
+.word-reveal .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.word-reveal .word-inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.word-reveal.is-visible .word-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   HOVER SHINE
+   Light sweep passes across element on hover.
+   ============================================================ */
+
+.hover-shine {
+  position: relative;
+  overflow: hidden;
+}
+.hover-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.18) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-18deg);
+  transition: left 0s;
+  pointer-events: none;
+}
+.hover-shine:hover::after {
+  left: 125%;
+  transition: left 0.55s ease;
+}
+
+
+/* ============================================================
+   HOVER REVEAL OVERLAY
+   Dark overlay fades in over a card on hover.
+   Structure:
+     <div class="hover-reveal-card">
+       <img ...> or any content
+       <div class="hover-reveal-content">Text here</div>
+     </div>
+   ============================================================ */
+
+.hover-reveal-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+.hover-reveal-content {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 30, 58, 0.82);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+.hover-reveal-card:hover .hover-reveal-content {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.hover-reveal-card.teal .hover-reveal-content { background: rgba(0,112,139,0.85); }
+.hover-reveal-card.gold .hover-reveal-content { background: rgba(180,140,20,0.88); }
+
+
+/* ============================================================
+   HOVER CARD FLIP
+   Structure:
+     <div class="flip-card" style="height:220px">
+       <div class="flip-card-inner">
+         <div class="flip-card-front">Front</div>
+         <div class="flip-card-back">Back</div>
+       </div>
+     </div>
+   ============================================================ */
+
+.flip-card { perspective: 1000px; }
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+  background: var(--color-navy);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+.flip-card .flip-card-back.teal { background: #0e3d44; }
+.flip-card .flip-card-back.gold { background: #8a6200; }
+
+
+/* ============================================================
+   COUNT-UP
+   JS animates the number. This sets the pre-animation state
+   so there's no flash of unstyled content before JS fires.
+   Apply .count-up to any element containing a number.
+   Optional data attributes:
+     data-count="1200"     — target number (overrides text)
+     data-prefix="$"       — prepend string
+     data-suffix="%"       — append string
+     data-decimals="1"     — decimal places
+     data-duration="1400"  — animation ms (default 1400)
+   ============================================================ */
+
+.count-up {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   TEXT SCRAMBLE
+   JS scrambles characters then settles to real text on scroll.
+   Apply .text-scramble to any short heading or label.
+   Optional: data-delay="200" (ms before starting).
+   Keep to < 40 characters — longer text looks chaotic.
+   ============================================================ */
+
+.text-scramble {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  min-width: 1ch; /* prevent layout jump during scramble */
+}
+
+
+/* ============================================================
+   STAGGER GRID
+   Like stagger-children but staggers left-to-right across rows
+   using a grid-position-aware delay calculation.
+   Apply .stagger-grid to a grid parent.
+   Works with up to 4 columns × N rows (24 items max).
+   ============================================================ */
+
+.stagger-grid > * {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stagger-grid.is-visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay:   0ms; }
+.stagger-grid.is-visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay:  60ms; }
+.stagger-grid.is-visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 120ms; }
+.stagger-grid.is-visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 180ms; }
+.stagger-grid.is-visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay:  80ms; }
+.stagger-grid.is-visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 140ms; }
+.stagger-grid.is-visible > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 200ms; }
+.stagger-grid.is-visible > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 260ms; }
+.stagger-grid.is-visible > *:nth-child(9)  { opacity: 1; transform: none; transition-delay: 160ms; }
+.stagger-grid.is-visible > *:nth-child(10) { opacity: 1; transform: none; transition-delay: 220ms; }
+.stagger-grid.is-visible > *:nth-child(11) { opacity: 1; transform: none; transition-delay: 280ms; }
+.stagger-grid.is-visible > *:nth-child(12) { opacity: 1; transform: none; transition-delay: 340ms; }
+.stagger-grid.is-visible > *:nth-child(13) { opacity: 1; transform: none; transition-delay: 240ms; }
+.stagger-grid.is-visible > *:nth-child(14) { opacity: 1; transform: none; transition-delay: 300ms; }
+.stagger-grid.is-visible > *:nth-child(15) { opacity: 1; transform: none; transition-delay: 360ms; }
+.stagger-grid.is-visible > *:nth-child(16) { opacity: 1; transform: none; transition-delay: 420ms; }
+.stagger-grid.is-visible > *:nth-child(17) { opacity: 1; transform: none; transition-delay: 320ms; }
+.stagger-grid.is-visible > *:nth-child(18) { opacity: 1; transform: none; transition-delay: 380ms; }
+.stagger-grid.is-visible > *:nth-child(19) { opacity: 1; transform: none; transition-delay: 440ms; }
+.stagger-grid.is-visible > *:nth-child(20) { opacity: 1; transform: none; transition-delay: 500ms; }
+.stagger-grid.is-visible > *:nth-child(21) { opacity: 1; transform: none; transition-delay: 400ms; }
+.stagger-grid.is-visible > *:nth-child(22) { opacity: 1; transform: none; transition-delay: 460ms; }
+.stagger-grid.is-visible > *:nth-child(23) { opacity: 1; transform: none; transition-delay: 520ms; }
+.stagger-grid.is-visible > *:nth-child(24) { opacity: 1; transform: none; transition-delay: 580ms; }
+
+
+/* ============================================================
+   REVEAL LINE
+   A horizontal rule that draws left-to-right on scroll entry.
+   Apply .reveal-line to any <hr> or block element.
+   Variants: .reveal-line-teal, .reveal-line-gold, .reveal-line-white
+   ============================================================ */
+
+.reveal-line {
+  width: 0;
+  height: 1px;
+  background: rgba(26, 54, 93, 0.15);
+  border: none;
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  display: block;
+}
+.reveal-line.is-visible { width: 100%; }
+
+.reveal-line-teal  { background: var(--accent-teal); height: 2px; }
+.reveal-line-gold  { background: var(--accent-gold); height: 2px; }
+.reveal-line-sky   { background: var(--accent-primary); height: 2px; }
+.reveal-line-white { background: rgba(255, 255, 255, 0.25); height: 1px; }
+
+/* Short decorative version — 80px wide max, centered */
+.reveal-line-short {
+  max-width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ============================================================
+   SECTION IN-VIEW HOOKS
+   JS adds .section-visible to any section when > 30% in viewport.
+   Use these CSS hooks to trigger effects inside the section
+   without needing JS on individual child elements.
+
+   Usage:
+     Any element inside a section can react to .section-visible
+     being added to its ancestor section.
+
+   Example:
+     .my-section.section-visible .my-heading { opacity: 1; }
+   ============================================================ */
+
+/* Fade-up children when parent section enters view */
+.section-reveal-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.section-visible.section-reveal-children > *,
+.section-visible .section-reveal-children > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Progress fill — a bar that fills when section is in view.
+   Apply to a div inside any section. */
+.progress-fill-bar {
+  height: 4px;
+  background: var(--accent-teal);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+.section-visible .progress-fill-bar,
+.progress-fill-bar.is-visible { width: var(--fill-width, 100%); }
+
+/* Set width via inline style: style="--fill-width: 73%" */
+
+
+/* ============================================================
+   FORM INPUT FOCUS MICRO-INTERACTIONS
+   Applies to Zoho form inputs. The label lifts and the border
+   animates on focus.
+   ============================================================ */
+
+/* Branded focus outline for all interactive elements */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+  border-color: var(--accent-teal) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Animated bottom-border focus line.
+   Apply .input-line to the input element. */
+.input-line {
+  border: none !important;
+  border-bottom: 2px solid #cbd5e0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  transition: border-color 0.25s ease !important;
+}
+.input-line:focus {
+  border-bottom-color: var(--accent-teal) !important;
+  outline: none !important;
+}
+
+/* Glow focus — adds a soft teal shadow on focus.
+   Apply .input-glow to the input container or input. */
+.input-glow:focus-within {
+  box-shadow: 0 0 0 3px rgba(0, 112, 139, 0.15);
+  border-color: var(--accent-teal) !important;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+
+/* ============================================================
+   HOVER ARROW
+   A → arrow slides in from left to replace a static state.
+   Apply .hover-arrow to any link or button text element.
+   Structure: <span class="hover-arrow">Learn more</span>
+   ============================================================ */
+
+.hover-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  transition: gap 0.25s ease;
+}
+.hover-arrow::after {
+  content: '→';
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  font-style: normal;
+}
+.hover-arrow:hover {
+  gap: 8px;
+}
+.hover-arrow:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ============================================================
+   TOOLTIP
+   Pure CSS tooltip on hover. No JS.
+   Apply .tooltip to the trigger element.
+   Set data-tip="Your tooltip text" on the element.
+   Variants: .tooltip-top (default), .tooltip-bottom, .tooltip-right
+   ============================================================ */
+
+[data-tip] {
+  position: relative;
+}
+[data-tip]::before {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--color-navy);
+  color: white;
+  font-size: 12px;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  line-height: 1.4;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+  max-width: 220px;
+  white-space: normal;
+  text-align: center;
+}
+[data-tip]::after {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border: 5px solid transparent;
+  border-top-color: var(--color-navy);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+}
+[data-tip]:hover::before,
+[data-tip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+[data-tip].tooltip-bottom::before {
+  bottom: auto;
+  top: calc(100% + 8px);
+  transform: translateX(-50%) translateY(-4px);
+}
+[data-tip].tooltip-bottom::after {
+  bottom: auto;
+  top: calc(100% + 2px);
+  transform: translateX(-50%) translateY(-4px);
+  border-top-color: transparent;
+  border-bottom-color: var(--color-navy);
+}
+[data-tip].tooltip-bottom:hover::before,
+[data-tip].tooltip-bottom:hover::after {
+  transform: translateX(-50%) translateY(0);
+}
+
+[data-tip].tooltip-right::before {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%) translateX(-4px);
+}
+[data-tip].tooltip-right::after {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 2px);
+  transform: translateY(-50%) translateX(-4px);
+  border-top-color: transparent;
+  border-right-color: var(--color-navy);
+}
+[data-tip].tooltip-right:hover::before,
+[data-tip].tooltip-right:hover::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+
+
+.hover-border-glow {
+  transition: box-shadow 0.35s ease;
+  border-radius: var(--radius-md);
+}
+.hover-border-glow:hover {
+  box-shadow: 0 0 0 2px var(--accent-teal), 0 0 16px 2px rgba(131,174,175,0.3), var(--shadow-md);
+}
+.hover-border-glow.gold:hover {
+  box-shadow: 0 0 0 2px var(--accent-gold), 0 0 16px 2px rgba(210,180,80,0.3), var(--shadow-md);
+}
+.hover-border-glow.sky:hover {
+  box-shadow: 0 0 0 2px var(--accent-primary), 0 0 16px 2px rgba(56,182,255,0.3), var(--shadow-md);
+}
+
+/* ============================================================
+   REDUCED MOTION — NEW ADDITIONS
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal-blur,
+  .scroll-reveal-drop,
+  .scroll-reveal-flip,
+  .scroll-reveal-zoom,
+  .scroll-reveal-slow,
+  .scroll-reveal-fast,
+  .scroll-reveal-repeat,
+  .scroll-reveal-skew,
+  .scroll-reveal-skew-right {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .word-reveal .word-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hover-icon-spin,
+  .hover-icon-bounce,
+  .hover-icon-wiggle:hover,
+  .hover-underline::after,
+  .hover-border-draw::before,
+  .hover-border-draw::after,
+  .hover-fill::before,
+  .hover-slide-up span,
+  .hover-shine::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .flip-card-inner {
+    transition: none !important;
+  }
+  .hover-reveal-content {
+    transition: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .ripple-host .ripple {
+    animation: none !important;
+  }
+  .typewriter-cursor::after {
+    animation: none !important;
+    opacity: 1;
+  }
+}
 
 
 /* ============================================================
@@ -3742,4 +4728,34 @@ body {
     background: #0d1f3c !important;
     background-size: auto !important;
   }
+}
+
+
+/* ── REDUCED MOTION — SCROLL + MICRO INTERACTIONS ── */
+@media (prefers-reduced-motion: reduce) {
+  .stagger-grid > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .reveal-line,
+  .reveal-line-teal,
+  .reveal-line-gold,
+  .reveal-line-sky,
+  .reveal-line-white {
+    width: 100% !important;
+    transition: none !important;
+  }
+  .section-reveal-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .progress-fill-bar {
+    width: var(--fill-width, 100%) !important;
+    transition: none !important;
+  }
+  .hover-arrow::after { transition: none !important; }
+  [data-tip]::before,
+  [data-tip]::after   { transition: none !important; }
 }
