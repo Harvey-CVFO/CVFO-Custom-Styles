@@ -4741,26 +4741,22 @@ select:focus-visible {
 }
 
 
+
 /* ============================================================
    CONTACT PAGE
+   Classes use brand tokens throughout.
+   No hardcoded hex — always var(--color-*) or var(--accent-*).
+   Apply classes directly to native Zoho elements.
+   Code Snippets used only where Zoho native elements can't achieve
+   the layout (e.g., flex rows requiring multiple child elements).
    ============================================================ */
 
 /* ── SECTION 1: HERO ─────────────────────────────────────── */
 
-/* Thin teal accent bar above the hero headline.
-   Apply contact-hero-accent to a Box element above the H1. */
-.contact-hero-accent {
-  width: 48px !important;
-  height: 3px !important;
-  background: var(--accent-teal) !important;
-  border-radius: 2px !important;
-  margin: 0 auto 20px !important;
-  display: block !important;
-}
-
-/* Persona hint pills below the subheadline.
-   Apply contact-persona-strip to a Box wrapping two pill spans.
-   Apply contact-persona-pill to each pill span. */
+/* Persona hint pills — apply directly to Zoho Text elements.
+   ::before adds the teal dot. Pill border and color use brand tokens.
+   Apply contact-persona-strip to the Row or Box wrapping the pills.
+   Apply contact-persona-pill to each Text element. */
 .contact-persona-strip {
   display: flex !important;
   gap: 10px !important;
@@ -4772,11 +4768,11 @@ select:focus-visible {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
-  padding: 6px 14px !important;
+  padding: 6px 16px !important;
   border-radius: var(--radius-pill) !important;
-  border: 1px solid rgba(131, 174, 175, 0.35) !important;
+  border: 1px solid rgba(131, 174, 175, 0.4) !important;
   color: var(--accent-teal) !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: 0.03em !important;
 }
 .contact-persona-pill::before {
   content: '';
@@ -4790,40 +4786,32 @@ select:focus-visible {
 
 /* ── SECTION 2: FORM + CONTACT DETAILS ───────────────────── */
 
-/* Form column wrapper — white card, teal top border.
-   Apply to a Box wrapping the Zoho Forms embed. */
+/* Form column card — apply to a Box wrapping the form embed.
+   Top border uses sky (primary accent) to signal action. */
 .contact-form-card {
   background: var(--color-white) !important;
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-md) !important;
   padding: 40px 36px !important;
-  border-top: 4px solid var(--accent-teal) !important;
+  border-top: 4px solid var(--accent-primary) !important;
 }
 
-/* Form column label above the card — "Tell us about your situation" */
-.contact-form-eyebrow {
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  color: var(--accent-teal) !important;
-  margin-bottom: 8px !important;
-  display: block !important;
-}
-
-/* Trust strip below the form embed.
-   Apply to a Box directly below the Zoho Forms element. */
+/* Trust strip — apply contact-form-trust to the Row below the form.
+   Apply contact-form-trust-item to each Text element in that row.
+   ::before adds the teal checkmark — no Code Snippet needed. */
 .contact-form-trust {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 16px 24px !important;
+  gap: 12px 24px !important;
   margin-top: 20px !important;
   padding-top: 20px !important;
-  border-top: 1px solid #e2e8f0 !important;
+  border-top: 1px solid var(--color-lightgray) !important;
 }
 .contact-form-trust-item {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
   gap: 7px !important;
-  color: #718096 !important;
+  color: var(--color-darkgray) !important;
 }
 .contact-form-trust-item::before {
   content: '✓';
@@ -4832,80 +4820,73 @@ select:focus-visible {
   flex-shrink: 0;
 }
 
-/* Right column — sticky info card wrapper */
+/* Right column sticky card — apply to the Box wrapping contact details.
+   Sticky keeps the card in view while the form scrolls on desktop. */
 .contact-info-card {
   background: var(--color-white) !important;
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-sm) !important;
   padding: 36px 32px !important;
   position: sticky !important;
-  top: 100px !important;  /* below fixed nav */
+  top: 100px !important;
 }
 
-/* Individual contact detail row: icon + label + value */
+/* Contact detail rows — apply contact-detail-item to each Box row.
+   Each row: native Box (contact-detail-item) contains two native
+   Text elements — one for the label (contact-detail-label),
+   one for the value (contact-detail-value).
+   Border-bottom row separator uses lightgray token. */
 .contact-detail-item {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
   padding: 14px 0 !important;
-  border-bottom: 1px solid #f0f4f8 !important;
+  border-bottom: 1px solid var(--color-lightgray) !important;
 }
 .contact-detail-item:last-of-type {
   border-bottom: none !important;
-}
-.contact-detail-icon {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 8px !important;
-  background: rgba(131, 174, 175, 0.1) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
-  color: var(--accent-teal) !important;
+  padding-bottom: 0 !important;
 }
 .contact-detail-label {
   display: block !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
-  color: #a0aec0 !important;
-  margin-bottom: 2px !important;
+  color: var(--accent-teal) !important;
+  margin-bottom: 3px !important;
 }
 .contact-detail-value {
   color: var(--color-navy) !important;
-  font-weight: 500 !important;
 }
 
-/* Office hours block — soft teal background box inside the card */
+/* Office hours inset — apply to a Box element.
+   Reuses the same visual language as svc-examples. */
 .contact-hours-block {
-  background: rgba(131, 174, 175, 0.07) !important;
+  background: rgba(131, 174, 175, 0.06) !important;
   border-left: 3px solid var(--accent-teal) !important;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
   padding: 14px 16px !important;
   margin-top: 20px !important;
 }
 
-/* "We partner with" credential line at the bottom of right column */
-.contact-credential-strip {
+/* Credential note — apply to a Text element at the bottom of info card.
+   Uses darkgray token for body text, not a custom hardcoded gray. */
+.contact-credential-note {
   margin-top: 20px !important;
   padding-top: 16px !important;
-  border-top: 1px solid #e2e8f0 !important;
-  color: #718096 !important;
-  line-height: 1.6 !important;
+  border-top: 1px solid var(--color-lightgray) !important;
+  color: var(--color-darkgray) !important;
 }
 
 
 /* ── SECTION 3: WHAT HAPPENS NEXT ────────────────────────── */
 
-/* Step card — simpler than hiw-step, no accordion.
-   Three of these sit in a 3-column row. */
+/* Step cards — apply to each Box in the 3-column row.
+   ::before top bar uses teal→sky gradient matching site system.
+   hover-lift behavior via transform matches other card patterns. */
 .contact-step {
   position: relative !important;
   background: var(--color-white) !important;
   border-radius: var(--radius-lg) !important;
   padding: 32px 28px !important;
   box-shadow: var(--shadow-sm) !important;
-  border: 1px solid #e8edf2 !important;
+  border: 1px solid rgba(131, 174, 175, 0.2) !important;
   transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
   height: 100% !important;
 }
@@ -4913,18 +4894,21 @@ select:focus-visible {
   box-shadow: var(--shadow-md) !important;
   transform: translateY(-4px) !important;
 }
-
-/* Top colored bar — teal gradient, same system as hiw-step */
 .contact-step::before {
   content: '' !important;
   position: absolute !important;
   top: 0 !important; left: 0 !important; right: 0 !important;
   height: 3px !important;
-  background: linear-gradient(to right, var(--accent-teal), var(--accent-primary)) !important;
+  background: linear-gradient(
+    to right,
+    var(--accent-teal),
+    var(--accent-primary)
+  ) !important;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
 }
 
-/* Step number badge */
+/* Step number badge — apply to a Text element inside the step card.
+   Matches hiw-step-badge visual system. */
 .contact-step-num {
   display: inline-flex !important;
   align-items: center !important;
@@ -4932,58 +4916,46 @@ select:focus-visible {
   width: 32px !important;
   height: 32px !important;
   border-radius: 50% !important;
-  background: var(--accent-teal) !important;
-  color: white !important;
+  background: var(--color-navy) !important;
+  color: var(--color-white) !important;
   font-weight: 700 !important;
   margin-bottom: 16px !important;
-  flex-shrink: 0 !important;
 }
 
-/* Connector between steps — horizontal dotted line.
-   Apply to a Box element placed between step cards in the row,
-   or use the ::after pseudo on the step itself.
-   We use a wrapper approach since Zoho can't target nth-child easily. */
-.contact-steps-row {
-  position: relative !important;
-}
-/* Arrow connector — apply this class to a Box element
-   between each step card. Set width to fill the gap. */
+/* Arrow connector — apply to a narrow Box between step columns.
+   Hidden on mobile. */
 .contact-step-connector {
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   justify-content: center !important;
-  padding-top: 32px !important; /* aligns with center of step num badge */
-  color: rgba(131, 174, 175, 0.5) !important;
-  flex-shrink: 0 !important;
+  padding-top: 48px !important;
 }
 .contact-step-connector::after {
   content: '→';
-  font-size: 20px;
+  font-size: 18px;
   color: var(--accent-teal);
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
-/* Closing line below the three steps */
+/* Closing italic line below steps — apply to a Text element. */
 .contact-steps-closing {
-  max-width: 600px !important;
-  margin: 32px auto 0 !important;
   text-align: center !important;
-  color: #718096 !important;
-  font-style: italic !important;
+  color: var(--color-darkgray) !important;
   padding-top: 24px !important;
-  border-top: 1px solid #e8edf2 !important;
+  border-top: 1px solid var(--color-lightgray) !important;
+  margin-top: 12px !important;
 }
 
-/* Mobile: hide connectors, stack vertically */
+/* ── MOBILE ──────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  .contact-step-connector { display: none !important; }
-  .contact-form-card      { padding: 28px 20px !important; }
-  .contact-info-card      { position: static !important; margin-top: 32px !important; }
-  .contact-detail-item    { gap: 10px !important; }
-  .contact-persona-strip  { flex-direction: column !important; align-items: center !important; }
+  .contact-step-connector  { display: none !important; }
+  .contact-form-card       { padding: 24px 18px !important; }
+  .contact-info-card       { position: static !important; margin-top: 32px !important; }
+  .contact-persona-strip   { flex-direction: column !important; align-items: center !important; }
+  .contact-form-trust      { flex-direction: column !important; gap: 10px !important; }
 }
 
-/* Reduced motion */
+/* ── REDUCED MOTION ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .contact-step { transition: none !important; }
 }
