@@ -4739,3 +4739,251 @@ select:focus-visible {
   [data-tip]::before,
   [data-tip]::after   { transition: none !important; }
 }
+
+
+/* ============================================================
+   CONTACT PAGE
+   ============================================================ */
+
+/* ── SECTION 1: HERO ─────────────────────────────────────── */
+
+/* Thin teal accent bar above the hero headline.
+   Apply contact-hero-accent to a Box element above the H1. */
+.contact-hero-accent {
+  width: 48px !important;
+  height: 3px !important;
+  background: var(--accent-teal) !important;
+  border-radius: 2px !important;
+  margin: 0 auto 20px !important;
+  display: block !important;
+}
+
+/* Persona hint pills below the subheadline.
+   Apply contact-persona-strip to a Box wrapping two pill spans.
+   Apply contact-persona-pill to each pill span. */
+.contact-persona-strip {
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  margin-top: 20px !important;
+}
+.contact-persona-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  border-radius: var(--radius-pill) !important;
+  border: 1px solid rgba(131, 174, 175, 0.35) !important;
+  color: var(--accent-teal) !important;
+  letter-spacing: 0.02em !important;
+}
+.contact-persona-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-teal);
+  flex-shrink: 0;
+}
+
+
+/* ── SECTION 2: FORM + CONTACT DETAILS ───────────────────── */
+
+/* Form column wrapper — white card, teal top border.
+   Apply to a Box wrapping the Zoho Forms embed. */
+.contact-form-card {
+  background: var(--color-white) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  padding: 40px 36px !important;
+  border-top: 4px solid var(--accent-teal) !important;
+}
+
+/* Form column label above the card — "Tell us about your situation" */
+.contact-form-eyebrow {
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: var(--accent-teal) !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* Trust strip below the form embed.
+   Apply to a Box directly below the Zoho Forms element. */
+.contact-form-trust {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 16px 24px !important;
+  margin-top: 20px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+.contact-form-trust-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  color: #718096 !important;
+}
+.contact-form-trust-item::before {
+  content: '✓';
+  color: var(--accent-teal);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Right column — sticky info card wrapper */
+.contact-info-card {
+  background: var(--color-white) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 36px 32px !important;
+  position: sticky !important;
+  top: 100px !important;  /* below fixed nav */
+}
+
+/* Individual contact detail row: icon + label + value */
+.contact-detail-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  padding: 14px 0 !important;
+  border-bottom: 1px solid #f0f4f8 !important;
+}
+.contact-detail-item:last-of-type {
+  border-bottom: none !important;
+}
+.contact-detail-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: rgba(131, 174, 175, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  color: var(--accent-teal) !important;
+}
+.contact-detail-label {
+  display: block !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: #a0aec0 !important;
+  margin-bottom: 2px !important;
+}
+.contact-detail-value {
+  color: var(--color-navy) !important;
+  font-weight: 500 !important;
+}
+
+/* Office hours block — soft teal background box inside the card */
+.contact-hours-block {
+  background: rgba(131, 174, 175, 0.07) !important;
+  border-left: 3px solid var(--accent-teal) !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+  padding: 14px 16px !important;
+  margin-top: 20px !important;
+}
+
+/* "We partner with" credential line at the bottom of right column */
+.contact-credential-strip {
+  margin-top: 20px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #e2e8f0 !important;
+  color: #718096 !important;
+  line-height: 1.6 !important;
+}
+
+
+/* ── SECTION 3: WHAT HAPPENS NEXT ────────────────────────── */
+
+/* Step card — simpler than hiw-step, no accordion.
+   Three of these sit in a 3-column row. */
+.contact-step {
+  position: relative !important;
+  background: var(--color-white) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 32px 28px !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid #e8edf2 !important;
+  transition: box-shadow var(--transition-base), transform var(--transition-base) !important;
+  height: 100% !important;
+}
+.contact-step:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* Top colored bar — teal gradient, same system as hiw-step */
+.contact-step::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(to right, var(--accent-teal), var(--accent-primary)) !important;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+}
+
+/* Step number badge */
+.contact-step-num {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: var(--accent-teal) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  margin-bottom: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Connector between steps — horizontal dotted line.
+   Apply to a Box element placed between step cards in the row,
+   or use the ::after pseudo on the step itself.
+   We use a wrapper approach since Zoho can't target nth-child easily. */
+.contact-steps-row {
+  position: relative !important;
+}
+/* Arrow connector — apply this class to a Box element
+   between each step card. Set width to fill the gap. */
+.contact-step-connector {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-top: 32px !important; /* aligns with center of step num badge */
+  color: rgba(131, 174, 175, 0.5) !important;
+  flex-shrink: 0 !important;
+}
+.contact-step-connector::after {
+  content: '→';
+  font-size: 20px;
+  color: var(--accent-teal);
+  opacity: 0.4;
+}
+
+/* Closing line below the three steps */
+.contact-steps-closing {
+  max-width: 600px !important;
+  margin: 32px auto 0 !important;
+  text-align: center !important;
+  color: #718096 !important;
+  font-style: italic !important;
+  padding-top: 24px !important;
+  border-top: 1px solid #e8edf2 !important;
+}
+
+/* Mobile: hide connectors, stack vertically */
+@media (max-width: 767px) {
+  .contact-step-connector { display: none !important; }
+  .contact-form-card      { padding: 28px 20px !important; }
+  .contact-info-card      { position: static !important; margin-top: 32px !important; }
+  .contact-detail-item    { gap: 10px !important; }
+  .contact-persona-strip  { flex-direction: column !important; align-items: center !important; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .contact-step { transition: none !important; }
+}
