@@ -1155,11 +1155,14 @@
 
   /* ── CARD BUILDER ───────────────────────────────────────── */
 
-  function buildCard(member) {
+  function buildCard(member, index) {
     const card = document.createElement('div');
-    // Don't use scroll-reveal here — cards are injected after the observer
-    // has already run. Force visible and add a simple fade-in instead.
-    card.className = 'team-card team-card-fadein';
+    card.className = 'team-card';
+    // Start invisible — JS transitions to visible after DOM paint
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+    card.dataset.cardIndex = index;
 
     const photoSrc  = member.photo  || '';
     const photoAlt  = member.name   || 'Team member';
@@ -1220,12 +1223,26 @@
         const grid = document.createElement('div');
         grid.className = 'team-grid';
 
-        members.forEach(function (member) {
-          grid.appendChild(buildCard(member));
+        members.forEach(function (member, index) {
+          grid.appendChild(buildCard(member, index));
         });
 
         container.innerHTML = '';
         container.appendChild(grid);
+
+        // Trigger fade-in after browser has painted the grid
+        // requestAnimationFrame alone isn't enough — need two frames to guarantee paint
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            grid.querySelectorAll('.team-card').forEach(function (card) {
+              const i = parseInt(card.dataset.cardIndex || '0', 10);
+              setTimeout(function () {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+              }, i * 60);
+            });
+          });
+        });
       })
       .catch(function (err) {
         console.error('renderTeamCards fetch error:', err);
