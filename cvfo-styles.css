@@ -5196,6 +5196,15 @@ select:focus-visible {
   text-align: left !important;
 }
 
+.team-modal-bio p {
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+.team-modal-bio p:last-child {
+  margin-bottom: 0 !important;
+}
+
 .team-modal-close {
   position: absolute !important;
   top: 12px !important;
