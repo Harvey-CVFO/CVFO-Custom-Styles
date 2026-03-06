@@ -5122,9 +5122,10 @@ select:focus-visible {
   -webkit-backdrop-filter: blur(4px) !important;
   z-index: 9000 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   justify-content: center !important;
-  padding: 24px !important;
+  padding: 40px 24px !important;
+  overflow-y: auto !important;
   opacity: 0 !important;
   transition: opacity 0.2s ease !important;
 }
@@ -5138,8 +5139,7 @@ select:focus-visible {
   border-radius: 12px !important;
   max-width: 540px !important;
   width: 100% !important;
-  max-height: 85vh !important;
-  overflow-y: auto !important;
+  flex-shrink: 0 !important;
   position: relative !important;
   transform: translateY(16px) !important;
   transition: transform 0.25s ease !important;
