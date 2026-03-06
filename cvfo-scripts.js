@@ -1131,10 +1131,14 @@
 
     const bioEl = modalOverlay.querySelector('.team-modal-bio');
     if (member.bio) {
-      bioEl.textContent = member.bio;
+      // Split on double newlines to get paragraphs
+      const paragraphs = member.bio.split(/\n\n+/).filter(Boolean);
+      bioEl.innerHTML = paragraphs
+        .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+        .join('');
       bioEl.classList.remove('team-modal-no-bio');
     } else {
-      bioEl.textContent = 'Full bio coming soon.';
+      bioEl.innerHTML = '<p>Full bio coming soon.</p>';
       bioEl.classList.add('team-modal-no-bio');
     }
 
