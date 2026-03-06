@@ -4959,3 +4959,274 @@ select:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .contact-step { transition: none !important; }
 }
+
+
+/* ============================================================
+   TEAM CARDS (EliteRT data, CVFO-rendered)
+   Applied via renderTeamCards() in cvfo-scripts.js.
+   
+   CLASSES:
+   .team-grid          — card grid container
+   .team-card          — individual member card
+   .team-card-header   — gradient bar at top of card
+   .team-card-photo    — circular headshot
+   .team-card-name     — member name
+   .team-card-title    — member title/role
+   .team-card-btn      — Bio button
+   .team-modal-overlay — full-screen modal backdrop
+   .team-modal         — modal content box
+   .team-modal-close   — × close button
+   ============================================================ */
+
+/* Grid */
+.team-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px !important;
+  max-width: 1024px !important;
+  margin: 0 auto !important;
+}
+
+@media (min-width: 640px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 186px) !important;
+    justify-content: center !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(5, 186px) !important;
+  }
+}
+
+/* Card */
+.team-card {
+  position: relative !important;
+  background: #ffffff !important;
+  border: 1px solid var(--color-lightgray) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+.team-card:hover {
+  border-color: var(--accent-teal) !important;
+  box-shadow: 0 6px 24px rgba(0, 112, 139, 0.12) !important;
+}
+
+/* Gradient header bar — navy → teal */
+.team-card-header {
+  height: 62px !important;
+  background: linear-gradient(to right, var(--color-navy), var(--accent-teal)) !important;
+  flex-shrink: 0 !important;
+}
+
+/* Card body */
+.team-card-body {
+  padding: 0 12px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  flex: 1 !important;
+  text-align: center !important;
+}
+
+/* Photo — overlaps header */
+.team-card-photo {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 3px solid #ffffff !important;
+  margin-top: -40px !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+}
+
+@media (min-width: 640px) {
+  .team-card-photo {
+    width: 96px !important;
+    height: 96px !important;
+    margin-top: -48px !important;
+  }
+}
+
+/* Name */
+.team-card-name {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--color-navy) !important;
+  margin-bottom: 4px !important;
+  line-height: 1.3 !important;
+}
+
+/* Title */
+.team-card-title {
+  font-size: 12px !important;
+  color: var(--color-darkgray) !important;
+  line-height: 1.4 !important;
+  flex: 1 !important;
+  margin-bottom: 12px !important;
+}
+
+/* Bio button */
+.team-card-btn {
+  display: block !important;
+  width: 100% !important;
+  padding: 8px 0 !important;
+  background: var(--color-navy) !important;
+  color: #ffffff !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-align: center !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease !important;
+}
+
+.team-card-btn:hover {
+  background: var(--accent-teal) !important;
+}
+
+/* Loading / error states */
+.team-loading {
+  text-align: center !important;
+  padding: 48px 24px !important;
+  color: var(--color-darkgray) !important;
+  font-size: 15px !important;
+}
+
+.team-error {
+  text-align: center !important;
+  padding: 32px 24px !important;
+  color: #c0392b !important;
+  font-size: 14px !important;
+}
+
+/* ── MODAL ──────────────────────────────────────────────── */
+
+.team-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(13, 28, 58, 0.72) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  z-index: 9000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.team-modal-overlay.is-open {
+  opacity: 1 !important;
+}
+
+.team-modal {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  max-width: 540px !important;
+  width: 100% !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+  position: relative !important;
+  transform: translateY(16px) !important;
+  transition: transform 0.25s ease !important;
+}
+
+.team-modal-overlay.is-open .team-modal {
+  transform: translateY(0) !important;
+}
+
+.team-modal-header {
+  height: 80px !important;
+  background: linear-gradient(to right, var(--color-navy), var(--accent-teal)) !important;
+  border-radius: 12px 12px 0 0 !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+
+.team-modal-photo {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 4px solid #ffffff !important;
+  position: absolute !important;
+  bottom: -48px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+.team-modal-body {
+  padding: 60px 32px 32px !important;
+  text-align: center !important;
+}
+
+.team-modal-name {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: var(--color-navy) !important;
+  margin-bottom: 4px !important;
+}
+
+.team-modal-title {
+  font-size: 14px !important;
+  color: var(--accent-teal) !important;
+  font-weight: 500 !important;
+  margin-bottom: 20px !important;
+}
+
+.team-modal-bio {
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: var(--color-darkgray) !important;
+  text-align: left !important;
+}
+
+.team-modal-close {
+  position: absolute !important;
+  top: 12px !important;
+  right: 14px !important;
+  background: rgba(255,255,255,0.15) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.15s ease !important;
+}
+
+.team-modal-close:hover {
+  background: rgba(255,255,255,0.3) !important;
+}
+
+/* No bio fallback */
+.team-modal-no-bio {
+  color: var(--color-darkgray) !important;
+  font-style: italic !important;
+  font-size: 14px !important;
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .team-card,
+  .team-modal-overlay,
+  .team-modal { transition: none !important; }
+}
