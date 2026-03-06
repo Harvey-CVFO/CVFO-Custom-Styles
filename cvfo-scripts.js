@@ -1057,3 +1057,183 @@
   }
 
 })();
+
+
+/* ============================================================
+   TEAM CARD RENDERER
+   Fetches static JSON from GitHub Pages, renders team member
+   cards with bio modal into a target container element.
+
+   USAGE (Zoho Sites Code Snippet):
+   <div id="cvfo-team-ppt"></div>
+   <script>
+     renderTeamCards({
+       containerId: 'cvfo-team-ppt',
+       jsonUrl: 'https://harvey-cvfo.github.io/CVFO-Custom-Styles/team-ppt.json'
+     });
+   </script>
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  /* ── MODAL ─────────────────────────────────────────────── */
+
+  let modalOverlay = null;
+
+  function createModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'team-modal-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Team member bio');
+
+    overlay.innerHTML = `
+      <div class="team-modal">
+        <div class="team-modal-header">
+          <img class="team-modal-photo" src="" alt="">
+          <button class="team-modal-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="team-modal-body">
+          <div class="team-modal-name"></div>
+          <div class="team-modal-title"></div>
+          <div class="team-modal-bio"></div>
+        </div>
+      </div>
+    `;
+
+    // Close on overlay click (outside modal box)
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Close on × button
+    overlay.querySelector('.team-modal-close').addEventListener('click', closeModal);
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+
+  function openModal(member) {
+    if (!modalOverlay) modalOverlay = createModal();
+
+    const photo = modalOverlay.querySelector('.team-modal-photo');
+    photo.src = member.photo || '';
+    photo.alt = member.name || '';
+
+    modalOverlay.querySelector('.team-modal-name').textContent  = member.name  || '';
+    modalOverlay.querySelector('.team-modal-title').textContent = member.title || '';
+
+    const bioEl = modalOverlay.querySelector('.team-modal-bio');
+    if (member.bio) {
+      bioEl.textContent = member.bio;
+      bioEl.classList.remove('team-modal-no-bio');
+    } else {
+      bioEl.textContent = 'Full bio coming soon.';
+      bioEl.classList.add('team-modal-no-bio');
+    }
+
+    // Trigger open animation on next frame
+    requestAnimationFrame(() => {
+      modalOverlay.classList.add('is-open');
+    });
+
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modalOverlay) return;
+    modalOverlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+
+  /* ── CARD BUILDER ───────────────────────────────────────── */
+
+  function buildCard(member) {
+    const card = document.createElement('div');
+    card.className = 'team-card scroll-reveal';
+
+    const photoSrc  = member.photo  || '';
+    const photoAlt  = member.name   || 'Team member';
+    const name      = member.name   || '';
+    const title     = member.title  || '';
+    const btnLabel  = member.buttonLabel || 'Bio';
+
+    card.innerHTML = `
+      <div class="team-card-header"></div>
+      <div class="team-card-body">
+        <img class="team-card-photo" src="${photoSrc}" alt="${photoAlt}" loading="lazy">
+        <div class="team-card-name">${name}</div>
+        <div class="team-card-title">${title}</div>
+        <button class="team-card-btn">${btnLabel}</button>
+      </div>
+    `;
+
+    card.querySelector('.team-card-btn').addEventListener('click', function () {
+      openModal(member);
+    });
+
+    return card;
+  }
+
+
+  /* ── MAIN FUNCTION ──────────────────────────────────────── */
+
+  window.renderTeamCards = function (options) {
+    const { containerId, jsonUrl } = options || {};
+
+    if (!containerId || !jsonUrl) {
+      console.warn('renderTeamCards: containerId and jsonUrl are required.');
+      return;
+    }
+
+    const container = document.getElementById(containerId);
+    if (!container) {
+      console.warn(`renderTeamCards: element #${containerId} not found.`);
+      return;
+    }
+
+    // Show loading state
+    container.innerHTML = '<div class="team-loading">Loading team...</div>';
+
+    fetch(jsonUrl)
+      .then(function (res) {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(function (data) {
+        const members = data.members || [];
+
+        if (!members.length) {
+          container.innerHTML = '<div class="team-error">No team members found.</div>';
+          return;
+        }
+
+        const grid = document.createElement('div');
+        grid.className = 'team-grid';
+
+        members.forEach(function (member) {
+          grid.appendChild(buildCard(member));
+        });
+
+        container.innerHTML = '';
+        container.appendChild(grid);
+
+        // Re-run scroll reveal for newly inserted cards
+        if (typeof initScrollReveal === 'function') {
+          initScrollReveal();
+        }
+      })
+      .catch(function (err) {
+        console.error('renderTeamCards fetch error:', err);
+        container.innerHTML = '<div class="team-error">Unable to load team data. Please try refreshing.</div>';
+      });
+  };
+
+})();
