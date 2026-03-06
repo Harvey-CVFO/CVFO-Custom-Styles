@@ -1079,8 +1079,6 @@
 
   /* ── MODAL ─────────────────────────────────────────────── */
 
-  let modalOverlay = null;
-
   function createModal() {
     const overlay = document.createElement('div');
     overlay.className = 'team-modal-overlay';
@@ -1102,36 +1100,48 @@
       </div>
     `;
 
-    // Close on overlay click (outside modal box)
+    const closeBtn = overlay.querySelector('.team-modal-close');
+
+    function close() {
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      // Remove from DOM after transition completes
+      setTimeout(function () {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 250);
+    }
+
     overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeModal();
+      if (e.target === overlay) close();
     });
 
-    // Close on × button
-    overlay.querySelector('.team-modal-close').addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', close);
 
-    // Close on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeModal();
-    });
+    // Scoped keydown listener — removed with overlay
+    function onKeyDown(e) {
+      if (e.key === 'Escape') {
+        close();
+        document.removeEventListener('keydown', onKeyDown);
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
 
-    document.body.appendChild(overlay);
     return overlay;
   }
 
   function openModal(member) {
-    if (!modalOverlay) modalOverlay = createModal();
+    // Always create a fresh overlay — avoids stale state on reuse
+    const overlay = createModal();
 
-    const photo = modalOverlay.querySelector('.team-modal-photo');
+    const photo = overlay.querySelector('.team-modal-photo');
     photo.src = member.photo || '';
     photo.alt = member.name || '';
 
-    modalOverlay.querySelector('.team-modal-name').textContent  = member.name  || '';
-    modalOverlay.querySelector('.team-modal-title').textContent = member.title || '';
+    overlay.querySelector('.team-modal-name').textContent  = member.name  || '';
+    overlay.querySelector('.team-modal-title').textContent = member.title || '';
 
-    const bioEl = modalOverlay.querySelector('.team-modal-bio');
+    const bioEl = overlay.querySelector('.team-modal-bio');
     if (member.bio) {
-      // Split on double newlines to get paragraphs
       const paragraphs = member.bio.split(/\n\n+/).filter(Boolean);
       bioEl.innerHTML = paragraphs
         .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
@@ -1142,18 +1152,13 @@
       bioEl.classList.add('team-modal-no-bio');
     }
 
-    // Trigger open animation on next frame
-    requestAnimationFrame(() => {
-      modalOverlay.classList.add('is-open');
-    });
-
+    document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
-  }
 
-  function closeModal() {
-    if (!modalOverlay) return;
-    modalOverlay.classList.remove('is-open');
-    document.body.style.overflow = '';
+    // Trigger open animation on next frame
+    requestAnimationFrame(function () {
+      overlay.classList.add('is-open');
+    });
   }
 
 
