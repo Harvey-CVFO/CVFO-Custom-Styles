@@ -53,8 +53,8 @@ function parseMembers(html) {
     // Photo
     const photo = $el.find('img').first().attr('src') || '';
 
-    // Bio text — lives in a modal element inside the same container
-    const bio = $el.find('[class*="member-bio"], [class*="description"]').first().text().trim();
+    // Bio text — stored in data-description attribute on the Bio button
+    const bio = $el.find('button[data-description]').first().attr('data-description') || '';
 
     // Button label (usually "Bio")
     const buttonLabel = $el.find('button').first().text().trim() || 'Bio';
