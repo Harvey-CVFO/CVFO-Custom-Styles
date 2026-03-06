@@ -1157,7 +1157,9 @@
 
   function buildCard(member) {
     const card = document.createElement('div');
-    card.className = 'team-card scroll-reveal';
+    // Don't use scroll-reveal here — cards are injected after the observer
+    // has already run. Force visible and add a simple fade-in instead.
+    card.className = 'team-card team-card-fadein';
 
     const photoSrc  = member.photo  || '';
     const photoAlt  = member.name   || 'Team member';
@@ -1224,11 +1226,6 @@
 
         container.innerHTML = '';
         container.appendChild(grid);
-
-        // Re-run scroll reveal for newly inserted cards
-        if (typeof initScrollReveal === 'function') {
-          initScrollReveal();
-        }
       })
       .catch(function (err) {
         console.error('renderTeamCards fetch error:', err);
