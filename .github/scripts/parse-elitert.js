@@ -54,7 +54,12 @@ function parseMembers(html) {
     const photo = $el.find('img').first().attr('src') || '';
 
     // Bio text — stored in data-description attribute on the Bio button
-    const bio = $el.find('button[data-description]').first().attr('data-description') || '';
+    // Clean <br /> tags and collapse excess whitespace
+    const rawBio = $el.find('button[data-description]').first().attr('data-description') || '';
+    const bio = rawBio
+      .replace(/<br\s*\/?>/gi, '\n')   // <br /> → newline
+      .replace(/\n{3,}/g, '\n\n')       // collapse 3+ newlines to 2
+      .trim();
 
     // Button label (usually "Bio")
     const buttonLabel = $el.find('button').first().text().trim() || 'Bio';
