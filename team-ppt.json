@@ -1,0 +1,62 @@
+{
+  "team": "ppt",
+  "updated": "2026-03-06T21:34:14.192Z",
+  "members": [
+    {
+      "name": "Sterling Hirsch",
+      "title": "Advanced Planning Lead / Collective VFO Mgr.",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204092104_Sterling Hirsch.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Wyatt Dursteler",
+      "title": "Advanced Planning Lead",
+      "photo": "https://biz-diagnostic.com/img/expert/20250205095851_Wyatt Dursteler.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Anna-Marie Lovell",
+      "title": "Advanced Planning Lead",
+      "photo": "https://biz-diagnostic.com/img/expert/20250516031336_Anna-Marie Lovell.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Christina Messer",
+      "title": "Tax Planning Partner",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204091355_Christina Messer.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Natalya Grigoriev",
+      "title": "CPA Partner",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204091707_Natalya Grigoriev.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Valerie Klimenko",
+      "title": "CPA Partner",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204091841_Valerie Klimenko.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Xavier Yuchongtian",
+      "title": "CPA Partner",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204091535_xavier Yuchongtian.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Phillip Graybeal",
+      "title": "CPA Partner",
+      "photo": "https://biz-diagnostic.com/img/expert/20250307104147_Phillip Graybeal.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    }
+  ]
+}

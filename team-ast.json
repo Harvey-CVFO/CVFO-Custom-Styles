@@ -1,0 +1,41 @@
+{
+  "team": "ast",
+  "updated": "2026-03-06T21:34:14.291Z",
+  "members": [
+    {
+      "name": "Sterling Hirsch",
+      "title": "Advanced Planning Lead / Collective VFO Mgr.",
+      "photo": "https://biz-diagnostic.com/img/expert/20250204092104_Sterling Hirsch.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Anna-Marie Lovell",
+      "title": "Advanced Planning Lead",
+      "photo": "https://biz-diagnostic.com/img/expert/20250516031336_Anna-Marie Lovell.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Wyatt Dursteler",
+      "title": "Advanced Planning Lead/Proactive Coordinator",
+      "photo": "https://biz-diagnostic.com/img/expert/20250312015707_Wyatt Dursteler Headshot.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Alan Barber",
+      "title": "Advanced Planning Lead/CPA",
+      "photo": "https://biz-diagnostic.com/img/expert/20241223041644_Alan Barber.png",
+      "bio": "",
+      "buttonLabel": "Bio"
+    },
+    {
+      "name": "Ian Welham",
+      "title": "Proactive Facilitator",
+      "photo": "https://biz-diagnostic.com/img/expert/20241223042002_ian.jpg",
+      "bio": "",
+      "buttonLabel": "Bio"
+    }
+  ]
+}
