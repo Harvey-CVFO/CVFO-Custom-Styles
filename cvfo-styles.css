@@ -2485,14 +2485,6 @@ select:focus-visible {
   .zpbutton.zpbutton-size-lg { font-size: 16px !important; }
 }
 
-@media (max-width: 480px) {
-  /* Full-width buttons on small screens */
-  .zpbutton.zpbutton-type-primary,
-  .zpbutton.zpbutton-type-secondary {
-    width: 100% !important;
-    text-align: center !important;
-  }
-}
 
 
 /* ============================================================
