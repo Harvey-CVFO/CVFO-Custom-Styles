@@ -1260,3 +1260,103 @@
   };
 
 })();
+
+
+/* ============================================================
+   RELATED POSTS RENDERER
+   Fetches the site's /blogs/feed XML and renders up to 3
+   related post cards inside a target container.
+
+   USAGE — add to a Code Snippet element in the Related Posts
+   section of each blog post:
+
+   <div id="cvfo-related-posts"></div>
+   <script>
+     (function() {
+       function tryRender() {
+         if (typeof renderRelatedPosts === 'function') {
+           renderRelatedPosts({
+             containerId: 'cvfo-related-posts',
+             excludeUrl: window.location.href,
+             maxPosts: 3
+           });
+         } else { setTimeout(tryRender, 100); }
+       }
+       tryRender();
+     })();
+   </script>
+
+   OPTIONS:
+   containerId  — id of the div to render into (required)
+   excludeUrl   — URL of current post to exclude from results
+   maxPosts     — number of posts to show (default: 3)
+   category     — optional category string to filter by
+   ============================================================ */
+
+  window.renderRelatedPosts = function(opts) {
+    var containerId = opts.containerId;
+    var maxPosts    = opts.maxPosts    || 3;
+    var excludeUrl  = opts.excludeUrl  || '';
+    var category    = opts.category    || '';
+
+    var container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = '<div class="related-loading">Loading...</div>';
+
+    var feedUrl = '/blogs/feed';
+
+    fetch(feedUrl)
+      .then(function(res) { return res.text(); })
+      .then(function(xmlText) {
+        var parser   = new DOMParser();
+        var xml      = parser.parseFromString(xmlText, 'text/xml');
+        var items    = Array.from(xml.querySelectorAll('item'));
+        var filtered = items.filter(function(item) {
+          var link = (item.querySelector('link') || {}).textContent || '';
+          if (excludeUrl && link === excludeUrl) return false;
+          if (category) {
+            var cats = Array.from(item.querySelectorAll('category'))
+              .map(function(c) { return c.textContent.toLowerCase(); });
+            if (!cats.includes(category.toLowerCase())) return false;
+          }
+          return true;
+        }).slice(0, maxPosts);
+
+        if (!filtered.length) {
+          container.innerHTML = '';
+          return;
+        }
+
+        var cards = filtered.map(function(item) {
+          var title    = (item.querySelector('title') || {}).textContent || '';
+          var link     = (item.querySelector('link')  || {}).textContent || '';
+          var pubDate  = (item.querySelector('pubDate') || {}).textContent || '';
+          var imgMatch = ((item.querySelector('description') || {}).textContent || '')
+                           .match(/<img[^>]+src=["']([^"']+)["']/i);
+          var img      = imgMatch ? imgMatch[1] : '';
+          var catEl    = item.querySelector('category');
+          var cat      = catEl ? catEl.textContent : '';
+          var dateStr  = pubDate ? new Date(pubDate).toLocaleDateString('en-US',
+                           { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+
+          return (
+            '<a href="' + link + '" class="related-card">' +
+              (img ? '<div class="related-card-img"><img src="' + img + '" alt="' + title + '" loading="lazy"></div>' : '') +
+              '<div class="related-card-body">' +
+                (cat ? '<span class="section-badge related-card-cat">' + cat + '</span>' : '') +
+                '<p class="related-card-title">' + title + '</p>' +
+                (dateStr ? '<p class="related-card-date">' + dateStr + '</p>' : '') +
+              '</div>' +
+            '</a>'
+          );
+        });
+
+        container.innerHTML =
+          '<div class="related-grid">' + cards.join('') + '</div>';
+      })
+      .catch(function(err) {
+        console.error('renderRelatedPosts error:', err);
+        container.innerHTML = '';
+      });
+  };
