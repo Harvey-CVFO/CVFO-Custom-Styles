@@ -5233,3 +5233,299 @@ select:focus-visible {
   .team-modal-overlay,
   .team-modal { transition: none !important; }
 }
+
+
+/* ============================================================
+   19. COLLECTIVE INSIGHTS — BLOG POST TEMPLATE
+   ============================================================
+
+   All classes apply to native Zoho Sites elements.
+   No Code Snippet wrappers — use native Box, Text, Image, Row.
+
+   HOW TO APPLY:
+   Select element → CSS icon in property panel →
+   type class name (no leading dot) → save.
+
+   CLASS INDEX:
+   .post-body-wrap       Row/Section wrapping all body content
+   .post-meta            Text element — date / author / read time
+   .post-h2              H2 subheadings inside post body
+   .post-h3              H3 subheadings inside post body
+   .post-callout         Box element — teal planning note callout
+   .post-editor-note     Box element — amber editor's note (conditional)
+   .post-cvfo-fits       Box element — "Where Collective VFO Fits"
+   .post-cvfo-fits-label Text heading inside .post-cvfo-fits
+   .post-author-card     Box element — author bio block
+   .post-author-name     Text — author name
+   .post-author-title    Text — author title/role (Sterling mode only)
+   .post-author-photo    Image — 80x80 headshot (Sterling mode only)
+   .post-compliance      Box element — compliance disclosure (conditional)
+   ============================================================ */
+
+/* ── POST BODY WRAPPER ───────────────────────────────────── */
+/* Apply to the Row or Section that wraps all body content.
+   Constrains reading width to 740px and centers it.
+   This is the single most important class — everything
+   else depends on content being inside this boundary. */
+.post-body-wrap {
+  max-width: 740px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+}
+
+/* ── POST META LINE ─────────────────────────────────────── */
+/* Apply to the Text element directly below H1.
+   "Collective VFO Editorial · Month DD, YYYY · X min read"
+   OR "By Sterling Hirsch · Month DD, YYYY · X min read" */
+.post-meta {
+  font-size: 14px !important;
+  color: #4a5568 !important;
+  text-align: center !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* ── IN-POST HEADINGS ────────────────────────────────────── */
+/* H2 and H3 global styles are set via Advanced Visual Editor.
+   These classes are for in-post overrides only — apply when
+   a specific heading needs to differ from the global style. */
+.post-h2 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: var(--color-navy) !important;
+  line-height: 1.25 !important;
+  margin-top: 48px !important;
+  margin-bottom: 16px !important;
+}
+
+.post-h3 {
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  color: var(--color-navy) !important;
+  line-height: 1.3 !important;
+  margin-top: 32px !important;
+  margin-bottom: 12px !important;
+}
+
+@media (max-width: 767px) {
+  .post-h2 { font-size: 24px !important; }
+  .post-h3 { font-size: 20px !important; }
+}
+
+/* ── CALLOUT BOX ─────────────────────────────────────────── */
+/* Native Box element inside post body.
+   Label options (bold text at top, set natively):
+   "Planning Note:" / "Important Distinction:" / "Timing Consideration:" */
+.post-callout {
+  background: #e6f4f7 !important;
+  border-left: 4px solid var(--accent-teal, #00708b) !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 24px 28px !important;
+}
+
+/* ── EDITOR'S NOTE ───────────────────────────────────────── */
+/* Native Box element. Placement: below featured image,
+   above post body. Conditional — not on every post.
+   See spec for when to use and example language. */
+.post-editor-note {
+  background: #fffbeb !important;
+  border-left: 4px solid #d97706 !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 16px 24px !important;
+  max-width: 740px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Apply to the Text element inside the editor's note box */
+.post-editor-note-text {
+  font-size: 15px !important;
+  color: #92400e !important;
+  line-height: 1.6 !important;
+  font-style: italic !important;
+}
+
+/* ── WHERE COLLECTIVE VFO FITS ───────────────────────────── */
+/* Native Box element. Use on every post, before author bio.
+   Structure inside: label (post-cvfo-fits-label), then 3 lines.
+   See spec for content formula per post topic. */
+.post-cvfo-fits {
+  background: var(--color-offwhite, #f7fafc) !important;
+  border-radius: 8px !important;
+  padding: 24px 28px !important;
+  max-width: 740px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Apply to Text element for the "Where Collective VFO Fits" label */
+.post-cvfo-fits-label {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--color-navy) !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 14px !important;
+}
+
+/* ── AUTHOR BIO CARD ─────────────────────────────────────── */
+/* Native Box element. Two modes — see spec.
+   Mode A (Sterling): 2-col Row inside — photo left, text right.
+   Mode B (Editorial): single column, no photo. */
+.post-author-card {
+  background: var(--color-offwhite, #f7fafc) !important;
+  border-radius: 8px !important;
+  padding: 32px !important;
+  max-width: 740px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.post-author-name {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--color-navy) !important;
+  margin-bottom: 4px !important;
+}
+
+/* Mode A only — omit for Editorial byline */
+.post-author-title {
+  font-size: 14px !important;
+  color: #4a5568 !important;
+  margin-bottom: 12px !important;
+}
+
+.post-author-bio {
+  font-size: 15px !important;
+  color: var(--color-darkgray) !important;
+  line-height: 1.6 !important;
+}
+
+/* Mode A only — apply to Image element, circular headshot */
+.post-author-photo {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+/* ── COMPLIANCE DISCLOSURE ───────────────────────────────── */
+/* Native Box element below author bio.
+   Conditional — see spec for when to include. */
+.post-compliance {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+  padding: 16px 24px !important;
+  max-width: 740px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Apply to Text element inside the compliance box */
+.post-compliance-text {
+  font-size: 13px !important;
+  color: #4a5568 !important;
+  line-height: 1.6 !important;
+}
+
+/* ── MOBILE ──────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .post-callout,
+  .post-editor-note  { padding: 18px 20px !important; }
+  .post-author-card  { padding: 24px 20px !important; }
+  .post-cvfo-fits    { padding: 20px !important; }
+  .post-compliance   { padding: 14px 18px !important; }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .post-callout,
+  .post-editor-note { transition: none !important; }
+}
+
+/* ── RELATED POSTS GRID ─────────────────────────────────── */
+/* Rendered via renderRelatedPosts() JS function.
+   Attach to a Code Snippet element in the Related Posts section. */
+.related-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+.related-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+
+.related-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+.related-card-img {
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+}
+
+.related-card-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.related-card-body {
+  padding: 20px !important;
+  flex: 1 !important;
+}
+
+.related-card-cat {
+  display: inline-block !important;
+  margin-bottom: 10px !important;
+}
+
+.related-card-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--color-navy) !important;
+  line-height: 1.4 !important;
+  margin: 0 0 10px !important;
+  /* Clamp to 2 lines */
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.related-card-date {
+  font-size: 13px !important;
+  color: #4a5568 !important;
+  margin: 0 !important;
+}
+
+.related-loading {
+  font-size: 14px !important;
+  color: #4a5568 !important;
+  padding: 16px 0 !important;
+}
+
+@media (max-width: 900px) {
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .related-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
