@@ -5264,13 +5264,8 @@ select:focus-visible {
 
 /* ── POST BODY WRAPPER ───────────────────────────────────── */
 /* Apply to the Row or Section that wraps all body content.
-   Constrains reading width to 740px and centers it.
-   This is the single most important class — everything
-   else depends on content being inside this boundary. */
+   Width is controlled by Zoho Sites native section settings. */
 .post-body-wrap {
-  max-width: 740px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
   width: 100% !important;
 }
 
@@ -5332,9 +5327,6 @@ select:focus-visible {
   border-left: 4px solid #d97706 !important;
   border-radius: 0 6px 6px 0 !important;
   padding: 16px 24px !important;
-  max-width: 740px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 /* Apply to the Text element inside the editor's note box */
@@ -5353,9 +5345,6 @@ select:focus-visible {
   background: var(--color-offwhite, #f7fafc) !important;
   border-radius: 8px !important;
   padding: 24px 28px !important;
-  max-width: 740px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 /* Apply to Text element for the "Where Collective VFO Fits" label */
@@ -5376,9 +5365,6 @@ select:focus-visible {
   background: var(--color-offwhite, #f7fafc) !important;
   border-radius: 8px !important;
   padding: 32px !important;
-  max-width: 740px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 .post-author-name {
@@ -5416,9 +5402,6 @@ select:focus-visible {
   border: 1px solid #e2e8f0 !important;
   border-radius: 6px !important;
   padding: 16px 24px !important;
-  max-width: 740px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 /* Apply to Text element inside the compliance box */
@@ -5450,8 +5433,6 @@ select:focus-visible {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 24px !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
 }
 
 .related-card {
