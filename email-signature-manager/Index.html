@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      --navy: #1a365d;
+      --teal: #00708b;
+      --muted-teal: #83aeaf;
+      --gold: #d2b450;
+      --snow: #f7fafc;
+      --line: #e2e8f0;
+      --text: #2d3748;
+      --danger: #b42318;
+      --success: #147a3f;
+      --warn: #9a6700;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6f8;
+      color: var(--text);
+    }
+    .app { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+    aside {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 18px;
+    }
+    main { padding: 24px; }
+    h1 { margin: 0 0 4px; font-size: 20px; color: var(--navy); }
+    .sub { margin: 0 0 20px; font-size: 12px; color: #64748b; line-height: 1.4; }
+    .person {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .person.active { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(0,112,139,.12); }
+    .person-name { font-weight: 700; color: var(--navy); font-size: 14px; }
+    .person-email { font-size: 11px; color: #64748b; margin-top: 3px; }
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      margin-right: 6px;
+      background: #cbd5e1;
+    }
+    .status-dot.success { background: var(--success); }
+    .status-dot.warn { background: var(--warn); }
+    .status-dot.error { background: var(--danger); }
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 980px;
+    }
+    .topbar { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+    .selected h2 { margin: 0; color: var(--navy); font-size: 22px; }
+    .selected .email { color: #64748b; font-size: 13px; margin-top: 4px; }
+    .variants { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+    .variant, button.action {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .variant.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    button.action.primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+    button.action.gold { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+    button.action:disabled { opacity: .55; cursor: not-allowed; }
+    .preview-wrap {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+      overflow: auto;
+    }
+    .preview-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    .message {
+      display: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+    }
+    .message.show { display: block; }
+    .message.success { background: #ecfdf3; color: var(--success); border: 1px solid #abefc6; }
+    .message.warn { background: #fffaeb; color: var(--warn); border: 1px solid #fedf89; }
+    .message.error { background: #fef3f2; color: var(--danger); border: 1px solid #fecdca; }
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 12px;
+      display: none;
+    }
+    textarea.show { display: block; }
+    .note { font-size: 12px; color: #64748b; line-height: 1.45; max-width: 760px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <h1>CVFO Signatures</h1>
+      <p class="sub">Select a user, preview a variant, then push it to Gmail. Push verifies by reading the live Gmail signature after update.</p>
+      <div id="people"></div>
+    </aside>
+
+    <main>
+      <div class="panel">
+        <div class="topbar">
+          <div class="selected">
+            <h2 id="selectedName">Loading...</h2>
+            <div class="email" id="selectedEmail"></div>
+          </div>
+        </div>
+
+        <div class="variants" id="variants"></div>
+        <div id="message" class="message"></div>
+
+        <div class="actions">
+          <button class="action primary" onclick="pushSelected()">Push Selected Variant</button>
+          <button class="action" onclick="verifySelected()">Verify Live</button>
+          <button class="action gold" onclick="pushAllActive()">Push All Active</button>
+          <button class="action" onclick="copyActivationInstructions()">Copy Activation Instructions</button>
+          <button class="action" onclick="toggleHtml()">Show/Hide HTML</button>
+        </div>
+
+        <div class="preview-label">Preview</div>
+        <div class="preview-wrap" id="preview"></div>
+        <textarea id="htmlSource" readonly></textarea>
+        <p class="note">
+          Gmail can store the signature through the API, but each user may still need to select it once in Gmail's Signature defaults dropdowns for new emails and replies. The API cannot set those dropdowns.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let PEOPLE = [];
+    let selectedEmail = null;
+    let selectedSigKey = null;
+    const statusByEmail = {};
+
+    function init() {
+      google.script.run
+        .withSuccessHandler(function(people) {
+          PEOPLE = people || [];
+          selectedEmail = PEOPLE[0] && PEOPLE[0].email;
+          selectedSigKey = PEOPLE[0] && PEOPLE[0].active;
+          renderPeople();
+          renderSelected();
+        })
+        .withFailureHandler(showError)
+        .getPeopleConfig();
+    }
+
+    function renderPeople() {
+      const root = document.getElementById('people');
+      root.innerHTML = '';
+      PEOPLE.forEach(function(p) {
+        const btn = document.createElement('button');
+        btn.className = 'person' + (p.email === selectedEmail ? ' active' : '');
+        btn.onclick = function() {
+          selectedEmail = p.email;
+          selectedSigKey = p.active;
+          renderPeople();
+          renderSelected();
+        };
+        const dotClass = statusByEmail[p.email] || '';
+        btn.innerHTML = '<div class="person-name"><span class="status-dot ' + dotClass + '"></span>' + escapeHtml(p.name) + '</div><div class="person-email">' + escapeHtml(p.email) + '</div>';
+        root.appendChild(btn);
+      });
+    }
+
+    function renderSelected() {
+      const person = getSelectedPerson();
+      if (!person) return;
+      document.getElementById('selectedName').textContent = person.name;
+      document.getElementById('selectedEmail').textContent = person.email;
+
+      const variantRoot = document.getElementById('variants');
+      variantRoot.innerHTML = '';
+      person.variants.forEach(function(v) {
+        const btn = document.createElement('button');
+        btn.className = 'variant' + (v.sig === selectedSigKey ? ' active' : '');
+        btn.textContent = v.label;
+        btn.onclick = function() {
+          selectedSigKey = v.sig;
+          renderSelected();
+        };
+        variantRoot.appendChild(btn);
+      });
+
+      google.script.run
+        .withSuccessHandler(function(html) {
+          document.getElementById('preview').innerHTML = html || '';
+          document.getElementById('htmlSource').value = html || '';
+        })
+        .withFailureHandler(showError)
+        .getSignatureHtml(selectedSigKey);
+    }
+
+    function pushSelected() {
+      const person = getSelectedPerson();
+      setBusy(true);
+      showMessage('warn', 'Pushing signature for ' + person.email + '...');
+      google.script.run
+        .withSuccessHandler(function(result) {
+          setBusy(false);
+          statusByEmail[person.email] = result.success && result.verified ? 'success' : (result.success ? 'warn' : 'error');
+          renderPeople();
+          showMessage(result.success ? (result.verified ? 'success' : 'warn') : 'error', result.message || JSON.stringify(result));
+        })
+        .withFailureHandler(function(err) { setBusy(false); showError(err); })
+        .pushSignatureByKey(person.email, selectedSigKey);
+    }
+
+    function pushAllActive() {
+      setBusy(true);
+      showMessage('warn', 'Pushing all active signatures...');
+      google.script.run
+        .withSuccessHandler(function(results) {
+          setBusy(false);
+          const lines = (results || []).map(function(r) {
+            statusByEmail[r.email] = r.success && r.verified ? 'success' : (r.success ? 'warn' : 'error');
+            return (r.success ? 'OK' : 'FAIL') + ' - ' + r.email + ': ' + r.message;
+          });
+          renderPeople();
+          showMessage(lines.every(line => line.indexOf('OK') === 0) ? 'success' : 'warn', lines.join('\n'));
+        })
+        .withFailureHandler(function(err) { setBusy(false); showError(err); })
+        .pushAllActive();
+    }
+
+    function verifySelected() {
+      const person = getSelectedPerson();
+      setBusy(true);
+      showMessage('warn', 'Reading live Gmail signature for ' + person.email + '...');
+      google.script.run
+        .withSuccessHandler(function(result) {
+          setBusy(false);
+          if (result.success && result.html) {
+            statusByEmail[person.email] = 'success';
+            document.getElementById('preview').innerHTML = result.html;
+            document.getElementById('htmlSource').value = result.html;
+            showMessage('success', 'Live signature loaded from Gmail. Length: ' + result.html.length + ' characters.');
+          } else {
+            statusByEmail[person.email] = 'warn';
+            showMessage('warn', result.message || 'No live signature returned.');
+          }
+          renderPeople();
+        })
+        .withFailureHandler(function(err) { setBusy(false); showError(err); })
+        .getLiveSignature(person.email);
+    }
+
+    function copyActivationInstructions() {
+      const person = getSelectedPerson();
+      const firstName = person.name.split(' ')[0];
+      const msg = `Hi ${firstName},\n\nYour Collective VFO email signature has been added to your Gmail account. If it is not showing automatically, please activate it once:\n\n1. Open Gmail on desktop.\n2. Click the gear icon in the upper-right.\n3. Click "See all settings."\n4. In the General tab, scroll to "Signature."\n5. Look for a signature named "My Signature" or your existing named signature.\n6. In "Signature defaults," select that signature for both "For new emails use" and "On reply/forward use."\n7. Scroll to the bottom and click "Save Changes."\n8. Compose a new email to confirm it appears.\n\nAfter that one-time activation, future updates can be pushed remotely.`;
+      navigator.clipboard.writeText(msg).then(function() {
+        showMessage('success', 'Activation instructions copied.');
+      }).catch(function() {
+        showMessage('warn', msg);
+      });
+    }
+
+    function toggleHtml() {
+      document.getElementById('htmlSource').classList.toggle('show');
+    }
+
+    function getSelectedPerson() {
+      return PEOPLE.find(function(p) { return p.email === selectedEmail; });
+    }
+
+    function setBusy(busy) {
+      document.querySelectorAll('button').forEach(function(btn) { btn.disabled = busy; });
+    }
+
+    function showMessage(type, text) {
+      const el = document.getElementById('message');
+      el.className = 'message show ' + type;
+      el.textContent = text;
+    }
+
+    function showError(err) {
+      setBusy(false);
+      showMessage('error', err && err.message ? err.message : String(err));
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>'"]/g, function(c) {
+        return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[c];
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
