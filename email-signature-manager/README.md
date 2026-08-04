@@ -58,5 +58,17 @@ The Gmail API can write the signature HTML to the account. It does not control t
 - Carmen Hirsch
 - Phil Castro
 - Henry Rodriguez
+- Briell Huddleston
 
 Book promo variants are included for Sterling, Anna-Marie, and Wyatt.
+
+## Source-of-truth workflow
+
+- GitHub is the canonical source for `Code.gs`, `Index.html`, and `appsscript.json`.
+- Use `clasp pull` only to reconcile intentional Apps Script editor changes; do not treat an unreviewed pull as canonical.
+- Use `clasp push` after review to synchronize approved repository code to Apps Script.
+- Test signature changes against Harvey before pushing to another user or using **Push All Active**.
+- Create a numbered Apps Script version before updating the production web-app deployment.
+- Do not edit production code directly in the Apps Script editor after this workflow is established.
+
+Briell uses the approved `BriellH_2026_1.png` headshot and the main office number at extension 105.
