@@ -71,4 +71,4 @@ Book promo variants are included for Sterling, Anna-Marie, and Wyatt.
 - Create a numbered Apps Script version before updating the production web-app deployment.
 - Do not edit production code directly in the Apps Script editor after this workflow is established.
 
-Briell uses the approved `BriellH_2026_1.png` headshot and the main office number at extension 105.
+Briell uses the square-cropped `BriellH_2026_square.png` headshot and the main office number at extension 105. The original portrait remains in the repository as `BriellH_2026_1.png`.
