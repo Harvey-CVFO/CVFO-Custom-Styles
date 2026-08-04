@@ -418,9 +418,26 @@ function getCredential_(key) {
   var value = PropertiesService.getScriptProperties().getProperty(key);
   if (!value) throw new Error('Missing Script Property: ' + key);
   if (key === 'SERVICE_ACCOUNT_PRIVATE_KEY') {
-    value = value.trim().replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+    value = normalizePrivateKey_(value);
   }
   return value;
+}
+
+function normalizePrivateKey_(value) {
+  var begin = '-----BEGIN PRIVATE KEY-----';
+  var end = '-----END PRIVATE KEY-----';
+  var normalized = value.trim().replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+
+  if (normalized.indexOf('\n') === -1
+      && normalized.indexOf(begin) === 0
+      && normalized.lastIndexOf(end) === normalized.length - end.length) {
+    var body = normalized.slice(begin.length, -end.length).replace(/\s/g, '');
+    var lines = body.match(/.{1,64}/g);
+    if (!lines) throw new Error('Invalid private-key body');
+    normalized = begin + '\n' + lines.join('\n') + '\n' + end;
+  }
+
+  return normalized;
 }
 
 function buildSendAsUrl_(userEmail, sendAsEmail) {

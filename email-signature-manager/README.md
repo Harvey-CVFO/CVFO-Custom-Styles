@@ -69,6 +69,7 @@ Book promo variants are included for Sterling, Anna-Marie, and Wyatt.
 - Use `clasp push` after review to synchronize approved repository code to Apps Script.
 - Test signature changes against Harvey before pushing to another user or using **Push All Active**.
 - Run `testFreshHarveyConnection` after rotating the service-account key; it clears Harvey's cached OAuth token before verifying that the replacement key can mint a fresh token.
+- The credential loader accepts normal PEM, escaped-newline PEM, or the single-line PEM format produced when the Apps Script property editor strips line breaks.
 - Create a numbered Apps Script version before updating the production web-app deployment.
 - Do not edit production code directly in the Apps Script editor after this workflow is established.
 
