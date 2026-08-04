@@ -125,6 +125,16 @@ var PEOPLE = [
     tel: OFFICE.mainTel + ',103',
     variants: [{ label: 'Regular', sig: 'HENRY_SIG' }],
     active: 'HENRY_SIG'
+  },
+  {
+    name: 'Briell Huddleston',
+    email: 'briell@collectivevfo.com',
+    title: 'Operations & Implementation Coordinator',
+    headshot: 'BriellH_2026_1.png',
+    phone: OFFICE.mainPhone + ' ext. 105',
+    tel: OFFICE.mainTel + ',105',
+    variants: [{ label: 'Regular', sig: 'BRIELL_SIG' }],
+    active: 'BRIELL_SIG'
   }
 ];
 
@@ -138,7 +148,8 @@ var SIGNATURE_TO_EMAIL = {
   WYATT_BOOK_SIG: 'wyatt@collectivevfo.com',
   CARMEN_SIG: 'carmen@collectivevfo.com',
   PHIL_SIG: 'phil@collectivevfo.com',
-  HENRY_SIG: 'henry@collectivevfo.com'
+  HENRY_SIG: 'henry@collectivevfo.com',
+  BRIELL_SIG: 'briell@collectivevfo.com'
 };
 
 function doGet() {
@@ -331,17 +342,26 @@ function renderContactBlock_(person) {
     ? 'width="90"'
     : 'width="90" height="90"';
 
+  var headshotColumn = person.headshot
+    ? '<td style="vertical-align:top;padding-right:16px;width:106px;" width="106">'
+      + '<img src="' + asset_(person.headshot) + '" ' + headshotAttrs + ' alt="' + esc_(person.name) + '" style="display:block;border:2px solid ' + BRAND.line + ';line-height:0;border-radius:5px;" border="0">'
+      + '</td>'
+      + '<td style="width:1px;background-color:' + BRAND.paleLine + ';padding:0;font-size:0;line-height:0;" width="1">&nbsp;</td>'
+    : '';
+
+  var contactPadding = person.headshot ? 'padding-left:16px;' : '';
+  var phoneRow = person.phone && person.tel
+    ? contactRow_(ASSETS.phone, '<a href="tel:' + person.tel + '" style="font-size:12px;color:' + BRAND.charcoal + ';text-decoration:none;line-height:1.4;">' + esc_(person.phone) + '</a>', '12px', true)
+    : '';
+
   return '<tr><td style="background-color:#ffffff;padding:15px 20px;mso-line-height-rule:exactly;line-height:1.4;">'
     + '<table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;"><tr>'
-    + '<td style="vertical-align:top;padding-right:16px;width:106px;" width="106">'
-    + '<img src="' + asset_(person.headshot) + '" ' + headshotAttrs + ' alt="' + esc_(person.name) + '" style="display:block;border:2px solid ' + BRAND.line + ';line-height:0;border-radius:5px;" border="0">'
-    + '</td>'
-    + '<td style="width:1px;background-color:' + BRAND.paleLine + ';padding:0;font-size:0;line-height:0;" width="1">&nbsp;</td>'
-    + '<td style="vertical-align:top;padding-left:16px;">'
+    + headshotColumn
+    + '<td style="vertical-align:top;' + contactPadding + '">'
     + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;">'
     + contactRow_(ASSETS.globe, '<a href="' + OFFICE.websiteUrl + '" style="font-size:12px;color:' + BRAND.navy + ';text-decoration:none;font-weight:600;line-height:1.4;">' + OFFICE.website + '</a>', '12px', true)
-    + contactRow_(ASSETS.envelope, '<a href="mailto:' + person.email + '" style="font-size:12px;color:' + BRAND.charcoal + ';text-decoration:none;line-height:1.4;">' + person.email + '</a>', '12px', true)
-    + contactRow_(ASSETS.phone, '<a href="tel:' + person.tel + '" style="font-size:12px;color:' + BRAND.charcoal + ';text-decoration:none;line-height:1.4;">' + person.phone + '</a>', '12px', true)
+    + contactRow_(ASSETS.envelope, '<a href="mailto:' + person.email + '" style="font-size:12px;color:' + BRAND.charcoal + ';text-decoration:none;line-height:1.4;">' + esc_(person.email) + '</a>', '12px', true)
+    + phoneRow
     + contactRow_(ASSETS.pin, '<span style="font-size:11px;color:' + BRAND.gray + ';line-height:1.4;">' + OFFICE.address + '</span>', '11px', false)
     + '</table></td></tr></table></td></tr>';
 }
