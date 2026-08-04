@@ -270,6 +270,11 @@ function testConnection() {
   return getLiveSignature('harvey@collectivevfo.com');
 }
 
+function testFreshHarveyConnection() {
+  getService_('harvey@collectivevfo.com').reset();
+  return getLiveSignature('harvey@collectivevfo.com');
+}
+
 function pushHarveyRegular() {
   return pushSignatureByKey('harvey@collectivevfo.com', 'HARVEY_SIG');
 }
@@ -412,6 +417,9 @@ function getService_(impersonateEmail) {
 function getCredential_(key) {
   var value = PropertiesService.getScriptProperties().getProperty(key);
   if (!value) throw new Error('Missing Script Property: ' + key);
+  if (key === 'SERVICE_ACCOUNT_PRIVATE_KEY') {
+    value = value.trim().replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+  }
   return value;
 }
 

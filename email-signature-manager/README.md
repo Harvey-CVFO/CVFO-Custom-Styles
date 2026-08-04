@@ -68,6 +68,7 @@ Book promo variants are included for Sterling, Anna-Marie, and Wyatt.
 - Use `clasp pull` only to reconcile intentional Apps Script editor changes; do not treat an unreviewed pull as canonical.
 - Use `clasp push` after review to synchronize approved repository code to Apps Script.
 - Test signature changes against Harvey before pushing to another user or using **Push All Active**.
+- Run `testFreshHarveyConnection` after rotating the service-account key; it clears Harvey's cached OAuth token before verifying that the replacement key can mint a fresh token.
 - Create a numbered Apps Script version before updating the production web-app deployment.
 - Do not edit production code directly in the Apps Script editor after this workflow is established.
 
