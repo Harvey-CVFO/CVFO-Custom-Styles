@@ -130,7 +130,7 @@ var PEOPLE = [
     name: 'Briell Huddleston',
     email: 'briell@collectivevfo.com',
     title: 'Operations & Implementation Coordinator',
-    headshot: 'BriellH_2026_1.png',
+    headshot: 'BriellH_2026_square.png',
     phone: OFFICE.mainPhone + ' ext. 105',
     tel: OFFICE.mainTel + ',105',
     variants: [{ label: 'Regular', sig: 'BRIELL_SIG' }],
