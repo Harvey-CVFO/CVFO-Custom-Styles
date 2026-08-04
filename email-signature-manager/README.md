@@ -74,3 +74,14 @@ Book promo variants are included for Sterling, Anna-Marie, and Wyatt.
 - Do not edit production code directly in the Apps Script editor after this workflow is established.
 
 Briell uses the top-aligned square crop `BriellH_2026_square_v2.png` and the main office number at extension 105. The original portrait remains in the repository as `BriellH_2026_1.png`.
+
+## Operational record — August 4, 2026
+
+- GitHub `main` is the canonical source and is synchronized to the Apps Script `@HEAD` editor deployment.
+- The production web-app deployment remains a separate versioned deployment; source synchronization does not update it.
+- The exposed service-account key was rotated. The replacement email and private key live only in the `SERVICE_ACCOUNT_EMAIL` and `SERVICE_ACCOUNT_PRIVATE_KEY` Script Properties, and the old key was removed.
+- The credential loader reconstructs a valid PEM when the Apps Script property editor stores the private key on one line.
+- Properties named `oauth2.cvfo_sig_<user_email>` are OAuth2 library token caches for delegated Gmail access. They are sensitive, automatically refreshed, and should not be edited manually. Deleting one forces a fresh token for that mailbox.
+- Briell's regular signature was pushed by Harvey and then read back successfully through **Verify Live** with a stored length of 4,725 characters and no OAuth error.
+- The generated Briell source is 5,138 characters. Gmail sanitizes stored signature HTML, so the manager currently treats a successful live read longer than 100 characters as verification rather than requiring byte-for-byte equality.
+- Briell's hosted headshot is `BriellH_2026_square_v2.png`, a pixel-preserving 1086×1086 top-aligned crop of the approved original. The versioned filename prevents stale browser and Gmail image caches from retaining the rejected crop.
